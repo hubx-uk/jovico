@@ -1,0 +1,233 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── CSS Custom Properties ─────────────────────────────── */
+:root {
+  --font-sora: 'Sora', system-ui, sans-serif;
+  --font-clash: 'Sora', system-ui, sans-serif; /* fallback; replace with Clash Display */
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Shadcn/ui tokens — light mode (default) */
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 222.2 47.4% 11.2%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 222.2 84% 4.9%;
+  --radius: 0.75rem;
+
+  /* Jovico custom tokens */
+  --jv-green: #22C55E;
+  --jv-green-dark: #16A34A;
+  --jv-black: #0A0A0A;
+  --jv-white: #FAFAFA;
+  --jv-slate: #64748B;
+  --jv-surface: #F8FAFC;
+  --nav-height: 72px;
+}
+
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 210 40% 98%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 212.7 26.8% 83.9%;
+}
+
+/* ─── Base Reset ─────────────────────────────────────────── */
+* {
+  border-color: hsl(var(--border));
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-sora);
+  overflow-x: hidden;
+}
+
+/* ─── Typography ─────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sora);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+/* ─── Selection ──────────────────────────────────────────── */
+::selection {
+  background-color: var(--jv-green);
+  color: var(--jv-white);
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.6);
+}
+
+/* ─── Utilities ──────────────────────────────────────────── */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .jv-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .jv-section {
+    @apply py-16 md:py-24;
+  }
+
+  .jv-card {
+    @apply bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300;
+  }
+
+  .jv-btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-[var(--jv-black)] text-white font-semibold px-7 py-3 text-sm hover:bg-slate-800 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-slate-900 disabled:opacity-50;
+  }
+
+  .jv-btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-transparent text-[var(--jv-black)] font-semibold px-7 py-3 text-sm border-2 border-[var(--jv-black)] hover:bg-[var(--jv-black)] hover:text-white transition-colors duration-200;
+  }
+
+  .jv-btn-green {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-[var(--jv-green)] text-white font-semibold px-7 py-3 text-sm hover:bg-[var(--jv-green-dark)] transition-colors duration-200;
+  }
+
+  .jv-badge {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold;
+  }
+
+  .jv-input {
+    @apply w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition duration-200;
+  }
+
+  .noise-overlay {
+    position: relative;
+  }
+
+  .noise-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: 0;
+  }
+
+  /* Stagger animation delays */
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+  .delay-500 { animation-delay: 500ms; }
+
+  /* Frosted glass */
+  .glass {
+    @apply backdrop-blur-md bg-white/80 border border-white/20;
+  }
+
+  .glass-dark {
+    @apply backdrop-blur-md bg-black/60 border border-white/10;
+  }
+}
+
+/* ─── Component Styles ───────────────────────────────────── */
+@layer components {
+  .nav-link {
+    @apply text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors duration-200 relative;
+  }
+
+  .nav-link::after {
+    content: '';
+    @apply absolute -bottom-0.5 left-0 w-0 h-0.5 bg-[var(--jv-green)] transition-all duration-300;
+  }
+
+  .nav-link:hover::after,
+  .nav-link.active::after {
+    @apply w-full;
+  }
+
+  /* Rich text / blog content */
+  .prose-jovico {
+    @apply prose prose-slate max-w-none;
+  }
+
+  .prose-jovico h2 {
+    @apply text-2xl font-bold text-slate-900 mt-10 mb-4;
+  }
+
+  .prose-jovico h3 {
+    @apply text-xl font-semibold text-slate-900 mt-8 mb-3;
+  }
+
+  .prose-jovico p {
+    @apply text-slate-600 leading-relaxed mb-4;
+  }
+
+  .prose-jovico a {
+    @apply text-[var(--jv-green)] underline underline-offset-2;
+  }
+
+  /* Admin sidebar */
+  .admin-nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200;
+  }
+
+  .admin-nav-item:not(.active) {
+    @apply text-slate-600 hover:bg-slate-100 hover:text-slate-900;
+  }
+
+  .admin-nav-item.active {
+    @apply bg-slate-900 text-white;
+  }
+}

@@ -1,0 +1,245 @@
+// prisma/schema.prisma
+// Jovico Bikes - MySQL Database Schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Auth ─────────────────────────────────────────────────
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      AdminRole @default(EDITOR)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("admins")
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  EDITOR
+}
+
+// ─── Products (Bikes) ──────────────────────────────────────
+model Product {
+  id          String        @id @default(cuid())
+  name        String
+  slug        String        @unique
+  description String        @db.Text
+  price       Decimal       @db.Decimal(10, 2)
+  salePrice   Decimal?      @db.Decimal(10, 2)
+  sku         String        @unique
+  stock       Int           @default(0)
+  category    ProductCategory
+  type        ProductType   @default(BIKE)
+  brand       String?
+  specs       Json?
+  images      ProductImage[]
+  orderItems  OrderItem[]
+  featured    Boolean       @default(false)
+  published   Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([category])
+  @@index([published])
+  @@map("products")
+}
+
+model ProductImage {
+  id        String  @id @default(cuid())
+  url       String
+  alt       String?
+  isPrimary Boolean @default(false)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+
+  @@map("product_images")
+}
+
+enum ProductCategory {
+  CITY_BIKE
+  MOUNTAIN_BIKE
+  CARGO_BIKE
+  FOLDING_BIKE
+  ROAD_BIKE
+  ACCESSORY
+  PART
+  APPAREL
+}
+
+enum ProductType {
+  BIKE
+  ACCESSORY
+  PART
+  APPAREL
+}
+
+// ─── Services ─────────────────────────────────────────────
+model Service {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String   @db.Text
+  shortDesc   String
+  price       Decimal? @db.Decimal(10, 2)
+  priceNote   String?
+  duration    String?
+  icon        String?
+  featured    Boolean  @default(false)
+  published   Boolean  @default(true)
+  order       Int      @default(0)
+  bookings    Booking[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("services")
+}
+
+// ─── Bookings ─────────────────────────────────────────────
+model Booking {
+  id          String        @id @default(cuid())
+  name        String
+  email       String
+  phone       String
+  service     Service       @relation(fields: [serviceId], references: [id])
+  serviceId   String
+  date        DateTime
+  notes       String?       @db.Text
+  status      BookingStatus @default(PENDING)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@map("bookings")
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+// ─── Blog ─────────────────────────────────────────────────
+model Post {
+  id          String     @id @default(cuid())
+  title       String
+  slug        String     @unique
+  excerpt     String     @db.Text
+  content     String     @db.LongText
+  coverImage  String?
+  category    PostCategory
+  tags        String?
+  author      String     @default("Jovico Team")
+  published   Boolean    @default(false)
+  featured    Boolean    @default(false)
+  views       Int        @default(0)
+  readTime    Int        @default(5)
+  publishedAt DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([published, publishedAt])
+  @@map("posts")
+}
+
+enum PostCategory {
+  NEWS
+  TIPS
+  REVIEW
+  GUIDE
+  COMPANY
+}
+
+// ─── Orders ───────────────────────────────────────────────
+model Order {
+  id              String      @id @default(cuid())
+  orderNumber     String      @unique
+  customerName    String
+  customerEmail   String
+  customerPhone   String
+  shippingAddress Json
+  items           OrderItem[]
+  subtotal        Decimal     @db.Decimal(10, 2)
+  shipping        Decimal     @db.Decimal(10, 2) @default(0)
+  total           Decimal     @db.Decimal(10, 2)
+  status          OrderStatus @default(PENDING)
+  paymentStatus   PaymentStatus @default(UNPAID)
+  paymentRef      String?
+  notes           String?     @db.Text
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId   String
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+  name      String
+  price     Decimal @db.Decimal(10, 2)
+  quantity  Int
+  image     String?
+
+  @@map("order_items")
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  UNPAID
+  PAID
+  REFUNDED
+}
+
+// ─── Contact / Inquiries ──────────────────────────────────
+model ContactMessage {
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String        @db.Text
+  read      Boolean       @default(false)
+  createdAt DateTime      @default(now())
+
+  @@map("contact_messages")
+}
+
+// ─── Newsletter ───────────────────────────────────────────
+model Subscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@map("subscribers")
+}
+
+// ─── Site Settings ────────────────────────────────────────
+model SiteSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt
+
+  @@map("site_settings")
+}
