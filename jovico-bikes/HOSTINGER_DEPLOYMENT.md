@@ -29,7 +29,7 @@ Create a `.env` file in the project root with the following variables:
 
 ```env
 # Database
-DATABASE_URL=mysql://username:password@host:port/database_name
+DATABASE_URL=mysql://username:password@host:port/jovico_bikes
 
 # Authentication
 JWT_SECRET=your_secure_jwt_secret_here
