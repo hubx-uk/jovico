@@ -1,9 +1,9 @@
 'use client'
+import { CheckCheck } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 // components/admin/AdminMarkRead.tsx
 import { useTransition } from 'react'
-import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { CheckCheck } from 'lucide-react'
 
 export function AdminMarkRead({ id }: { id: string }) {
     const [isPending, startTransition] = useTransition()

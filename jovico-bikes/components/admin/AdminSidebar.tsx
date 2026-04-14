@@ -1,29 +1,28 @@
 'use client'
-// components/admin/AdminSidebar.tsx
-import Link from 'next/link'
-import { toast } from 'sonner'
-import { useState } from 'react'
-import { usePathname, useRouter } from 'next/navigation'
 import {
-    LayoutDashboard,
-    ShoppingBag,
-    FileText,
-    Settings,
-    LogOut,
-    Zap,
-    Wrench,
-    ShoppingCart,
-    Mail,
-    Menu,
-    X,
-    Users,
-    Tag,
-    BookOpen,
-    MessageSquare,
     BarChart3,
     Bell,
     Bike,
+    BookOpen,
+    LayoutDashboard,
+    LogOut,
+    Mail,
+    Menu,
+    MessageSquare,
+    Settings,
+    ShoppingBag,
+    ShoppingCart,
+    Tag,
+    Users,
+    Wrench,
+    X,
+    Zap,
 } from 'lucide-react'
+// components/admin/AdminSidebar.tsx
+import Link from 'next/link'
+import { usePathname, useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { toast } from 'sonner'
 
 import { cn } from '@/lib/utils'
 

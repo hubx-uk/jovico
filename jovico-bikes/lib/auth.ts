@@ -1,8 +1,8 @@
+import bcrypt from 'bcryptjs'
 // lib/auth.ts
 import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 import { prisma } from './prisma'
-import bcrypt from 'bcryptjs'
 
 const JWT_SECRET = new TextEncoder().encode(
     process.env.JWT_SECRET ?? 'jovico-bikes-dev-secret-key-change-in-production'

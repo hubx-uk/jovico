@@ -1,10 +1,10 @@
+import { prisma } from '@/lib/prisma'
+import { formatDate } from '@/lib/utils'
+import { ArrowLeft, Calendar, Clock, Eye, Share2, Tag } from 'lucide-react'
 // app/main/blog/[slug]/page.tsx
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowLeft, Clock, Eye, Calendar, Share2, Tag } from 'lucide-react'
-import { prisma } from '@/lib/prisma'
-import { formatDate } from '@/lib/utils'
 
 export async function generateStaticParams() {
     const posts = await prisma.post.findMany({ where: { published: true }, select: { slug: true } })

@@ -1,9 +1,9 @@
+import type { Metadata } from 'next'
 // app/admin/shop/[id]/page.tsx
 import { notFound } from 'next/navigation'
-import type { Metadata } from 'next'
 
-import { prisma } from '@/lib/prisma'
 import { ProductEditor } from '@/components/admin/ProductEditor'
+import { prisma } from '@/lib/prisma'
 
 export const metadata: Metadata = { title: 'Edit Product' }
 

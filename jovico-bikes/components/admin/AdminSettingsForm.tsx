@@ -1,8 +1,8 @@
 'use client'
+import { Loader2, Save } from 'lucide-react'
 // components/admin/AdminSettingsForm.tsx
 import { useState } from 'react'
 import { toast } from 'sonner'
-import { Save, Loader2 } from 'lucide-react'
 
 interface Props {
     settings: Record<string, string>

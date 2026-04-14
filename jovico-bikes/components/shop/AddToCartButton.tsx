@@ -1,6 +1,6 @@
 'use client'
 // components/shop/AddToCartButton.tsx
-import { ShoppingBag, Check } from 'lucide-react'
+import { Check, ShoppingBag } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 

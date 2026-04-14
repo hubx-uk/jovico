@@ -1,10 +1,10 @@
 'use client'
+import { cn } from '@/lib/utils'
+import { BikeIcon, Menu, ShoppingBag, X } from 'lucide-react'
 // components/layout/Navbar.tsx
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState, useEffect } from 'react'
-import { Menu, X, ShoppingBag, Zap, BikeIcon } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { useEffect, useState } from 'react'
 
 const navLinks = [
     { label: 'Shop', href: '/shop' },

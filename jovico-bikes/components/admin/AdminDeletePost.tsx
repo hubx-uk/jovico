@@ -1,6 +1,6 @@
 'use client'
 // components/admin/AdminDeletePost.tsx
-import { Trash2, Loader2 } from 'lucide-react'
+import { Loader2, Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'

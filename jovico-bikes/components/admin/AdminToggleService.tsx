@@ -1,7 +1,7 @@
 'use client'
+import { useRouter } from 'next/navigation'
 // components/admin/AdminToggleService.tsx
 import { useState, useTransition } from 'react'
-import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
 export function AdminToggleService({ id, published }: { id: string; published: boolean }) {

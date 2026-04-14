@@ -1,21 +1,20 @@
-// app/main/services/page.tsx
-import type { Metadata } from 'next'
-import Link from 'next/link'
-import {
-    CheckCircle2,
-    Clock,
-    ArrowRight,
-    Wrench,
-    Zap,
-    Battery,
-    Circle,
-    Settings,
-    Shield,
-    MessageCircle,
-} from 'lucide-react'
+import { BookingForm } from '@/components/home/BookingForm'
 import { prisma } from '@/lib/prisma'
 import { formatNaira } from '@/lib/utils'
-import { BookingForm } from '@/components/home/BookingForm'
+import {
+    ArrowRight,
+    Battery,
+    CheckCircle2,
+    Circle,
+    Clock,
+    MessageCircle,
+    Settings,
+    Shield,
+    Wrench,
+    Zap,
+} from 'lucide-react'
+// app/main/services/page.tsx
+import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
     title: 'eBike Services',

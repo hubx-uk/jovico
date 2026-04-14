@@ -1,11 +1,11 @@
 // app/admin/services/page.tsx
-import { Plus, Pencil, Wrench } from 'lucide-react'
+import { Pencil, Plus, Wrench } from 'lucide-react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
+import { AdminToggleService } from '@/components/admin/AdminToggleService'
 import { prisma } from '@/lib/prisma'
 import { formatNaira } from '@/lib/utils'
-import { AdminToggleService } from '@/components/admin/AdminToggleService'
 
 export const metadata: Metadata = { title: 'Services' }
 

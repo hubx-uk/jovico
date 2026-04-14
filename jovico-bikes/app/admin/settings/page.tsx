@@ -1,6 +1,6 @@
+import { prisma } from '@/lib/prisma'
 // app/admin/settings/page.tsx
 import type { Metadata } from 'next'
-import { prisma } from '@/lib/prisma'
 
 import { AdminSettingsForm } from '@/components/admin/AdminSettingsForm'
 

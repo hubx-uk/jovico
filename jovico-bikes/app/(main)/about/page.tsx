@@ -1,7 +1,7 @@
+import { ArrowRight, Award, Heart, Leaf, MapPin, Target, Users, Zap } from 'lucide-react'
 // app/main/about/page.tsx
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, MapPin, Users, Award, Leaf, Zap, Heart, Target } from 'lucide-react'
 
 export const metadata: Metadata = {
     title: 'About Us',

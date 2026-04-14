@@ -1,9 +1,9 @@
+import { prisma } from '@/lib/prisma'
+import { formatNaira } from '@/lib/utils'
+import { ArrowRight } from 'lucide-react'
 // app/main/accessories/page.tsx
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
-import { prisma } from '@/lib/prisma'
-import { formatNaira } from '@/lib/utils'
 
 export const metadata: Metadata = {
     title: 'Accessories',

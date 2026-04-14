@@ -1,10 +1,10 @@
 'use client'
+import type { Post } from '@/prisma/generated/prisma/client'
+import { Eye, EyeOff, Loader2, Save, Star } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 // components/admin/BlogPostEditor.tsx
 import { toast } from 'sonner'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Save, Loader2, Eye, EyeOff, Star } from 'lucide-react'
-import { Post } from '@/prisma/generated/prisma/client'
 
 // import type { Post } from "@prisma/client";
 

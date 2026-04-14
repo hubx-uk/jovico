@@ -1,12 +1,12 @@
 // app/admin/shop/page.tsx
-import { Plus, Pencil, Eye, EyeOff, Package } from 'lucide-react'
+import { Eye, Package, Pencil, Plus } from 'lucide-react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
-import { prisma } from '@/lib/prisma'
-import { formatNaira } from '@/lib/utils'
 import { AdminDeletePost } from '@/components/admin/AdminDeletePost'
 import { AdminToggleProduct } from '@/components/admin/AdminToggleProduct'
+import { prisma } from '@/lib/prisma'
+import { formatNaira } from '@/lib/utils'
 
 export const metadata: Metadata = { title: 'Products' }
 

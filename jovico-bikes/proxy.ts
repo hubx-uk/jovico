@@ -1,6 +1,6 @@
-// middleware.ts
-import { NextRequest, NextResponse } from 'next/server'
 import { verifyToken } from '@/lib/auth'
+// middleware.ts
+import { type NextRequest, NextResponse } from 'next/server'
 
 const ADMIN_PREFIX = '/admin'
 const PUBLIC_ADMIN_PATHS = ['/admin/login']

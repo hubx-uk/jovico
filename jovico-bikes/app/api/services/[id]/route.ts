@@ -1,8 +1,8 @@
 // app/api/services/[id]/route.ts
-import { NextRequest, NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 
-import { prisma } from '@/lib/prisma'
 import { requireAuth } from '@/lib/auth'
+import { prisma } from '@/lib/prisma'
 import { createSlug } from '@/lib/utils'
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {

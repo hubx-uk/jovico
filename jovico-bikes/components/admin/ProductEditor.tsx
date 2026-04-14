@@ -1,6 +1,6 @@
 'use client'
 // components/admin/ProductEditor.tsx
-import { Save, Loader2, Plus, Minus } from 'lucide-react'
+import { Loader2, Minus, Plus, Save } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'

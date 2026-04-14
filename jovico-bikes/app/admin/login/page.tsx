@@ -1,7 +1,7 @@
-// app/admin/login/page.tsx
-import type { Metadata } from 'next'
 import { AdminLoginForm } from '@/components/admin/AdminLoginForm'
 import { Zap } from 'lucide-react'
+// app/admin/login/page.tsx
+import type { Metadata } from 'next'
 
 export const metadata: Metadata = { title: 'Admin Login' }
 

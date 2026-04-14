@@ -1,8 +1,8 @@
 'use client'
+import { Calendar, FileText, Loader2, Mail, Phone, User } from 'lucide-react'
 // components/home/BookingForm.tsx
 import { useState } from 'react'
 import { toast } from 'sonner'
-import { Calendar, User, Mail, Phone, FileText, Loader2 } from 'lucide-react'
 
 interface Service {
     id: string

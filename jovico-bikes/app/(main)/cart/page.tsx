@@ -1,9 +1,9 @@
 'use client'
+import { formatNaira } from '@/lib/utils'
+import { ArrowLeft, ArrowRight, Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react'
+import Link from 'next/link'
 // app/(main)/cart/page.tsx
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
-import { Trash2, Plus, Minus, ShoppingBag, ArrowRight, ArrowLeft } from 'lucide-react'
-import { formatNaira } from '@/lib/utils'
 
 interface CartItem {
     id: string

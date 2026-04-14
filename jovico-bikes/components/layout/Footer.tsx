@@ -1,10 +1,20 @@
 'use client'
 // components/layout/Footer.tsx
 
+import {
+    BikeIcon,
+    Facebook,
+    Instagram,
+    Loader2,
+    Mail,
+    MapPin,
+    MessageCircle,
+    Phone,
+    Twitter,
+} from 'lucide-react'
 import Link from 'next/link'
-import { toast } from 'sonner'
 import { useState } from 'react'
-import { BikeIcon, Instagram, Twitter, Facebook, MessageCircle, Mail, Phone, MapPin, Loader2 } from 'lucide-react'
+import { toast } from 'sonner'
 
 import { useSiteSettings } from './SiteSettingsProvider'
 
@@ -33,32 +43,32 @@ const companyLinks = [
 ]
 
 export function Footer() {
-    const s = useSiteSettings();
-    const [email, setEmail] = useState("");
-    const [subscribing, setSubscribing] = useState(false);
+    const s = useSiteSettings()
+    const [email, setEmail] = useState('')
+    const [subscribing, setSubscribing] = useState(false)
 
     async function handleSubscribe(e: React.FormEvent) {
-        e.preventDefault();
-        if (!email) return;
-        setSubscribing(true);
+        e.preventDefault()
+        if (!email) return
+        setSubscribing(true)
         try {
-        const res = await fetch("/api/subscribers", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email }),
-        });
-        if (!res.ok) throw new Error();
-        toast.success("You're subscribed! Welcome to the Jovico community.");
-        setEmail("");
+            const res = await fetch('/api/subscribers', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email }),
+            })
+            if (!res.ok) throw new Error()
+            toast.success("You're subscribed! Welcome to the Jovico community.")
+            setEmail('')
         } catch {
-        toast.error("Subscription failed. Please try again.");
+            toast.error('Subscription failed. Please try again.')
         } finally {
-        setSubscribing(false);
+            setSubscribing(false)
         }
     }
 
-    const waNumber = s.whatsapp.replace(/\D/g, "");
-    const waUrl = `https://wa.me/${waNumber}`;
+    const waNumber = s.whatsapp.replace(/\D/g, '')
+    const waUrl = `https://wa.me/${waNumber}`
 
     return (
         <footer className='bg-slate-950 text-slate-300'>
@@ -74,17 +84,27 @@ export function Footer() {
                         </p>
                     </div>
                     <form
-                         onSubmit={handleSubscribe} className="flex gap-3 w-full lg:w-auto lg:max-w-md">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
-                required
-                className="flex-1 md:w-72 px-5 py-3 rounded-2xl bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
-              />
-              <button type="submit" disabled={subscribing} className="jv-btn-green whitespace-nowrap !rounded-2xl text-sm shrink-0 disabled:opacity-60">
-                {subscribing ? <Loader2 className="w-4 h-4 animate-spin" /> : "Subscribe"}
+                        onSubmit={handleSubscribe}
+                        className='flex gap-3 w-full lg:w-auto lg:max-w-md'
+                    >
+                        <input
+                            type='email'
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder='your@email.com'
+                            required
+                            className='flex-1 md:w-72 px-5 py-3 rounded-2xl bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-green-500'
+                        />
+                        <button
+                            type='submit'
+                            disabled={subscribing}
+                            className='jv-btn-green whitespace-nowrap !rounded-2xl text-sm shrink-0 disabled:opacity-60'
+                        >
+                            {subscribing ? (
+                                <Loader2 className='w-4 h-4 animate-spin' />
+                            ) : (
+                                'Subscribe'
+                            )}
                         </button>
                     </form>
                 </div>
@@ -109,7 +129,7 @@ export function Footer() {
                         </p>
                         <div className='space-y-2 text-sm text-slate-400'>
                             <a
-                                href={`tel:${s.phone.replace(/\s/g, "")}`}
+                                href={`tel:${s.phone.replace(/\s/g, '')}`}
                                 className='flex items-center gap-2 hover:text-white transition-colors'
                             >
                                 <Phone className='w-4 h-4 text-green-500' />
@@ -124,7 +144,7 @@ export function Footer() {
                             </a>
                             <div className='flex items-start gap-2'>
                                 <MapPin className='w-4 h-4 text-green-500 mt-0.5 shrink-0' />
-                                <span className="leading-relaxed">{s.address}</span>
+                                <span className='leading-relaxed'>{s.address}</span>
                             </div>
                         </div>
                     </div>
@@ -195,39 +215,45 @@ export function Footer() {
                         © {new Date().getFullYear()} {s.site_name} Ltd. All rights reserved.
                     </p>
                     <div className='flex items-center gap-4'>
-                        {s.instagram && <a
-                            href={s.instagram}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                            className='text-slate-500 hover:text-white transition-colors'
-                            aria-label="Instagram"
-                        >
-                            <Instagram className='w-5 h-5' />
-                        </a>}
-                        {s.twitter && <a
-                            href={s.twitter}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                            className='text-slate-500 hover:text-white transition-colors'
-                            aria-label="Twitter"
-                        >
-                            <Twitter className='w-5 h-5' />
-                        </a>}
-                        {s.facebook && <a
-                            href={s.facebook}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                            className='text-slate-500 hover:text-white transition-colors'
-                            aria-label="Facebook"
-                        >
-                            <Facebook className='w-5 h-5' />
-                        </a>}
+                        {s.instagram && (
+                            <a
+                                href={s.instagram}
+                                target='_blank'
+                                rel='noopener noreferrer'
+                                className='text-slate-500 hover:text-white transition-colors'
+                                aria-label='Instagram'
+                            >
+                                <Instagram className='w-5 h-5' />
+                            </a>
+                        )}
+                        {s.twitter && (
+                            <a
+                                href={s.twitter}
+                                target='_blank'
+                                rel='noopener noreferrer'
+                                className='text-slate-500 hover:text-white transition-colors'
+                                aria-label='Twitter'
+                            >
+                                <Twitter className='w-5 h-5' />
+                            </a>
+                        )}
+                        {s.facebook && (
+                            <a
+                                href={s.facebook}
+                                target='_blank'
+                                rel='noopener noreferrer'
+                                className='text-slate-500 hover:text-white transition-colors'
+                                aria-label='Facebook'
+                            >
+                                <Facebook className='w-5 h-5' />
+                            </a>
+                        )}
                         <a
                             href={waUrl}
                             target='_blank'
                             rel='noopener noreferrer'
                             className='text-slate-500 hover:text-green-400 transition-colors'
-                            aria-label="WhatsApp"
+                            aria-label='WhatsApp'
                         >
                             <MessageCircle className='w-5 h-5' />
                         </a>

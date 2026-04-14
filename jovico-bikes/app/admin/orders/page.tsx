@@ -1,8 +1,8 @@
+import { AdminOrderStatusSelect } from '@/components/admin/AdminOrderStatusSelect'
+import { prisma } from '@/lib/prisma'
+import { formatDate, formatNaira } from '@/lib/utils'
 // app/admin/orders/page.tsx
 import type { Metadata } from 'next'
-import { prisma } from '@/lib/prisma'
-import { formatNaira, formatDate } from '@/lib/utils'
-import { AdminOrderStatusSelect } from '@/components/admin/AdminOrderStatusSelect'
 
 export const metadata: Metadata = { title: 'Orders' }
 

@@ -1,11 +1,11 @@
+import { AdminDeletePost } from '@/components/admin/AdminDeletePost'
+import { AdminToggleProduct } from '@/components/admin/AdminToggleProduct'
+import { prisma } from '@/lib/prisma'
+import { formatNaira } from '@/lib/utils'
+import { Package, Pencil, Plus } from 'lucide-react'
 // app/admin/accessories/page.tsx
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Plus, Pencil, Package } from 'lucide-react'
-import { prisma } from '@/lib/prisma'
-import { formatNaira } from '@/lib/utils'
-import { AdminDeletePost } from '@/components/admin/AdminDeletePost'
-import { AdminToggleProduct } from '@/components/admin/AdminToggleProduct'
 
 export const metadata: Metadata = { title: 'Accessories' }
 

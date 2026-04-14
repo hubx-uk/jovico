@@ -1,7 +1,7 @@
-// app/layout.tsx
-import { Toaster } from 'sonner'
 import type { Metadata } from 'next'
 import { Sora } from 'next/font/google'
+// app/layout.tsx
+import { Toaster } from 'sonner'
 
 import './globals.css'
 
@@ -53,7 +53,7 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang='en' data-scroll-behavior="smooth" suppressHydrationWarning>
+        <html lang='en' data-scroll-behavior='smooth' suppressHydrationWarning>
             <body className={`${sora.variable} font-sans antialiased`}>
                 {children}
                 <Toaster
