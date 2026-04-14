@@ -11,6 +11,27 @@
 /* 2. Typography plugin for blog prose classes */
 @plugin "@tailwindcss/typography";
 
+@utility prose {
+  --tw-prose-body: var(--color-primary);
+  --tw-prose-headings: var(--color-primary);
+  --tw-prose-bold: var(--color-primary);
+  --tw-prose-quote-borders: var(--color-slate-300);
+  --tw-prose-quotes: var(--color-muted-foreground);
+  --tw-prose-code: var(--color-primary);
+
+  code {
+    &::before,
+    &::after {
+      display: none;
+    }
+    text-wrap: nowrap;
+  }
+
+  blockquote {
+    font-weight: 400;
+  }
+}
+
 /* 3. Dark mode — toggle via .dark class on <html> */
 @variant dark (&:where(.dark, .dark *));
 
@@ -378,12 +399,12 @@
     }
     .nav-link::after {
         content: "";
-        @apply absolute -bottom-0.5 left-0 w-0 h-0.5 transition-all duration-300;
+        @apply absolute -bottom-0.5 invisible rounded-full left-[50%] w-1 h-1 transition-all duration-300;
         background-color: var(--jv-green);
     }
     .nav-link:hover::after,
     .nav-link.active::after {
-        @apply w-full;
+        @apply w-4 -translate-x-[50%] visible;
     }
 
     /* ── Rich text (blog) ── */

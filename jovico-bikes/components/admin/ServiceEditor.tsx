@@ -5,12 +5,12 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-interface Service {
+export interface Service {
     id: string
     name: string
     shortDesc: string
     description: string
-    price: any
+    price: number
     priceNote: string | null
     duration: string | null
     icon: string | null

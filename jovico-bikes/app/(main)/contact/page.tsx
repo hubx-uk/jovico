@@ -1,167 +1,109 @@
-// app/main/contact/page.tsx
-import type { Metadata } from 'next'
-import { MapPin, Phone, Mail, Clock, MessageCircle } from 'lucide-react'
-
-import { ContactForm } from '@/components/home/ContactForm'
+// app/(main)/contact/page.tsx
+import type { Metadata } from "next";
+import { MapPin, Phone, Mail, Clock, MessageCircle } from "lucide-react";
+import { ContactForm } from "@/components/home/ContactForm";
+import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
-    title: 'Contact Us',
-    description:
-        'Get in touch with the Jovico Bikes team. Visit us on Victoria Island Lagos, call, email or WhatsApp.',
+  title: "Contact Us",
+  description:
+    "Get in touch with the Jovico Bikes team. Visit us on Victoria Island Lagos, call, email or WhatsApp.",
+};
+
+async function getContactSettings() {
+  try {
+    const rows = await prisma.siteSetting.findMany({
+      where: { key: { in: ["phone", "email", "address", "whatsapp"] } },
+    });
+    return Object.fromEntries(rows.map((r) => [r.key, r.value]));
+  } catch {
+    return {
+      phone: "+234 801 234 5678",
+      email: "hello@jovicobikes.com",
+      address: "14 Adeola Odeku Street, Victoria Island, Lagos",
+      whatsapp: "+2348012345678",
+    };
+  }
 }
 
-export default function ContactPage() {
-    return (
-        <>
-            {/* Hero */}
-            <section className='pt-32 pb-16 bg-slate-950'>
-                <div className='jv-container'>
-                    <p className='text-green-400 font-semibold text-sm uppercase tracking-wider mb-2'>
-                        Say Hello
-                    </p>
-                    <h1 className='text-5xl md:text-6xl font-extrabold text-white mb-4'>
-                        Contact Us
-                    </h1>
-                    <p className='text-slate-400 text-lg max-w-lg'>
-                        Whether you want to buy a bike, book a service or just have a question —
-                        we're always happy to help.
-                    </p>
-                </div>
-            </section>
+export default async function ContactPage() {
+  const s = await getContactSettings();
+  const phone = s.phone ?? "+234 801 234 5678";
+  const email = s.email ?? "hello@jovicobikes.com";
+  const address = s.address ?? "14 Adeola Odeku Street, Victoria Island, Lagos";
+  const waNumber = (s.whatsapp ?? "+2348012345678").replace(/\D/g, "");
 
-            <section className='jv-section bg-white'>
-                <div className='jv-container'>
-                    <div className='grid lg:grid-cols-2 gap-12 xl:gap-20'>
-                        {/* Left: Contact info */}
-                        <div>
-                            <h2 className='text-3xl font-extrabold text-slate-900 mb-8'>
-                                Get in Touch
-                            </h2>
+  return (
+    <>
+      <section className="pt-28 sm:pt-32 pb-14 bg-slate-950">
+        <div className="jv-container">
+          <p className="text-green-400 font-semibold text-sm uppercase tracking-wider mb-2">Say Hello</p>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-4">Contact Us</h1>
+          <p className="text-slate-400 text-base md:text-lg max-w-lg leading-relaxed">
+            Whether you want to buy a bike, book a service, or just have a question — we&apos;re always happy to help.
+          </p>
+        </div>
+      </section>
 
-                            {/* Quick contact cards */}
-                            <div className='space-y-4 mb-10'>
-                                {[
-                                    {
-                                        icon: MessageCircle,
-                                        title: 'WhatsApp',
-                                        desc: 'The fastest way to reach us',
-                                        value: '+234 801 234 5678',
-                                        href: 'https://wa.me/2348012345678',
-                                        color: 'bg-green-50 text-green-600',
-                                        actionLabel: 'Chat Now',
-                                    },
-                                    {
-                                        icon: Phone,
-                                        title: 'Phone',
-                                        desc: 'Mon–Sat, 9am–6pm',
-                                        value: '+234 801 234 5678',
-                                        href: 'tel:+2348012345678',
-                                        color: 'bg-blue-50 text-blue-600',
-                                        actionLabel: 'Call Us',
-                                    },
-                                    {
-                                        icon: Mail,
-                                        title: 'Email',
-                                        desc: 'We reply within 24 hours',
-                                        value: 'hello@jovicobikes.com',
-                                        href: 'mailto:hello@jovicobikes.com',
-                                        color: 'bg-slate-100 text-slate-700',
-                                        actionLabel: 'Send Email',
-                                    },
-                                ].map((c) => (
-                                    <a
-                                        key={c.title}
-                                        href={c.href}
-                                        target={c.href.startsWith('http') ? '_blank' : undefined}
-                                        rel='noopener noreferrer'
-                                        className='flex items-center gap-4 p-5 rounded-2xl border border-slate-100 hover:border-slate-200 hover:shadow-sm transition-all group'
-                                    >
-                                        <div
-                                            className={`w-12 h-12 rounded-2xl ${c.color} flex items-center justify-center shrink-0`}
-                                        >
-                                            <c.icon className='w-6 h-6' />
-                                        </div>
-                                        <div className='flex-1'>
-                                            <div className='text-xs text-slate-500 mb-0.5'>
-                                                {c.desc}
-                                            </div>
-                                            <div className='font-semibold text-slate-900'>
-                                                {c.value}
-                                            </div>
-                                        </div>
-                                        <div className='text-sm font-bold text-slate-500 group-hover:text-green-600 transition-colors'>
-                                            {c.actionLabel} →
-                                        </div>
-                                    </a>
-                                ))}
-                            </div>
-
-                            {/* Address + hours */}
-                            <div className='grid grid-cols-1 sm:grid-cols-2 gap-5'>
-                                <div className='p-5 rounded-2xl bg-slate-50 border border-slate-100'>
-                                    <div className='flex items-center gap-2 mb-3'>
-                                        <MapPin className='w-5 h-5 text-green-500' />
-                                        <h3 className='font-bold text-slate-900 text-sm'>
-                                            Our Location
-                                        </h3>
-                                    </div>
-                                    <p className='text-sm text-slate-600 leading-relaxed'>
-                                        14 Adeola Odeku Street
-                                        <br />
-                                        Victoria Island, Lagos
-                                        <br />
-                                        Nigeria
-                                    </p>
-                                    <a
-                                        href='https://maps.google.com/?q=Victoria+Island+Lagos'
-                                        target='_blank'
-                                        rel='noopener noreferrer'
-                                        className='mt-3 inline-flex items-center gap-1 text-xs font-bold text-green-600 hover:text-green-700'
-                                    >
-                                        Get Directions →
-                                    </a>
-                                </div>
-                                <div className='p-5 rounded-2xl bg-slate-50 border border-slate-100'>
-                                    <div className='flex items-center gap-2 mb-3'>
-                                        <Clock className='w-5 h-5 text-green-500' />
-                                        <h3 className='font-bold text-slate-900 text-sm'>
-                                            Opening Hours
-                                        </h3>
-                                    </div>
-                                    <div className='space-y-1.5 text-sm text-slate-600'>
-                                        <div className='flex justify-between'>
-                                            <span>Monday – Friday</span>
-                                            <span className='font-medium text-slate-900'>
-                                                9am – 6pm
-                                            </span>
-                                        </div>
-                                        <div className='flex justify-between'>
-                                            <span>Saturday</span>
-                                            <span className='font-medium text-slate-900'>
-                                                9am – 4pm
-                                            </span>
-                                        </div>
-                                        <div className='flex justify-between'>
-                                            <span>Sunday</span>
-                                            <span className='font-medium text-slate-900'>
-                                                By Appointment
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Right: Form */}
-                        <div>
-                            <h2 className='text-3xl font-extrabold text-slate-900 mb-8'>
-                                Send a Message
-                            </h2>
-                            <ContactForm />
-                        </div>
+      <section className="jv-section bg-white">
+        <div className="jv-container">
+          <div className="grid lg:grid-cols-2 gap-10 xl:gap-16">
+            <div>
+              <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 mb-7">Get in Touch</h2>
+              <div className="space-y-3 mb-8">
+                {[
+                  { icon: MessageCircle, title: "WhatsApp", desc: "Fastest — usually within minutes", value: phone, href: `https://wa.me/${waNumber}`, color: "bg-green-50 text-green-600", action: "Chat Now" },
+                  { icon: Phone, title: "Phone", desc: "Mon–Sat, 9am–6pm", value: phone, href: `tel:${phone.replace(/\s/g, "")}`, color: "bg-blue-50 text-blue-600", action: "Call Us" },
+                  { icon: Mail, title: "Email", desc: "We reply within 24 hours", value: email, href: `mailto:${email}`, color: "bg-slate-100 text-slate-700", action: "Send Email" },
+                ].map((c) => (
+                  <a key={c.title} href={c.href} target={c.href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer"
+                    className="flex items-center gap-4 p-4 rounded-2xl border border-slate-100 hover:border-slate-200 hover:shadow-sm transition-all group">
+                    <div className={`w-11 h-11 rounded-2xl ${c.color} flex items-center justify-center shrink-0`}>
+                      <c.icon className="w-5 h-5" />
                     </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-[11px] text-slate-400 mb-0.5">{c.desc}</div>
+                      <div className="font-semibold text-slate-900 text-sm truncate">{c.value}</div>
+                    </div>
+                    <span className="hidden sm:block text-sm font-bold text-slate-400 group-hover:text-green-600 transition-colors shrink-0">{c.action} →</span>
+                  </a>
+                ))}
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100">
+                  <div className="flex items-center gap-2 mb-3">
+                    <MapPin className="w-4 h-4 text-green-500 shrink-0" />
+                    <h3 className="font-bold text-slate-900 text-sm">Location</h3>
+                  </div>
+                  <p className="text-sm text-slate-600 leading-relaxed">{address}</p>
+                  <a href={`https://maps.google.com/?q=${encodeURIComponent(address)}`} target="_blank" rel="noopener noreferrer"
+                    className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-green-600 hover:text-green-700">
+                    Get Directions →
+                  </a>
                 </div>
-            </section>
-        </>
-    )
+                <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Clock className="w-4 h-4 text-green-500 shrink-0" />
+                    <h3 className="font-bold text-slate-900 text-sm">Opening Hours</h3>
+                  </div>
+                  <div className="space-y-1.5 text-sm text-slate-600">
+                    {[["Mon – Fri", "9am – 6pm"], ["Saturday", "9am – 4pm"], ["Sunday", "By Appointment"]].map(([day, time]) => (
+                      <div key={day} className="flex justify-between gap-2">
+                        <span>{day}</span>
+                        <span className="font-semibold text-slate-900 shrink-0">{time}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 mb-7">Send a Message</h2>
+              <ContactForm />
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
 }

@@ -2,7 +2,11 @@
 // components/layout/Footer.tsx
 
 import Link from 'next/link'
-import { Zap, Instagram, Twitter, Facebook, MessageCircle, Mail, Phone, MapPin } from 'lucide-react'
+import { toast } from 'sonner'
+import { useState } from 'react'
+import { BikeIcon, Instagram, Twitter, Facebook, MessageCircle, Mail, Phone, MapPin, Loader2 } from 'lucide-react'
+
+import { useSiteSettings } from './SiteSettingsProvider'
 
 const shopLinks = [
     { label: 'City Bikes', href: '/shop?category=city' },
@@ -29,6 +33,33 @@ const companyLinks = [
 ]
 
 export function Footer() {
+    const s = useSiteSettings();
+    const [email, setEmail] = useState("");
+    const [subscribing, setSubscribing] = useState(false);
+
+    async function handleSubscribe(e: React.FormEvent) {
+        e.preventDefault();
+        if (!email) return;
+        setSubscribing(true);
+        try {
+        const res = await fetch("/api/subscribers", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email }),
+        });
+        if (!res.ok) throw new Error();
+        toast.success("You're subscribed! Welcome to the Jovico community.");
+        setEmail("");
+        } catch {
+        toast.error("Subscription failed. Please try again.");
+        } finally {
+        setSubscribing(false);
+        }
+    }
+
+    const waNumber = s.whatsapp.replace(/\D/g, "");
+    const waUrl = `https://wa.me/${waNumber}`;
+
     return (
         <footer className='bg-slate-950 text-slate-300'>
             {/* Newsletter bar */}
@@ -43,19 +74,17 @@ export function Footer() {
                         </p>
                     </div>
                     <form
-                        className='flex gap-3 w-full md:w-auto'
-                        onSubmit={(e) => e.preventDefault()}
-                    >
-                        <input
-                            type='email'
-                            placeholder='your@email.com'
-                            className='flex-1 md:w-72 px-5 py-3 rounded-2xl bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-green-500'
-                        />
-                        <button
-                            type='submit'
-                            className='jv-btn-green whitespace-nowrap !rounded-2xl text-sm'
-                        >
-                            Subscribe
+                         onSubmit={handleSubscribe} className="flex gap-3 w-full lg:w-auto lg:max-w-md">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="your@email.com"
+                required
+                className="flex-1 md:w-72 px-5 py-3 rounded-2xl bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+              <button type="submit" disabled={subscribing} className="jv-btn-green whitespace-nowrap !rounded-2xl text-sm shrink-0 disabled:opacity-60">
+                {subscribing ? <Loader2 className="w-4 h-4 animate-spin" /> : "Subscribe"}
                         </button>
                     </form>
                 </div>
@@ -68,7 +97,7 @@ export function Footer() {
                     <div className='col-span-2 lg:col-span-2'>
                         <Link href='/' className='flex items-center gap-2 mb-5 group'>
                             <div className='w-9 h-9 rounded-xl bg-slate-800 flex items-center justify-center group-hover:bg-green-500 transition-colors'>
-                                <Zap className='w-5 h-5 text-white' strokeWidth={2.5} />
+                                <BikeIcon className='w-5 h-5 text-white' strokeWidth={2.5} />
                             </div>
                             <span className='font-bold text-white text-lg tracking-tight'>
                                 Jovico<span className='text-green-500'>.</span>
@@ -80,22 +109,22 @@ export function Footer() {
                         </p>
                         <div className='space-y-2 text-sm text-slate-400'>
                             <a
-                                href='tel:+2348012345678'
+                                href={`tel:${s.phone.replace(/\s/g, "")}`}
                                 className='flex items-center gap-2 hover:text-white transition-colors'
                             >
                                 <Phone className='w-4 h-4 text-green-500' />
-                                +234 801 234 5678
+                                {s.phone}
                             </a>
                             <a
-                                href='mailto:hello@jovicobikes.com'
+                                href={`mailto:${s.email}`}
                                 className='flex items-center gap-2 hover:text-white transition-colors'
                             >
                                 <Mail className='w-4 h-4 text-green-500' />
-                                hello@jovicobikes.com
+                                <span>{s.email}</span>
                             </a>
                             <div className='flex items-start gap-2'>
                                 <MapPin className='w-4 h-4 text-green-500 mt-0.5 shrink-0' />
-                                <span>14 Adeola Odeku St, Victoria Island, Lagos</span>
+                                <span className="leading-relaxed">{s.address}</span>
                             </div>
                         </div>
                     </div>
@@ -163,38 +192,42 @@ export function Footer() {
             <div className='border-t border-slate-800'>
                 <div className='jv-container py-6 flex flex-col sm:flex-row items-center justify-between gap-4'>
                     <p className='text-slate-500 text-sm'>
-                        © {new Date().getFullYear()} Jovico Bikes Ltd. All rights reserved.
+                        © {new Date().getFullYear()} {s.site_name} Ltd. All rights reserved.
                     </p>
                     <div className='flex items-center gap-4'>
-                        <a
-                            href='https://instagram.com/jovicobikes'
+                        {s.instagram && <a
+                            href={s.instagram}
                             target='_blank'
                             rel='noopener noreferrer'
                             className='text-slate-500 hover:text-white transition-colors'
+                            aria-label="Instagram"
                         >
                             <Instagram className='w-5 h-5' />
-                        </a>
-                        <a
-                            href='https://twitter.com/jovicobikes'
+                        </a>}
+                        {s.twitter && <a
+                            href={s.twitter}
                             target='_blank'
                             rel='noopener noreferrer'
                             className='text-slate-500 hover:text-white transition-colors'
+                            aria-label="Twitter"
                         >
                             <Twitter className='w-5 h-5' />
-                        </a>
-                        <a
-                            href='https://facebook.com/jovicobikes'
+                        </a>}
+                        {s.facebook && <a
+                            href={s.facebook}
                             target='_blank'
                             rel='noopener noreferrer'
                             className='text-slate-500 hover:text-white transition-colors'
+                            aria-label="Facebook"
                         >
                             <Facebook className='w-5 h-5' />
-                        </a>
+                        </a>}
                         <a
-                            href='https://wa.me/2348012345678'
+                            href={waUrl}
                             target='_blank'
                             rel='noopener noreferrer'
                             className='text-slate-500 hover:text-green-400 transition-colors'
+                            aria-label="WhatsApp"
                         >
                             <MessageCircle className='w-5 h-5' />
                         </a>
@@ -212,7 +245,7 @@ export function Footer() {
 
             {/* WhatsApp floating button */}
             <a
-                href='https://wa.me/2348012345678?text=Hi%20Jovico%20Bikes!%20I%27d%20like%20to%20enquire%20about%20your%20eBikes.'
+                href={`${waUrl}?text=Hi%20${encodeURIComponent(s.site_name)}!%20I%27d%20like%20to%20enquire%20about%20your%20eBikes.`}
                 target='_blank'
                 rel='noopener noreferrer'
                 className='fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-green-500 hover:bg-green-600 text-white flex items-center justify-center shadow-lg shadow-green-500/30 transition-transform hover:scale-110'

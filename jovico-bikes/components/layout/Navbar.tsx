@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
-import { Menu, X, ShoppingBag, Zap } from 'lucide-react'
+import { Menu, X, ShoppingBag, Zap, BikeIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const navLinks = [
@@ -52,8 +52,8 @@ export function Navbar() {
             className={cn(
                 'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
                 scrolled
-                    ? 'bg-white/95 backdrop-blur-lg border-b border-slate-100 shadow-sm'
-                    : 'bg-transparent'
+                    ? 'bg-white/95 text-slate-800 hover:text-slate-200 backdrop-blur-lg border-b border-slate-100 shadow-sm'
+                    : 'bg-transparent text-slate-200 hover:text-slate-800 border-b border-slate-900'
             )}
             style={{ height: 'var(--nav-height)' }}
         >
@@ -61,9 +61,9 @@ export function Navbar() {
                 {/* Logo */}
                 <Link href='/' className='flex items-center gap-2 group'>
                     <div className='w-9 h-9 rounded-xl bg-slate-900 flex items-center justify-center group-hover:bg-green-500 transition-colors duration-300'>
-                        <Zap className='w-5 h-5 text-white' strokeWidth={2.5} />
+                        <BikeIcon className='w-5 h-5 text-white' strokeWidth={2.5} />
                     </div>
-                    <span className='font-bold text-slate-900 text-lg tracking-tight'>
+                    <span className='font-bold text-lg tracking-tight'>
                         Jovico<span className='text-green-500'>.</span>
                     </span>
                 </Link>
@@ -78,7 +78,7 @@ export function Navbar() {
                                     'nav-link px-4 py-2 rounded-full transition-all duration-200 text-sm font-medium',
                                     pathname === link.href || pathname.startsWith(link.href + '/')
                                         ? 'text-slate-900 bg-slate-100'
-                                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                                        : 'text-slate-600'
                                 )}
                             >
                                 {link.label}
