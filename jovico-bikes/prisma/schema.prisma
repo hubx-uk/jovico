@@ -2,12 +2,12 @@
 // Jovico Bikes - MySQL Database Schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "./generated/prisma"
 }
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
 }
 
 // ─── Auth ─────────────────────────────────────────────────
@@ -74,6 +74,7 @@ enum ProductCategory {
   ACCESSORY
   PART
   APPAREL
+  ALL
 }
 
 enum ProductType {

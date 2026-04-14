@@ -1,8 +1,11 @@
 // prisma/seed.ts
-import { PrismaClient, ProductCategory, ProductType, PostCategory, AdminRole } from "@prisma/client";
+// import { PrismaClient, ProductCategory, ProductType, PostCategory, AdminRole } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
-const prisma = new PrismaClient();
+import { prisma } from '../lib/prisma'
+import { AdminRole, PostCategory, ProductCategory, ProductType } from "./generated/prisma/enums";
+
+// const prisma = new PrismaClient();
 
 async function main() {
   console.log("🌱 Seeding Jovico Bikes database...");

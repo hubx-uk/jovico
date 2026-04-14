@@ -1,0 +1,6 @@
+allowBuilds:
+  '@biomejs/biome': false
+  '@prisma/engines': false
+  esbuild: false
+  prisma: false
+  sharp: false

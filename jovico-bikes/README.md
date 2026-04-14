@@ -83,7 +83,7 @@ jovico-bikes/
 ### 1. Install Dependencies
 
 ```bash
-npm install
+pnpm install
 ```
 
 ### 2. Environment Variables
@@ -118,13 +118,13 @@ On **Hostinger**, create a new MySQL database via the hPanel, then note the:
 
 ```bash
 # Generate Prisma client
-npm run db:generate
+pnpm run db:generate
 
 # Push schema to MySQL
-npm run db:push
+pnpm run db:push
 
 # Seed with sample data
-npm run db:seed
+pnpm run db:seed
 ```
 
 This creates:
@@ -137,7 +137,7 @@ This creates:
 ### 5. Run Development Server
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 Visit:
@@ -186,7 +186,7 @@ Visit:
 ### 1. Build Locally
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 ### 2. Upload via FTP or Git
@@ -196,11 +196,11 @@ Hostinger supports Node.js apps via their **Node.js** or **Business Hosting** pl
 **Option A: Git Deploy**
 1. Push to GitHub
 2. In hPanel → Git → Link repository
-3. Set build command: `npm install && npm run build`
-4. Set start command: `npm start`
+3. Set build command: `pnpm install && pnpm run build`
+4. Set start command: `pnpm start`
 
 **Option B: FTP Upload**
-1. Run `npm run build`
+1. Run `pnpm run build`
 2. Upload the entire project folder (including `.next/`, `public/`, `prisma/`, `node_modules/`)
 3. Set entry point to `node_modules/.bin/next start`
 
@@ -214,7 +214,7 @@ In hPanel → Node.js → Environment Variables, add all variables from `.env.ex
 2. Create database: `jovico_bikes`
 3. Create user with full privileges
 4. Note the connection details for `DATABASE_URL`
-5. Once deployed, run `npm run db:push && npm run db:seed` via SSH
+5. Once deployed, run `pnpm run db:push && pnpm run db:seed` via SSH
 
 ---
 
@@ -247,16 +247,16 @@ Add Paystack or Flutterwave by:
 ## Scripts
 
 ```bash
-npm run dev          # Start dev server
-npm run build        # Build for production
-npm run start        # Start production server
-npm run db:push      # Push schema to database
-npm run db:generate  # Regenerate Prisma client
-npm run db:migrate   # Create + run migrations
-npm run db:seed      # Seed sample data
-npm run db:studio    # Open Prisma Studio (GUI)
-npm run check        # Run Biome lint + format check
-npm run format       # Format all files with Biome
+pnpm run dev          # Start dev server
+pnpm run build        # Build for production
+pnpm run start        # Start production server
+pnpm run db:push      # Push schema to database
+pnpm run db:generate  # Regenerate Prisma client
+pnpm run db:migrate   # Create + run migrations
+pnpm run db:seed      # Seed sample data
+pnpm run db:studio    # Open Prisma Studio (GUI)
+pnpm run check        # Run Biome lint + format check
+pnpm run format       # Format all files with Biome
 ```
 
 ---
