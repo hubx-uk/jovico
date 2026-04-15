@@ -1,7 +1,9 @@
-import { ArrowRight, Award, Heart, Leaf, MapPin, Target, Users, Zap } from 'lucide-react'
 // app/main/about/page.tsx
+import { ArrowRight, Award, Heart, Leaf, MapPin, Target, Users, Zap } from 'lucide-react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+
+import { getContactSettings } from '../contact/page'
 
 export const metadata: Metadata = {
     title: 'About Us',
@@ -9,7 +11,13 @@ export const metadata: Metadata = {
         "Learn about Jovico Bikes — Lagos's homegrown eBike company on a mission to transform urban mobility in Nigeria.",
 }
 
-export default function AboutPage() {
+export default async function AboutPage() {
+    const s = await getContactSettings()
+    const phone = s.phone ?? '+234 801 234 5678'
+    const email = s.email ?? 'hello@jovicobikes.com'
+    const address = s.address ?? '14 Adeola Odeku Street, Victoria Island, Lagos'
+    const waNumber = (s.whatsapp ?? '+2348012345678').replace(/\D/g, '')
+    
     return (
         <>
             {/* Hero */}
@@ -31,7 +39,7 @@ export default function AboutPage() {
                     <h1 className='text-5xl md:text-7xl font-extrabold text-white mb-6 max-w-3xl leading-tight'>
                         Born in Lagos.
                         <br />
-                        <span className='text-green-400'>Built for Lagos.</span>
+                        <span className='text-green-400'>Built for Nigeria.</span>
                     </h1>
                     <p className='text-slate-400 text-xl leading-relaxed max-w-2xl'>
                         Jovico Bikes was founded with one simple belief: electric mobility can
@@ -177,7 +185,7 @@ export default function AboutPage() {
                     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
                         {[
                             {
-                                name: 'Chukwuemeka Jovita',
+                                name: 'Joseph Ewulu',
                                 role: 'Founder & CEO',
                                 bio: 'Serial entrepreneur and eBike obsessive. Founded Jovico after one too many hours in Lagos traffic.',
                                 emoji: '👨🏾‍💼',
@@ -238,7 +246,7 @@ export default function AboutPage() {
                                 {[
                                     {
                                         label: 'Address',
-                                        value: '14 Adeola Odeku Street, Victoria Island, Lagos',
+                                        value: address,
                                         icon: MapPin,
                                     },
                                     {
@@ -246,8 +254,8 @@ export default function AboutPage() {
                                         value: 'Mon–Sat: 9am–6pm | Sunday: By Appointment',
                                         icon: '🕘',
                                     },
-                                    { label: 'Phone', value: '+234 801 234 5678', icon: '📞' },
-                                    { label: 'Email', value: 'hello@jovicobikes.com', icon: '✉️' },
+                                    { label: 'Phone', value: phone, icon: '📞' },
+                                    { label: 'Email', value: email, icon: '✉️' },
                                 ].map((info) => (
                                     <div key={info.label} className='flex items-start gap-3'>
                                         <div className='text-lg mt-0.5'>
@@ -274,16 +282,16 @@ export default function AboutPage() {
                         </div>
                         {/* Map placeholder */}
                         <div className='aspect-square max-w-lg mx-auto rounded-3xl bg-slate-800 border border-slate-700 flex items-center justify-center text-center overflow-hidden'>
-                            <div>
+                            <div className='px-8'>
                                 <div className='text-5xl mb-4'>📍</div>
                                 <div className='text-white font-semibold'>
                                     Victoria Island, Lagos
                                 </div>
                                 <div className='text-slate-400 text-sm mt-1'>
-                                    14 Adeola Odeku Street
+                                    {address}
                                 </div>
                                 <a
-                                    href='https://maps.google.com/?q=Victoria+Island+Lagos'
+                                    href={`https://maps.google.com/?q=${address}`}
                                     target='_blank'
                                     rel='noopener noreferrer'
                                     className='mt-4 inline-flex items-center gap-1.5 text-green-400 text-sm font-medium hover:text-green-300 transition-colors'
