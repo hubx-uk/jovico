@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(order, { status: 201 })
     } catch (err) {
         if (err instanceof z.ZodError) {
-            return NextResponse.json({ error: err.errors }, { status: 400 })
+            return NextResponse.json({ error: err.issues }, { status: 400 })
         }
         return NextResponse.json({ error: 'Server error' }, { status: 500 })
     }
