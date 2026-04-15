@@ -30,19 +30,19 @@ const SPEC_KEYS = [
     'suspension',
 ]
 
-interface Product {
+export interface Product {
     id: string
     name: string
     slug: string
     description: string
-    price: any
-    salePrice: any
+    price: number
+    salePrice: number
     sku: string
     stock: number
     category: string
     type: string
     brand: string | null
-    specs: any
+    specs: Record<string, string>
     featured: boolean
     published: boolean
 }

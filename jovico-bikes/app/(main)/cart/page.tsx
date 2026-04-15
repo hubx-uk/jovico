@@ -1,4 +1,5 @@
 'use client'
+import { useSiteSettings } from '@/components/layout/SiteSettingsProvider'
 import { formatNaira } from '@/lib/utils'
 import { ArrowLeft, ArrowRight, Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react'
 import Link from 'next/link'
@@ -14,6 +15,7 @@ interface CartItem {
 }
 
 export default function CartPage() {
+    const s = useSiteSettings()
     const [cart, setCart] = useState<CartItem[]>([])
     const [mounted, setMounted] = useState(false)
 
@@ -51,6 +53,9 @@ export default function CartPage() {
     const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
     const shipping = subtotal > 0 && subtotal < 100000 ? 5000 : 0
     const total = subtotal + shipping
+
+    const waNumber = s.whatsapp.replace(/\D/g, '')
+    const waUrl = `https://wa.me/${waNumber}`
 
     if (!mounted) {
         return (
@@ -217,7 +222,7 @@ export default function CartPage() {
                                     </Link>
 
                                     <a
-                                        href={`https://wa.me/2348012345678?text=Hi! I'd like to order: ${cart.map((i) => `${i.name} x${i.quantity}`).join(', ')}. Total: ${formatNaira(total)}`}
+                                        href={`${waUrl}?text=Hi! I'd like to order: ${cart.map((i) => `${i.name} x${i.quantity}`).join(', ')}. Total: ${formatNaira(total)}`}
                                         target='_blank'
                                         rel='noopener noreferrer'
                                         className='jv-btn-secondary w-full justify-center text-sm !border-slate-200 !text-slate-700 hover:!bg-slate-50 mb-4'

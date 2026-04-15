@@ -1,12 +1,14 @@
-import { AddToCartButton } from '@/components/shop/AddToCartButton'
-import { EnquireButton } from '@/components/shop/EnquireButton'
-import { prisma } from '@/lib/prisma'
-import { formatNaira } from '@/lib/utils'
-import { ChevronRight, Clock, MessageCircle, Shield, Star, Zap } from 'lucide-react'
 // app/main/shop/[slug]/page.tsx
+import { ChevronRight, Clock, MessageCircle, Shield, Star, Zap } from 'lucide-react'
+import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
+
+import { prisma } from '@/lib/prisma'
+import { formatNaira } from '@/lib/utils'
+import { getContactSettings } from '../../contact/page'
+import { EnquireButton } from '@/components/shop/EnquireButton'
+import { AddToCartButton } from '@/components/shop/AddToCartButton'
 
 export async function generateStaticParams() {
     const products = await prisma.product.findMany({ select: { slug: true } })
@@ -51,6 +53,10 @@ export default async function ProductPage({
     })
 
     const specs = product.specs as Record<string, string> | null
+
+    const s = await getContactSettings()
+    const waNumber = s.whatsapp.replace(/\D/g, '')
+    const waUrl = `https://wa.me/${waNumber}`
 
     return (
         <>
@@ -205,7 +211,7 @@ export default async function ProductPage({
                                     Need help? Chat with our eBike experts on WhatsApp
                                 </div>
                                 <a
-                                    href={`https://wa.me/2348012345678?text=Hi! I'm interested in the ${product.name}`}
+                                    href={`${waUrl}?text=Hi! I'm interested in the ${product.name}`}
                                     target='_blank'
                                     rel='noopener noreferrer'
                                     className='text-sm font-bold text-green-700 hover:text-green-900 whitespace-nowrap'

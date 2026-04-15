@@ -1,8 +1,9 @@
-import { ContactForm } from '@/components/home/ContactForm'
-import { prisma } from '@/lib/prisma'
-import { Clock, Mail, MapPin, MessageCircle, Phone } from 'lucide-react'
 // app/(main)/contact/page.tsx
+import { Clock, Mail, MapPin, MessageCircle, Phone } from 'lucide-react'
 import type { Metadata } from 'next'
+
+import { prisma } from '@/lib/prisma'
+import { ContactForm } from '@/components/home/ContactForm'
 
 export const metadata: Metadata = {
     title: 'Contact Us',
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
         'Get in touch with the Jovico Bikes team. Visit us on Victoria Island Lagos, call, email or WhatsApp.',
 }
 
-async function getContactSettings() {
+export async function getContactSettings() {
     try {
         const rows = await prisma.siteSetting.findMany({
             where: { key: { in: ['phone', 'email', 'address', 'whatsapp'] } },

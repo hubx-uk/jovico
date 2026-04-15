@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { requireAuth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { createSlug } from '@/lib/utils'
+import { ProductCategory, ProductType } from '@/prisma/generated/prisma/enums'
 
 const productSchema = z.object({
     name: z.string().min(2),
@@ -16,7 +17,7 @@ const productSchema = z.object({
     category: z.string(),
     type: z.string().default('BIKE'),
     brand: z.string().optional(),
-    specs: z.record(z.string()).optional(),
+    specs: z.record(z.string(), z.string()).optional(),
     featured: z.boolean().default(false),
     published: z.boolean().default(true),
 })
@@ -28,7 +29,7 @@ export async function GET(req: NextRequest) {
 
     const products = await prisma.product.findMany({
         where: {
-            ...(category ? { category: category as any } : {}),
+            ...(category ? { category: category as unknown as ProductCategory } : {}),
             ...(published !== null ? { published: published === 'true' } : {}),
         },
         include: { images: { where: { isPrimary: true }, take: 1 } },
@@ -48,6 +49,8 @@ export async function POST(req: NextRequest) {
             data: {
                 ...data,
                 slug,
+                type: data.type as ProductType,
+                category: data.category as ProductCategory,
                 price: data.price,
                 salePrice: data.salePrice ?? null,
                 specs: data.specs ?? undefined,

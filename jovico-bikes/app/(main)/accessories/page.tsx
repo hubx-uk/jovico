@@ -1,9 +1,11 @@
-import { prisma } from '@/lib/prisma'
-import { formatNaira } from '@/lib/utils'
-import { ArrowRight } from 'lucide-react'
 // app/main/accessories/page.tsx
+import { ArrowRight } from 'lucide-react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+
+import { prisma } from '@/lib/prisma'
+import { formatNaira } from '@/lib/utils'
+import { getContactSettings } from '../contact/page'
 
 export const metadata: Metadata = {
     title: 'Accessories',
@@ -27,6 +29,10 @@ export default async function AccessoriesPage() {
         { emoji: '📱', name: 'Mounts & Tech', desc: 'Phone mounts, GPS and more.' },
         { emoji: '🎒', name: 'Bags & Racks', desc: 'Carry more. Go further.' },
     ]
+
+    const s = await getContactSettings()
+    const waNumber = s.whatsapp.replace(/\D/g, '')
+    const waUrl = `https://wa.me/${waNumber}`
 
     return (
         <>
@@ -89,7 +95,7 @@ export default async function AccessoriesPage() {
                                 launch!
                             </p>
                             <a
-                                href='https://wa.me/2348012345678?text=Hi! Please notify me when your accessories are available.'
+                                href={`${waUrl}?text=Hi! Please notify me when your accessories are available.`}
                                 target='_blank'
                                 rel='noopener noreferrer'
                                 className='jv-btn-green'
@@ -138,7 +144,7 @@ export default async function AccessoriesPage() {
                         We can source any eBike accessory or spare part. Just ask us!
                     </p>
                     <a
-                        href="https://wa.me/2348012345678?text=Hi! I'm looking for a specific eBike accessory."
+                        href={`${waUrl}?text=Hi! I'm looking for a specific eBike accessory.`}
                         target='_blank'
                         rel='noopener noreferrer'
                         className='jv-btn-green'
