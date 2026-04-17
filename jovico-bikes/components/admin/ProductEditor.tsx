@@ -1,11 +1,12 @@
 'use client'
-import type { ProductEditorData, ProductFormState } from '@/types'
-import type { ProductCategory, ProductType } from '@prisma/client'
-import { Loader2, Minus, Plus, Save } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 // components/admin/ProductEditor.tsx
+import { Save, Loader2, Plus, Minus } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
+
+import { ProductCategory, ProductType } from '@prisma/client'
+import type { ProductEditorData, ProductFormState } from '@/types'
 
 const CATEGORIES: ProductCategory[] = [
     'CITY_BIKE',

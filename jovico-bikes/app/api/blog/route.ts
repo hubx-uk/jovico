@@ -1,9 +1,10 @@
-import { requireAuth } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
-import { createSlug, getReadTime } from '@/lib/utils'
 // app/api/blog/route.ts
-import { type NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
+
+import { prisma } from '@/lib/prisma'
+import { requireAuth } from '@/lib/auth'
+import { createSlug, getReadTime } from '@/lib/utils'
 
 const postSchema = z.object({
     title: z.string().min(5),

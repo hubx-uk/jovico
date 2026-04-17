@@ -1,6 +1,7 @@
-import { BlogPostEditor } from '@/components/admin/BlogPostEditor'
 // app/admin/blog/new/page.tsx
 import type { Metadata } from 'next'
+
+import { BlogPostEditor } from '@/components/admin/BlogPostEditor'
 
 export const metadata: Metadata = { title: 'New Post' }
 

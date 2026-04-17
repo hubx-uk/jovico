@@ -1,13 +1,22 @@
-import { AddToCartButton } from '@/components/shop/AddToCartButton'
-import { EnquireButton } from '@/components/shop/EnquireButton'
-import { ProductImageSlider } from '@/components/shop/ProductImageSlider'
-import { prisma } from '@/lib/prisma'
-import { formatNaira } from '@/lib/utils'
-import { ChevronRight, Clock, MessageCircle, Shield, Star, Zap } from 'lucide-react'
 // app/(main)/shop/[slug]/page.tsx
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import {
+    ArrowLeft,
+    CheckCircle2,
+    Zap,
+    Shield,
+    Clock,
+    MessageCircle,
+    ChevronRight,
+    Star,
+} from 'lucide-react'
+import { prisma } from '@/lib/prisma'
+import { formatNaira } from '@/lib/utils'
+import { AddToCartButton } from '@/components/shop/AddToCartButton'
+import { EnquireButton } from '@/components/shop/EnquireButton'
+import { ProductImageSlider } from '@/components/shop/ProductImageSlider'
 
 export async function generateStaticParams() {
     const products = await prisma.product.findMany({ select: { slug: true } })

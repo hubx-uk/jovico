@@ -1,7 +1,7 @@
 'use client'
-import { ImageIcon, Link2, Loader2, Plus, Star, Trash2, Upload, X } from 'lucide-react'
 // components/admin/ProductImageManager.tsx
-import { useCallback, useRef, useState } from 'react'
+import { Upload, Star, Trash2, Loader2, Plus, Link2, X, ImageIcon } from 'lucide-react'
+import { useState, useRef, useCallback } from 'react'
 import { toast } from 'sonner'
 
 interface ProductImage {

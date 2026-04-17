@@ -1,8 +1,9 @@
 'use client'
-import { cn } from '@/lib/utils'
-import { ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react'
 // components/shop/ProductImageSlider.tsx
-import { useCallback, useEffect, useState } from 'react'
+import { ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react'
+import { useState, useCallback, useEffect } from 'react'
+
+import { cn } from '@/lib/utils'
 
 interface ProductImage {
     id: string

@@ -1,6 +1,7 @@
-import { AdminSidebar } from '@/components/admin/AdminSidebar'
 // app/admin/layout.tsx
 import type { Metadata } from 'next'
+
+import { AdminSidebar } from '@/components/admin/AdminSidebar'
 
 export const metadata: Metadata = {
     title: { default: 'Admin', template: '%s | Jovico Admin' },

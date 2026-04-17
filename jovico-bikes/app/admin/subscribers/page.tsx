@@ -1,8 +1,9 @@
+// app/admin/subscribers/page.tsx
+import { Download } from 'lucide-react'
+import type { Metadata } from 'next'
+
 import { prisma } from '@/lib/prisma'
 import { formatDate } from '@/lib/utils'
-import { Download } from 'lucide-react'
-// app/admin/subscribers/page.tsx
-import type { Metadata } from 'next'
 
 export const metadata: Metadata = { title: 'Subscribers' }
 

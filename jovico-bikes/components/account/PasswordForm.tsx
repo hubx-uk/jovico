@@ -1,6 +1,6 @@
 'use client'
-import { Eye, EyeOff, Loader2, Lock } from 'lucide-react'
 // components/account/PasswordForm.tsx
+import { Lock, Eye, EyeOff, Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 

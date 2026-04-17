@@ -1,11 +1,12 @@
 'use client'
-import { formatNaira } from '@/lib/utils'
-import { ArrowLeft, CheckCircle2, Loader2, Mail, MapPin, Phone, User } from 'lucide-react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 // app/(main)/checkout/page.tsx
+import { ArrowLeft, CheckCircle2, Loader2, User, Mail, Phone, MapPin } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import Link from 'next/link'
+
+import { formatNaira } from '@/lib/utils'
 
 interface CartItem {
     id: string

@@ -1,6 +1,6 @@
 'use client'
-import { Pause, Play, Volume2, VolumeX } from 'lucide-react'
 // components/home/HomepageVideoSection.tsx
+import { Pause, Play, Volume2, VolumeX } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
 interface Props {

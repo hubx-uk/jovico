@@ -1,6 +1,7 @@
-import { ServiceEditor } from '@/components/admin/ServiceEditor'
 // app/admin/services/new/page.tsx
 import type { Metadata } from 'next'
+
+import { ServiceEditor } from '@/components/admin/ServiceEditor'
 
 export const metadata: Metadata = { title: 'New Service' }
 

@@ -1,7 +1,7 @@
 'use client'
-import { Calendar, Fuel, Leaf, TrendingDown, Zap } from 'lucide-react'
 // components/home/EBikeROICalculator.tsx
-import { useMemo, useState } from 'react'
+import { Zap, Fuel, TrendingDown, Calendar, Leaf } from 'lucide-react'
+import { useState, useMemo } from 'react'
 
 interface CalcInputs {
     kmPerDay: number
@@ -74,7 +74,7 @@ export function EBikeROICalculator() {
         const savingsPerYear = petrolCostPerYear - electricCostPerYear
         const savingsPerMonth = savingsPerYear / 12
         const paybackMonths =
-            savingsPerYear > 0 ? (ebikePriceNaira / savingsPerYear) * 12 : Number.POSITIVE_INFINITY
+            savingsPerYear > 0 ? (ebikePriceNaira / savingsPerYear) * 12 : Infinity
         const paybackYears = paybackMonths / 12
 
         // CO₂ savings (petrol ≈ 2.31 kg CO₂/litre)

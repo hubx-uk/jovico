@@ -1,8 +1,9 @@
-import { AdminBookingStatus } from '@/components/admin/AdminBookingStatus'
-import { prisma } from '@/lib/prisma'
-import { formatDate } from '@/lib/utils'
 // app/admin/bookings/page.tsx
 import type { Metadata } from 'next'
+
+import { prisma } from '@/lib/prisma'
+import { formatDate } from '@/lib/utils'
+import { AdminBookingStatus } from '@/components/admin/AdminBookingStatus'
 
 export const metadata: Metadata = { title: 'Bookings' }
 

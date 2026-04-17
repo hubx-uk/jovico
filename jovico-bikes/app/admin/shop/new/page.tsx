@@ -1,6 +1,7 @@
-import { ProductEditor } from '@/components/admin/ProductEditor'
 // app/admin/shop/new/page.tsx
 import type { Metadata } from 'next'
+
+import { ProductEditor } from '@/components/admin/ProductEditor'
 
 export const metadata: Metadata = { title: 'New Product' }
 

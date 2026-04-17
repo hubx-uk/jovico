@@ -1,7 +1,8 @@
-import { prisma } from '@/lib/prisma'
 // app/api/subscribers/route.ts
-import { type NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
+
+import { prisma } from '@/lib/prisma'
 
 const schema = z.object({
     email: z.string().email(),

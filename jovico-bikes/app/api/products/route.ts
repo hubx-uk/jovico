@@ -1,10 +1,11 @@
-import { requireAuth } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
-import { createSlug } from '@/lib/utils'
-import type { ProductCategory, ProductType } from '@prisma/client'
 // app/api/products/route.ts
-import { type NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
+
+import type { ProductCategory, ProductType } from '@prisma/client'
+import { requireAuth } from '@/lib/auth'
+import { createSlug } from '@/lib/utils'
+import { prisma } from '@/lib/prisma'
 
 const productSchema = z.object({
     name: z.string().min(2),

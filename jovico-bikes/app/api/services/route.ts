@@ -1,9 +1,10 @@
-import { requireAuth } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
-import { createSlug } from '@/lib/utils'
 // app/api/services/route.ts
-import { type NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
+
+import { prisma } from '@/lib/prisma'
+import { requireAuth } from '@/lib/auth'
+import { createSlug } from '@/lib/utils'
 
 const serviceSchema = z.object({
     name: z.string().min(2),

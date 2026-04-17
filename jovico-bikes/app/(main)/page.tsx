@@ -1,24 +1,25 @@
-import { EBikeROICalculator } from '@/components/home/EBikeROICalculator'
-import { HomepageVideoSection } from '@/components/home/HomepageVideoSection'
-import { prisma } from '@/lib/prisma'
-import { formatDate, formatNaira } from '@/lib/utils'
-import {
-    ArrowRight,
-    Award,
-    Battery,
-    CheckCircle2,
-    ChevronRight,
-    Clock,
-    MapPin,
-    Shield,
-    Star,
-    Users,
-    Wind,
-    Wrench,
-    Zap,
-} from 'lucide-react'
 // app/(main)/page.tsx
 import Link from 'next/link'
+import {
+    ArrowRight,
+    Zap,
+    Shield,
+    Star,
+    Wrench,
+    ChevronRight,
+    Battery,
+    Wind,
+    MapPin,
+    Clock,
+    CheckCircle2,
+    Users,
+    TrendingUp,
+    Award,
+} from 'lucide-react'
+import { prisma } from '@/lib/prisma'
+import { formatNaira, formatDate } from '@/lib/utils'
+import { HomepageVideoSection } from '@/components/home/HomepageVideoSection'
+import { EBikeROICalculator } from '@/components/home/EBikeROICalculator'
 
 // ─── Server data fetching ──────────────────────────────────
 async function getFeaturedBikes() {

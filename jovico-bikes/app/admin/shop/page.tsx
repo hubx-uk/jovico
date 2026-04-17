@@ -1,15 +1,14 @@
-import { AdminDeletePost } from '@/components/admin/AdminDeletePost'
-import { AdminToggleProduct } from '@/components/admin/AdminToggleProduct'
-import { prisma } from '@/lib/prisma'
-import { formatNaira } from '@/lib/utils'
-import { Eye, Package, Pencil, Plus } from 'lucide-react'
 // app/admin/shop/page.tsx
+import { Plus, Pencil, Eye, EyeOff, Package } from 'lucide-react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
-export const metadata: Metadata = { title: 'Products' }
+import { prisma } from '@/lib/prisma'
+import { formatNaira } from '@/lib/utils'
+import { AdminDeletePost } from '@/components/admin/AdminDeletePost'
+import { AdminToggleProduct } from '@/components/admin/AdminToggleProduct'
 
-export const dynamic = 'force-dynamic' // always fresh
+export const metadata: Metadata = { title: 'Products' }
 
 export default async function AdminShopPage() {
     const products = await prisma.product.findMany({

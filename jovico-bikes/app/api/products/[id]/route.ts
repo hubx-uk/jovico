@@ -1,9 +1,10 @@
-import { requireAuth } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
-import { createSlug } from '@/lib/utils'
-import { revalidatePath } from 'next/cache'
 // app/api/products/[id]/route.ts
-import { type NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
+
+import { prisma } from '@/lib/prisma'
+import { requireAuth } from '@/lib/auth'
+import { createSlug } from '@/lib/utils'
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params

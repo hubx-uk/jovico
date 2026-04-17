@@ -1,8 +1,9 @@
-import { ContactForm } from '@/components/home/ContactForm'
-import { prisma } from '@/lib/prisma'
-import { Clock, Mail, MapPin, MessageCircle, Phone } from 'lucide-react'
 // app/(main)/contact/page.tsx
 import type { Metadata } from 'next'
+import { MapPin, Phone, Mail, Clock, MessageCircle } from 'lucide-react'
+
+import { ContactForm } from '@/components/home/ContactForm'
+import { prisma } from '@/lib/prisma'
 
 export const metadata: Metadata = {
     title: 'Contact Us',
@@ -19,7 +20,7 @@ async function getContactSettings() {
     } catch {
         return {
             phone: '+234 801 234 5678',
-            email: 'hello@jovicoworld.com',
+            email: 'hello@jovicobikes.com',
             address: '14 Adeola Odeku Street, Victoria Island, Lagos',
             whatsapp: '+2348012345678',
         }
@@ -29,7 +30,7 @@ async function getContactSettings() {
 export default async function ContactPage() {
     const s = await getContactSettings()
     const phone = s.phone ?? '+234 801 234 5678'
-    const email = s.email ?? 'hello@jovicoworld.com'
+    const email = s.email ?? 'hello@jovicobikes.com'
     const address = s.address ?? '14 Adeola Odeku Street, Victoria Island, Lagos'
     const waNumber = (s.whatsapp ?? '+2348012345678').replace(/\D/g, '')
 

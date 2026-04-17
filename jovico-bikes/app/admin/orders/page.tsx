@@ -1,10 +1,11 @@
-import { AdminOrderStatusSelect } from '@/components/admin/AdminOrderStatusSelect'
-import { prisma } from '@/lib/prisma'
-import { formatDate, formatNaira } from '@/lib/utils'
-import { ExternalLink } from 'lucide-react'
 // app/admin/orders/page.tsx
+import { ExternalLink } from 'lucide-react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+
+import { prisma } from '@/lib/prisma'
+import { formatNaira, formatDate } from '@/lib/utils'
+import { AdminOrderStatusSelect } from '@/components/admin/AdminOrderStatusSelect'
 
 export const metadata: Metadata = { title: 'Orders' }
 
@@ -16,7 +17,7 @@ export default async function AdminOrdersPage() {
         },
     })
 
-    const _statColors: Record<string, string> = {
+    const statColors: Record<string, string> = {
         PENDING: 'bg-amber-100 text-amber-700',
         PROCESSING: 'bg-blue-100 text-blue-700',
         SHIPPED: 'bg-purple-100 text-purple-700',
@@ -71,7 +72,7 @@ export default async function AdminOrdersPage() {
                                     <th className='text-left px-4 py-3.5 font-semibold text-slate-600 hidden md:table-cell'>
                                         Date
                                     </th>
-                                    <th className='text-right px-4 lg:px-6 py-3.5 font-semibold text-slate-600' />
+                                    <th className='text-right px-4 lg:px-6 py-3.5 font-semibold text-slate-600'></th>
                                 </tr>
                             </thead>
                             <tbody className='divide-y divide-slate-50'>

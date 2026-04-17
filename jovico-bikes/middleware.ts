@@ -1,7 +1,7 @@
+// middleware.ts
+import { NextRequest, NextResponse } from 'next/server'
 import { verifyToken } from '@/lib/auth'
 import { verifyCustomerToken } from '@/lib/customerAuth'
-// middleware.ts
-import { type NextRequest, NextResponse } from 'next/server'
 
 export async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl

@@ -1,27 +1,28 @@
 'use client'
-import { cn } from '@/lib/utils'
-import {
-    BarChart3,
-    Bell,
-    BookOpen,
-    LayoutDashboard,
-    LogOut,
-    Mail,
-    Menu,
-    MessageSquare,
-    Settings,
-    ShoppingBag,
-    ShoppingCart,
-    Tag,
-    Users,
-    Wrench,
-    X,
-    Zap,
-} from 'lucide-react'
 // components/admin/AdminSidebar.tsx
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
+import {
+    LayoutDashboard,
+    ShoppingBag,
+    FileText,
+    Settings,
+    LogOut,
+    Zap,
+    Wrench,
+    ShoppingCart,
+    Mail,
+    Menu,
+    X,
+    Users,
+    Tag,
+    BookOpen,
+    MessageSquare,
+    BarChart3,
+    Bell,
+} from 'lucide-react'
+import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 
 const navGroups = [
@@ -50,6 +51,7 @@ const navGroups = [
     {
         label: 'Customers',
         items: [
+            { icon: Users, label: 'Manage', href: '/admin/customers' },
             { icon: Mail, label: 'Enquiries', href: '/admin/enquiries' },
             { icon: MessageSquare, label: 'Bookings', href: '/admin/bookings' },
             { icon: Users, label: 'Subscribers', href: '/admin/subscribers' },

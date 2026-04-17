@@ -1,19 +1,21 @@
-import { prisma } from '@/lib/prisma'
-import { formatDate, formatNaira } from '@/lib/utils'
-import {
-    ArrowUpRight,
-    CheckCircle2,
-    Clock,
-    FileText,
-    Mail,
-    Package,
-    ShoppingBag,
-    ShoppingCart,
-    TrendingUp,
-} from 'lucide-react'
 // app/admin/page.tsx
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import {
+    ShoppingBag,
+    FileText,
+    ShoppingCart,
+    Mail,
+    TrendingUp,
+    ArrowUpRight,
+    Clock,
+    CheckCircle2,
+    XCircle,
+    Package,
+    Users,
+} from 'lucide-react'
+import { prisma } from '@/lib/prisma'
+import { formatNaira, formatDate } from '@/lib/utils'
 
 export const metadata: Metadata = { title: 'Dashboard' }
 
@@ -27,6 +29,7 @@ export default async function AdminDashboard() {
         recentMessages,
         pendingBookings,
         revenue,
+        customerCount,
     ] = await Promise.all([
         prisma.product.count({ where: { published: true } }),
         prisma.order.count(),
@@ -47,6 +50,7 @@ export default async function AdminDashboard() {
             where: { paymentStatus: 'PAID' },
             _sum: { total: true },
         }),
+        prisma.customer.count({ where: { deletedAt: null } }),
     ])
 
     const totalRevenue = Number(revenue._sum.total ?? 0)
@@ -83,6 +87,14 @@ export default async function AdminDashboard() {
             sub: 'Published',
             color: 'bg-purple-50 text-purple-600',
             href: '/admin/blog',
+        },
+        {
+            label: 'Customers',
+            value: customerCount.toString(),
+            icon: Users,
+            sub: 'Active accounts',
+            color: 'bg-amber-50 text-amber-600',
+            href: '/admin/customers',
         },
         {
             label: 'Unread Messages',
@@ -215,7 +227,7 @@ export default async function AdminDashboard() {
                             {recentMessages.map((msg) => (
                                 <Link
                                     key={msg.id}
-                                    href={'/admin/enquiries'}
+                                    href={`/admin/enquiries`}
                                     className='block px-6 py-4 hover:bg-slate-50 transition-colors'
                                 >
                                     <div className='flex items-start gap-3'>

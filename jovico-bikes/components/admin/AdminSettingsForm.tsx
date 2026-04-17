@@ -1,6 +1,6 @@
 'use client'
-import { CheckCircle2, Info, Loader2, Save } from 'lucide-react'
 // components/admin/AdminSettingsForm.tsx
+import { Save, Loader2, CheckCircle2, Info } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -34,7 +34,7 @@ const CONTACT_FIELDS = [
         key: 'email',
         label: 'Email Address',
         type: 'email',
-        placeholder: 'hello@jovicoworld.com',
+        placeholder: 'hello@jovicobikes.com',
         hint: 'Shown on Contact page and footer',
     },
     {

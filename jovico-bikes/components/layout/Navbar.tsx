@@ -1,10 +1,11 @@
 'use client'
-import { cn } from '@/lib/utils'
-import { Menu, ShoppingBag, User, X, Zap } from 'lucide-react'
 // components/layout/Navbar.tsx
-import Link from 'next/link'
+import { Menu, X, ShoppingBag, Zap, User } from 'lucide-react'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
+
+import { cn } from '@/lib/utils'
 
 const navLinks = [
     { label: 'Shop', href: '/shop' },
@@ -45,13 +46,15 @@ export function Navbar() {
 
     useEffect(() => {
         setOpen(false)
-    }, [])
+    }, [pathname])
 
     return (
         <header
             className={cn(
                 'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-                scrolled ? 'bg-white/95 backdrop-blur-lg shadow-sm' : 'bg-transparent'
+                scrolled
+                    ? 'bg-white/95 backdrop-blur-lg border-b border-slate-100 shadow-sm'
+                    : 'bg-transparent'
             )}
             style={{ height: 'var(--nav-height)' }}
         >
@@ -61,14 +64,7 @@ export function Navbar() {
                     <div className='w-9 h-9 rounded-xl bg-slate-900 flex items-center justify-center group-hover:bg-green-500 transition-colors duration-300'>
                         <Zap className='w-5 h-5 text-white' strokeWidth={2.5} />
                     </div>
-                    <span
-                        className={cn(
-                            'font-bold text-lg text-base sm:text-lg tracking-tight',
-                            scrolled
-                                ? 'text-slate-700 hover:text-slate-900'
-                                : 'text-slate-400 hover:text-slate-200'
-                        )}
-                    >
+                    <span className='font-bold text-slate-900 text-base sm:text-lg tracking-tight'>
                         Jovico<span className='text-green-500'>.</span>
                     </span>
                 </Link>
@@ -81,14 +77,9 @@ export function Navbar() {
                                 href={link.href}
                                 className={cn(
                                     'nav-link px-4 py-2 rounded-full transition-all duration-200 text-sm font-medium',
-                                    pathname === link.href || pathname.startsWith(`${link.href}/`)
-                                        ? scrolled
-                                            ? 'bg-slate-200'
-                                            : 'bg-slate-800'
-                                        : '',
-                                    scrolled
-                                        ? 'text-slate-600 hover:text-slate-900'
-                                        : 'text-slate-400 hover:text-slate-200'
+                                    pathname === link.href || pathname.startsWith(link.href + '/')
+                                        ? 'text-slate-900 bg-slate-100'
+                                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                                 )}
                             >
                                 {link.label}

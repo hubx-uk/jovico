@@ -1,6 +1,6 @@
-import type { Metadata } from 'next'
 // app/layout.tsx
 import { Sora } from 'next/font/google'
+import type { Metadata } from 'next'
 import { Toaster } from 'sonner'
 
 import './globals.css'

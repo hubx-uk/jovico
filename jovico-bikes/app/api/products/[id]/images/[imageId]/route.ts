@@ -1,14 +1,15 @@
-import { unlink } from 'node:fs/promises'
-import { join } from 'node:path'
-import { requireAuth } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
-import { revalidatePath } from 'next/cache'
 // app/api/products/[id]/images/[imageId]/route.ts
-import { type NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
+import { unlink } from 'fs/promises'
+import { join } from 'path'
+
+import { prisma } from '@/lib/prisma'
+import { requireAuth } from '@/lib/auth'
 
 // PATCH — set as primary
 export async function PATCH(
-    _req: NextRequest,
+    req: NextRequest,
     { params }: { params: Promise<{ id: string; imageId: string }> }
 ) {
     try {

@@ -1,10 +1,10 @@
-import { prisma } from '@/lib/prisma'
-import { formatDate } from '@/lib/utils'
-import type { PostCategory } from '@prisma/client'
-import { ArrowRight, Clock, Eye } from 'lucide-react'
 // app/main/blog/page.tsx
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { ArrowRight, Clock, Eye } from 'lucide-react'
+import { prisma } from '@/lib/prisma'
+import type { PostCategory } from '@prisma/client'
+import { formatDate } from '@/lib/utils'
 
 export const metadata: Metadata = {
     title: 'Blog',

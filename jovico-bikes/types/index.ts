@@ -3,13 +3,21 @@
 // All Prisma model shapes used in components are defined here so we never need `any`
 
 import type {
-    AdminRole,
+    Product,
+    ProductImage,
+    ProductCategory,
+    ProductType,
+    Service,
+    Post,
+    PostCategory,
     Order,
     OrderItem,
-    PostCategory,
-    ProductCategory,
-    ProductImage,
-    ProductType,
+    OrderStatus,
+    PaymentStatus,
+    Booking,
+    BookingStatus,
+    ContactMessage,
+    AdminRole,
 } from '@prisma/client'
 import type { Decimal } from '@prisma/client/runtime/library'
 

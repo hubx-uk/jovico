@@ -1,7 +1,8 @@
-import { clearSession, getSession, loginAdmin } from '@/lib/auth'
 // app/api/auth/route.ts
-import { type NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
+
+import { loginAdmin, clearSession, getSession } from '@/lib/auth'
 
 const loginSchema = z.object({
     email: z.string().email(),

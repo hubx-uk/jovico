@@ -1,8 +1,9 @@
+// app/admin/analytics/page.tsx
+import { TrendingUp, ShoppingCart, Eye, Users } from 'lucide-react'
+import type { Metadata } from 'next'
+
 import { prisma } from '@/lib/prisma'
 import { formatNaira } from '@/lib/utils'
-import { Eye, ShoppingCart, TrendingUp } from 'lucide-react'
-// app/admin/analytics/page.tsx
-import type { Metadata } from 'next'
 
 export const metadata: Metadata = { title: 'Analytics' }
 

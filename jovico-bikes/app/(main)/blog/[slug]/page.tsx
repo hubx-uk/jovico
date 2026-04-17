@@ -1,10 +1,10 @@
-import { prisma } from '@/lib/prisma'
-import { formatDate } from '@/lib/utils'
-import { ArrowLeft, Calendar, Clock, Eye, Share2, Tag } from 'lucide-react'
 // app/(main)/blog/[slug]/page.tsx
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { ArrowLeft, Clock, Eye, Calendar, Share2, Tag } from 'lucide-react'
+import { prisma } from '@/lib/prisma'
+import { formatDate } from '@/lib/utils'
 
 export async function generateStaticParams() {
     const posts = await prisma.post.findMany({
@@ -142,7 +142,7 @@ export default async function BlogPostPage({
                                 </h3>
                                 <div className='grid grid-cols-2 lg:grid-cols-1 gap-2'>
                                     <a
-                                        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(`https://jovicoworld.com/blog/${post.slug}`)}`}
+                                        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(`https://jovicobikes.com/blog/${post.slug}`)}`}
                                         target='_blank'
                                         rel='noopener noreferrer'
                                         className='flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-medium hover:bg-slate-700 transition-colors'
@@ -150,7 +150,7 @@ export default async function BlogPostPage({
                                         Share on Twitter
                                     </a>
                                     <a
-                                        href={`https://wa.me/?text=${encodeURIComponent(`${post.title} https://jovicoworld.com/blog/${post.slug}`)}`}
+                                        href={`https://wa.me/?text=${encodeURIComponent(`${post.title} https://jovicobikes.com/blog/${post.slug}`)}`}
                                         target='_blank'
                                         rel='noopener noreferrer'
                                         className='flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-green-500 text-white text-xs font-medium hover:bg-green-600 transition-colors'

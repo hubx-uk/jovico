@@ -1,8 +1,9 @@
+// app/api/orders/route.ts
+import { NextRequest, NextResponse } from 'next/server'
+import { z } from 'zod'
+
 import { prisma } from '@/lib/prisma'
 import { generateOrderNumber } from '@/lib/utils'
-// app/api/orders/route.ts
-import { type NextRequest, NextResponse } from 'next/server'
-import { z } from 'zod'
 
 const orderSchema = z.object({
     customerName: z.string().min(2),

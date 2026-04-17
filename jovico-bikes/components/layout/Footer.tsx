@@ -1,19 +1,20 @@
 'use client'
-import {
-    Facebook,
-    Instagram,
-    Loader2,
-    Mail,
-    MapPin,
-    MessageCircle,
-    Phone,
-    Twitter,
-    Zap,
-} from 'lucide-react'
 // components/layout/Footer.tsx
-import Link from 'next/link'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import Link from 'next/link'
+import {
+    Zap,
+    Instagram,
+    Twitter,
+    Facebook,
+    MessageCircle,
+    Mail,
+    Phone,
+    MapPin,
+    Loader2,
+} from 'lucide-react'
+
 import { useSiteSettings } from './SiteSettingsProvider'
 
 const shopLinks = [

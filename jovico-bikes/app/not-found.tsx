@@ -1,6 +1,6 @@
-import { ArrowLeft, Zap } from 'lucide-react'
 // app/not-found.tsx
 import Link from 'next/link'
+import { ArrowLeft, Zap } from 'lucide-react'
 
 export default function NotFound() {
     return (

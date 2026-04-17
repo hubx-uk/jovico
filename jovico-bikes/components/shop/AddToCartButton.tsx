@@ -1,9 +1,10 @@
 'use client'
-import type { CartItem } from '@/types'
 // components/shop/AddToCartButton.tsx
-import { Check, ShoppingBag } from 'lucide-react'
+import { ShoppingBag, Check } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
+
+import type { CartItem } from '@/types'
 
 interface Props {
     product: Pick<CartItem, 'id' | 'name' | 'price' | 'slug'>

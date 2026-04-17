@@ -1,15 +1,14 @@
-import { AdminDeletePost } from '@/components/admin/AdminDeletePost'
-import { AdminTogglePost } from '@/components/admin/AdminTogglePost'
-import { prisma } from '@/lib/prisma'
-import { formatDate } from '@/lib/utils'
-import { Eye, Pencil, Plus } from 'lucide-react'
 // app/admin/blog/page.tsx
+import { Plus, Pencil, Eye } from 'lucide-react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
-export const metadata: Metadata = { title: 'Blog Posts' }
+import { prisma } from '@/lib/prisma'
+import { formatDate } from '@/lib/utils'
+import { AdminTogglePost } from '@/components/admin/AdminTogglePost'
+import { AdminDeletePost } from '@/components/admin/AdminDeletePost'
 
-export const dynamic = 'force-dynamic' // always fresh
+export const metadata: Metadata = { title: 'Blog Posts' }
 
 export default async function AdminBlogPage() {
     const posts = await prisma.post.findMany({

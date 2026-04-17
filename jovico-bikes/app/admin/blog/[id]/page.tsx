@@ -1,10 +1,10 @@
 // app/admin/blog/[id]/page.tsx  (also used for /new via [...id] routing trick)
 // For "new" we create a separate page at /admin/blog/new/page.tsx
-
-import { BlogPostEditor } from '@/components/admin/BlogPostEditor'
-import { prisma } from '@/lib/prisma'
-import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
+
+import { prisma } from '@/lib/prisma'
+import { BlogPostEditor } from '@/components/admin/BlogPostEditor'
 
 export const metadata: Metadata = { title: 'Edit Post' }
 

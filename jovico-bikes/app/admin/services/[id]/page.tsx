@@ -1,8 +1,9 @@
-import { ServiceEditor } from '@/components/admin/ServiceEditor'
-import { prisma } from '@/lib/prisma'
 // app/admin/services/[id]/page.tsx
-import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
+
+import { prisma } from '@/lib/prisma'
+import { ServiceEditor } from '@/components/admin/ServiceEditor'
 
 export const metadata: Metadata = { title: 'Edit Service' }
 

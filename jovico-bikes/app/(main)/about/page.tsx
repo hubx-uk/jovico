@@ -1,8 +1,9 @@
-import { prisma } from '@/lib/prisma'
-import { ArrowRight, Award, Heart, Leaf, Target, Users, Zap } from 'lucide-react'
 // app/(main)/about/page.tsx
+import { ArrowRight, MapPin, Users, Award, Leaf, Zap, Heart, Target } from 'lucide-react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+
+import { prisma } from '@/lib/prisma'
 
 export const metadata: Metadata = {
     title: 'About Us',
@@ -260,7 +261,7 @@ export default async function AboutPage() {
                                         label: 'Hours',
                                         value: 'Mon–Sat: 9am–6pm  |  Sunday: By Appointment',
                                     },
-                                    { emoji: '✉️', label: 'Email', value: 'hello@jovicoworld.com' },
+                                    { emoji: '✉️', label: 'Email', value: 'hello@jovicobikes.com' },
                                 ].map((info) => (
                                     <div key={info.label} className='flex items-start gap-3'>
                                         <span className='text-lg mt-0.5 shrink-0'>

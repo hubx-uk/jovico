@@ -1,10 +1,11 @@
+// app/admin/shop/[id]/page.tsx
+import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
+
+import { prisma } from '@/lib/prisma'
+import { ProductEditorData } from '@/types'
 import { ProductEditor } from '@/components/admin/ProductEditor'
 import { ProductImageManager } from '@/components/admin/ProductImageManager'
-import { prisma } from '@/lib/prisma'
-import type { ProductEditorData } from '@/types'
-// app/admin/shop/[id]/page.tsx
-import type { Metadata } from 'next'
-import { notFound } from 'next/navigation'
 
 export const metadata: Metadata = { title: 'Edit Product' }
 
@@ -14,10 +15,10 @@ export default async function EditProductPage({
     params: Promise<{ id: string }>
 }) {
     const { id } = await params
-    const product = (await prisma.product.findUnique({
+    const product = await prisma.product.findUnique({
         where: { id },
         include: { images: { orderBy: [{ isPrimary: 'desc' }, { id: 'asc' }] } },
-    })) as ProductEditorData
+    }) as ProductEditorData | null
     if (!product) notFound()
 
     return (

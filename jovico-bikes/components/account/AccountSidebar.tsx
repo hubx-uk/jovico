@@ -1,10 +1,11 @@
 'use client'
-import { cn } from '@/lib/utils'
-import { ChevronRight, LogOut, Shield, ShoppingBag, User } from 'lucide-react'
 // components/account/AccountSidebar.tsx
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import { usePathname, useRouter } from 'next/navigation'
+import { User, ShoppingBag, Shield, LogOut, ChevronRight } from 'lucide-react'
+
+import { cn } from '@/lib/utils'
 
 const navItems = [
     { href: '/account', label: 'Dashboard', icon: User, exact: true },

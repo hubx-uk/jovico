@@ -1,6 +1,6 @@
-import { Footer } from '@/components/layout/Footer'
 // app/(main)/layout.tsx
 import { Navbar } from '@/components/layout/Navbar'
+import { Footer } from '@/components/layout/Footer'
 import { SiteSettingsProvider } from '@/components/layout/SiteSettingsProvider'
 import { prisma } from '@/lib/prisma'
 

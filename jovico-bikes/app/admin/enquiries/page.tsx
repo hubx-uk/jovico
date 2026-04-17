@@ -1,8 +1,9 @@
-import { AdminMarkRead } from '@/components/admin/AdminMarkRead'
-import { prisma } from '@/lib/prisma'
-import { formatDate } from '@/lib/utils'
 // app/admin/enquiries/page.tsx
 import type { Metadata } from 'next'
+
+import { prisma } from '@/lib/prisma'
+import { formatDate } from '@/lib/utils'
+import { AdminMarkRead } from '@/components/admin/AdminMarkRead'
 
 export const metadata: Metadata = { title: 'Enquiries' }
 

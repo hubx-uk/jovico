@@ -1,7 +1,7 @@
 'use client'
-import { Eye, EyeOff, Loader2, Lock, Mail, Phone, User } from 'lucide-react'
-import { useRouter, useSearchParams } from 'next/navigation'
 // components/account/CustomerLoginForm.tsx
+import { Mail, Lock, User, Phone, Eye, EyeOff, Loader2 } from 'lucide-react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 

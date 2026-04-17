@@ -1,7 +1,8 @@
-import { requireCustomer } from '@/lib/customerAuth'
-import { prisma } from '@/lib/prisma'
 // app/api/customer/orders/route.ts
 import { NextResponse } from 'next/server'
+
+import { prisma } from '@/lib/prisma'
+import { requireCustomer } from '@/lib/customerAuth'
 
 export async function GET() {
     try {

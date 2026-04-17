@@ -1,12 +1,13 @@
+// app/api/customer/auth/route.ts
+import { NextRequest, NextResponse } from 'next/server'
+import { z } from 'zod'
+
 import {
-    clearCustomerSession,
-    getCustomerSession,
     loginCustomer,
     registerCustomer,
+    clearCustomerSession,
+    getCustomerSession,
 } from '@/lib/customerAuth'
-// app/api/customer/auth/route.ts
-import { type NextRequest, NextResponse } from 'next/server'
-import { z } from 'zod'
 
 const loginSchema = z.object({
     email: z.string().email(),

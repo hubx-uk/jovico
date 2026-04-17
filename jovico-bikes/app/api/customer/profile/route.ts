@@ -1,9 +1,10 @@
-import { clearCustomerSession, requireCustomer, setCustomerSession } from '@/lib/customerAuth'
+// app/api/customer/profile/route.ts
+import { NextRequest, NextResponse } from 'next/server'
+import { z } from 'zod'
+
 import { prisma } from '@/lib/prisma'
 import { comparePasswords, hashPassword } from '@/lib/utils'
-// app/api/customer/profile/route.ts
-import { type NextRequest, NextResponse } from 'next/server'
-import { z } from 'zod'
+import { requireCustomer, clearCustomerSession, setCustomerSession } from '@/lib/customerAuth'
 
 const updateSchema = z.object({
     name: z.string().min(2).optional(),

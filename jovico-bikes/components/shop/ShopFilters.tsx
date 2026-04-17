@@ -1,9 +1,10 @@
 'use client'
-import { cn } from '@/lib/utils'
-import { Search, SlidersHorizontal } from 'lucide-react'
 // components/shop/ShopFilters.tsx
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useCallback, useTransition } from 'react'
+import { Search, SlidersHorizontal } from 'lucide-react'
+import { useTransition, useCallback } from 'react'
+
+import { cn } from '@/lib/utils'
 
 const CATEGORIES = [
     { value: 'all', label: 'All Bikes' },

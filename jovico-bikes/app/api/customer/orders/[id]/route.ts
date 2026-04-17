@@ -1,7 +1,8 @@
-import { requireCustomer } from '@/lib/customerAuth'
-import { prisma } from '@/lib/prisma'
 // app/api/customer/orders/[id]/route.ts
-import { type NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+
+import { prisma } from '@/lib/prisma'
+import { requireCustomer } from '@/lib/customerAuth'
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {

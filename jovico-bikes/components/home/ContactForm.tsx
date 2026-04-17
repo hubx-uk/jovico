@@ -1,6 +1,6 @@
 'use client'
-import { Loader2, Mail, MessageSquare, Phone, User } from 'lucide-react'
 // components/home/ContactForm.tsx
+import { User, Mail, Phone, MessageSquare, Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 

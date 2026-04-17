@@ -1,20 +1,18 @@
-import { ShopFilters } from '@/components/shop/ShopFilters'
-import { prisma } from '@/lib/prisma'
-import { formatNaira } from '@/lib/utils'
-import type { ProductCategory } from '@prisma/client'
-import { ArrowRight } from 'lucide-react'
 // app/(main)/shop/page.tsx
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
+import { prisma } from '@/lib/prisma'
+import { formatNaira } from '@/lib/utils'
+import { ShopFilters } from '@/components/shop/ShopFilters'
 import { Suspense } from 'react'
+import type { ProductCategory } from '@prisma/client'
 
 export const metadata: Metadata = {
     title: 'Shop eBikes',
     description:
         'Browse the full Jovico Bikes collection. City bikes, mountain bikes, cargo bikes and folding bikes — all built for Lagos.',
 }
-
-export const dynamic = 'force-dynamic' // always fresh
 
 export default async function ShopPage({
     searchParams,

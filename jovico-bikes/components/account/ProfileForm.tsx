@@ -1,6 +1,6 @@
 'use client'
-import { Loader2, MapPin, Phone, Save, User } from 'lucide-react'
 // components/account/ProfileForm.tsx
+import { Save, Loader2, User, Phone, MapPin } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 

@@ -1,9 +1,10 @@
-import { prisma } from '@/lib/prisma'
-import { formatDate, formatNaira } from '@/lib/utils'
-import { ArrowRight, Bell, Calendar, CheckCircle2, Mail, Package } from 'lucide-react'
 // app/admin/notifications/page.tsx
+import { Bell, Package, Calendar, Mail, ArrowRight, CheckCircle2 } from 'lucide-react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+
+import { prisma } from '@/lib/prisma'
+import { formatDate, formatNaira } from '@/lib/utils'
 
 export const metadata: Metadata = { title: 'Notifications' }
 

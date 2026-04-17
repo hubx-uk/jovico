@@ -1,35 +1,36 @@
 'use client'
-import type { PostEditorData, PostFormState } from '@/types'
-import type { PostCategory } from '@prisma/client'
+// components/admin/BlogPostEditor.tsx
 import CharacterCount from '@tiptap/extension-character-count'
-import TiptapLink from '@tiptap/extension-link'
-import Placeholder from '@tiptap/extension-placeholder'
 import TiptapUnderline from '@tiptap/extension-underline'
-import { EditorContent, useEditor } from '@tiptap/react'
+import { useEditor, EditorContent } from '@tiptap/react'
+import Placeholder from '@tiptap/extension-placeholder'
+import TiptapLink from '@tiptap/extension-link'
+import { useState, useCallback } from 'react'
 import StarterKit from '@tiptap/starter-kit'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import {
-    Bold,
-    Code,
+    Save,
+    Loader2,
     Eye,
-    Heading2,
-    Heading3,
+    Star,
+    Bold,
     Italic,
-    Link2,
+    Underline as UnderlineIcon,
     List,
     ListOrdered,
-    Loader2,
-    Minus,
+    Link2,
+    Code,
+    Heading2,
+    Heading3,
     Quote,
-    Redo2,
-    Save,
-    Star,
-    Underline as UnderlineIcon,
+    Minus,
     Undo2,
+    Redo2,
 } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-// components/admin/BlogPostEditor.tsx
-import { useCallback, useState } from 'react'
-import { toast } from 'sonner'
+
+import type { PostEditorData, PostFormState } from '@/types'
+import type { PostCategory } from '@prisma/client'
 
 interface Props {
     post: PostEditorData | null
