@@ -411,7 +411,7 @@
     }
     .nav-link::after {
         content: "";
-        @apply absolute -bottom-0.5 invisible rounded-full left-[50%] w-0 h-0.5 transition-all duration-300;
+        @apply absolute -bottom-0.5 invisible rounded-full left-[50%] w-0 h-1 transition-all duration-300;
         background-color: var(--jv-green);
     }
     .nav-link:hover::after,

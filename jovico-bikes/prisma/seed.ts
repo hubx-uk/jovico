@@ -1,8 +1,10 @@
 // prisma/seed.ts
 import { hashPassword } from "@/lib/utils";
-import { PrismaClient, ProductCategory, ProductType, PostCategory, AdminRole, OrderStatus, PaymentStatus, BookingStatus } from "@prisma/client";
+// import { PrismaClient, ProductCategory, ProductType, PostCategory, AdminRole, OrderStatus, PaymentStatus, BookingStatus } from "@prisma/client";
+import { prisma } from "../lib/prisma";
+import { ProductCategory, ProductType, PostCategory, OrderStatus, PaymentStatus, BookingStatus, AdminRole } from "./generated/prisma/client";
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 
 async function main() {
   console.log("🌱 Seeding Jovico Bikes database...");

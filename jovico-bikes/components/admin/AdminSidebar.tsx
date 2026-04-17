@@ -9,7 +9,7 @@ import {
     FileText,
     Settings,
     LogOut,
-    Zap,
+    Bike,
     Wrench,
     ShoppingCart,
     Mail,
@@ -24,6 +24,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
+import Image from 'next/image'
 
 const navGroups = [
     {
@@ -83,7 +84,8 @@ export function AdminSidebar() {
             {/* Logo */}
             <div className='flex items-center gap-3 px-4 py-5 border-b border-slate-100'>
                 <div className='w-9 h-9 rounded-xl bg-slate-900 flex items-center justify-center shrink-0'>
-                    <Zap className='w-5 h-5 text-white' />
+                    {/* <Bike className='w-5 h-5 text-white' /> */}
+                    <Image src={'/images/logo_sq.png'} alt='Jovico Logo' width={20} height={20} />
                 </div>
                 {!collapsed && (
                     <div>
@@ -145,7 +147,7 @@ export function AdminSidebar() {
                     target='_blank'
                     className={cn('admin-nav-item', collapsed ? 'justify-center px-2' : '')}
                 >
-                    <Zap style={{ width: 18, height: 18 }} className='shrink-0 text-green-500' />
+                    <Bike style={{ width: 18, height: 18 }} className='shrink-0 text-green-500' />
                     {!collapsed && <span className='text-sm'>View Site</span>}
                 </Link>
                 <button
@@ -188,7 +190,8 @@ export function AdminSidebar() {
             <div className='lg:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b border-slate-100 flex items-center justify-between px-4 py-3 h-14'>
                 <div className='flex items-center gap-2'>
                     <div className='w-8 h-8 rounded-xl bg-slate-900 flex items-center justify-center'>
-                        <Zap className='w-4 h-4 text-white' />
+                        {/* <Bike className='w-4 h-4 text-white' /> */}
+                        <Image src={'/images/logo_sq.png'} alt='Jovico Logo' width={20} height={20} />
                     </div>
                     <span className='font-bold text-slate-900 text-sm'>Jovico Admin</span>
                 </div>

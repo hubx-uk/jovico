@@ -1,11 +1,12 @@
 'use client'
 // components/layout/Navbar.tsx
-import { Menu, X, ShoppingBag, Zap, User } from 'lucide-react'
+import { Menu, X, ShoppingBag, Bike, User } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 import { cn } from '@/lib/utils'
+import Image from 'next/image'
 
 const navLinks = [
     { label: 'Shop', href: '/shop' },
@@ -62,7 +63,8 @@ export function Navbar() {
                 {/* Logo */}
                 <Link href='/' className='flex items-center gap-2 group'>
                     <div className='w-9 h-9 rounded-xl bg-slate-900 flex items-center justify-center group-hover:bg-green-500 transition-colors duration-300'>
-                        <Zap className='w-5 h-5 text-white' strokeWidth={2.5} />
+                        {/* <Bike className='w-5 h-5 text-white' strokeWidth={2.5} /> */}
+                        <Image src={'/images/logo_sq.png'} alt='Jovico Logo' width={20} height={20} />
                     </div>
                     <span className={cn(
                             'font-bold text-lg text-base sm:text-lg tracking-tight',
