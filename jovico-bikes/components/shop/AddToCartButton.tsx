@@ -1,20 +1,21 @@
 'use client'
+import type { CartItem } from '@/types'
 // components/shop/AddToCartButton.tsx
 import { Check, ShoppingBag } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
 interface Props {
-    product: { id: string; name: string; price: number; slug: string }
+    product: Pick<CartItem, 'id' | 'name' | 'price' | 'slug'>
 }
 
 export function AddToCartButton({ product }: Props) {
     const [added, setAdded] = useState(false)
 
     const handleAdd = () => {
-        // Cart stored in localStorage for now; can be replaced with server-side cart
-        const cart = JSON.parse(localStorage.getItem('jovico_cart') || '[]')
-        const existing = cart.find((i: any) => i.id === product.id)
+        const raw = localStorage.getItem('jovico_cart')
+        const cart: CartItem[] = raw ? (JSON.parse(raw) as CartItem[]) : []
+        const existing = cart.find((i) => i.id === product.id)
         if (existing) {
             existing.quantity += 1
         } else {

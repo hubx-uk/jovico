@@ -18,7 +18,7 @@ export default async function AdminAccessoriesPage() {
 
     return (
         <div className='max-w-7xl mx-auto'>
-            <div className='flex items-center justify-between mb-8'>
+            <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8'>
                 <div>
                     <h1 className='text-2xl font-extrabold text-slate-900'>Accessories</h1>
                     <p className='text-slate-500 text-sm mt-0.5'>

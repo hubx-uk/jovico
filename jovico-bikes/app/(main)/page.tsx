@@ -1,3 +1,5 @@
+import { EBikeROICalculator } from '@/components/home/EBikeROICalculator'
+import { HomepageVideoSection } from '@/components/home/HomepageVideoSection'
 import { prisma } from '@/lib/prisma'
 import { formatDate, formatNaira } from '@/lib/utils'
 import {
@@ -15,7 +17,7 @@ import {
     Wrench,
     Zap,
 } from 'lucide-react'
-// app/main/page.tsx
+// app/(main)/page.tsx
 import Link from 'next/link'
 
 // ─── Server data fetching ──────────────────────────────────
@@ -44,12 +46,33 @@ async function getFeaturedServices() {
     })
 }
 
+async function getVideoSettings() {
+    try {
+        const rows = await prisma.siteSetting.findMany({
+            where: {
+                key: {
+                    in: [
+                        'hero_video_url',
+                        'hero_video_poster',
+                        'hero_video_title',
+                        'hero_video_subtitle',
+                    ],
+                },
+            },
+        })
+        return Object.fromEntries(rows.map((r) => [r.key, r.value]))
+    } catch {
+        return {}
+    }
+}
+
 // ─── Home Page ─────────────────────────────────────────────
 export default async function HomePage() {
-    const [bikes, posts, services] = await Promise.all([
+    const [bikes, posts, services, videoSettings] = await Promise.all([
         getFeaturedBikes(),
         getFeaturedPosts(),
         getFeaturedServices(),
+        getVideoSettings(),
     ])
 
     return (
@@ -141,7 +164,9 @@ export default async function HomePage() {
 
                                 <div className='absolute inset-0 flex items-center justify-center'>
                                     <div className='text-center'>
-                                        <div className='text-8xl mb-4 animate-float'>🚴</div>
+                                        <div className='text-6xl sm:text-8xl mb-4 animate-float'>
+                                            🚴
+                                        </div>
                                         <div className='text-white/60 text-sm font-medium'>
                                             Jovico City Cruiser Pro
                                         </div>
@@ -213,6 +238,16 @@ export default async function HomePage() {
                 </div>
             </section>
 
+            {/* ═══ VIDEO SECTION (if configured) ════════════════════ */}
+            {videoSettings.hero_video_url && (
+                <HomepageVideoSection
+                    videoUrl={videoSettings.hero_video_url}
+                    poster={videoSettings.hero_video_poster || undefined}
+                    title={videoSettings.hero_video_title}
+                    subtitle={videoSettings.hero_video_subtitle}
+                />
+            )}
+
             {/* ═══ FEATURED BIKES ═══════════════════════════════ */}
             <section className='jv-section bg-white'>
                 <div className='jv-container'>
@@ -221,7 +256,7 @@ export default async function HomePage() {
                             <p className='text-green-500 font-semibold text-sm uppercase tracking-wider mb-2'>
                                 Our Collection
                             </p>
-                            <h2 className='text-4xl md:text-5xl font-extrabold text-slate-900'>
+                            <h2 className='text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900'>
                                 Featured eBikes
                             </h2>
                         </div>
@@ -306,7 +341,7 @@ export default async function HomePage() {
                         <p className='text-green-500 font-semibold text-sm uppercase tracking-wider mb-2'>
                             Why Choose Us
                         </p>
-                        <h2 className='text-4xl md:text-5xl font-extrabold text-slate-900'>
+                        <h2 className='text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900'>
                             Built for Lagos.
                             <br />
                             Built to Last.
@@ -375,13 +410,13 @@ export default async function HomePage() {
             {/* ═══ SERVICES PREVIEW ══════════════════════════════ */}
             <section className='jv-section bg-white'>
                 <div className='jv-container'>
-                    <div className='grid lg:grid-cols-2 gap-12 items-center'>
+                    <div className='grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-center'>
                         {/* Left: Content */}
                         <div>
                             <p className='text-green-500 font-semibold text-sm uppercase tracking-wider mb-2'>
                                 Expert Servicing
                             </p>
-                            <h2 className='text-4xl md:text-5xl font-extrabold text-slate-900 mb-5'>
+                            <h2 className='text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 mb-5'>
                                 Keep Your Ride in Peak Condition
                             </h2>
                             <p className='text-slate-500 text-lg leading-relaxed mb-8'>
@@ -423,7 +458,7 @@ export default async function HomePage() {
                         <div className='relative'>
                             <div className='aspect-square max-w-lg mx-auto rounded-[2.5rem] bg-gradient-to-br from-slate-900 to-slate-700 overflow-hidden flex items-center justify-center'>
                                 <div className='text-center text-white'>
-                                    <div className='text-8xl mb-4'>🔧</div>
+                                    <div className='text-5xl sm:text-8xl mb-4'>🔧</div>
                                     <p className='font-semibold text-lg'>Expert Workshop</p>
                                     <p className='text-slate-400 text-sm'>
                                         Lagos's Best eBike Technicians
@@ -431,8 +466,8 @@ export default async function HomePage() {
                                 </div>
                             </div>
 
-                            {/* Stat card */}
-                            <div className='absolute -bottom-6 -left-6 bg-white rounded-3xl shadow-xl p-6 border border-slate-100'>
+                            {/* Stat card — hidden on mobile, shown md+ */}
+                            <div className='hidden md:block absolute -bottom-6 -left-6 bg-white rounded-3xl shadow-xl p-5 sm:p-6 border border-slate-100'>
                                 <div className='flex items-center gap-3'>
                                     <div className='w-12 h-12 rounded-2xl bg-green-50 flex items-center justify-center'>
                                         <Award className='w-6 h-6 text-green-600' />
@@ -457,7 +492,7 @@ export default async function HomePage() {
                         <p className='text-green-400 font-semibold text-sm uppercase tracking-wider mb-2'>
                             Testimonials
                         </p>
-                        <h2 className='text-4xl md:text-5xl font-extrabold text-white'>
+                        <h2 className='text-3xl sm:text-4xl md:text-5xl font-extrabold text-white'>
                             What Our Riders Say
                         </h2>
                     </div>
@@ -526,7 +561,7 @@ export default async function HomePage() {
                                 <p className='text-green-500 font-semibold text-sm uppercase tracking-wider mb-2'>
                                     From the Blog
                                 </p>
-                                <h2 className='text-4xl font-extrabold text-slate-900'>
+                                <h2 className='text-3xl sm:text-4xl font-extrabold text-slate-900'>
                                     Riding Insights
                                 </h2>
                             </div>
@@ -581,10 +616,13 @@ export default async function HomePage() {
                 </section>
             )}
 
+            {/* ═══ ROI CALCULATOR ════════════════════════════════ */}
+            <EBikeROICalculator />
+
             {/* ═══ CTA BANNER ═══════════════════════════════════ */}
             <section className='py-20 bg-green-500'>
                 <div className='jv-container text-center'>
-                    <h2 className='text-4xl md:text-5xl font-extrabold text-white mb-5'>
+                    <h2 className='text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-5'>
                         Ready to Ride Electric?
                     </h2>
                     <p className='text-green-100 text-lg mb-8 max-w-xl mx-auto'>

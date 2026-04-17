@@ -1,8 +1,8 @@
 'use client'
 import { Eye, EyeOff, Loader2, Lock, Mail } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 // components/admin/AdminLoginForm.tsx
+import { useState } from 'react'
 import { toast } from 'sonner'
 
 export function AdminLoginForm() {
@@ -51,7 +51,7 @@ export function AdminLoginForm() {
                         type='email'
                         name='email'
                         required
-                        placeholder='admin@jovicobikes.com'
+                        placeholder='admin@jovicoworld.com'
                         className='w-full bg-slate-800 border border-slate-700 text-white placeholder:text-slate-600 rounded-2xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition'
                     />
                 </div>

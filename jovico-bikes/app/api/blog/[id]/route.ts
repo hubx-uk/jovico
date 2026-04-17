@@ -1,9 +1,9 @@
-// app/api/blog/[id]/route.ts
-import { type NextRequest, NextResponse } from 'next/server'
-
 import { requireAuth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { createSlug, getReadTime } from '@/lib/utils'
+import { revalidatePath } from 'next/cache'
+// app/api/blog/[id]/route.ts
+import { type NextRequest, NextResponse } from 'next/server'
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
@@ -39,6 +39,11 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
                 ...rest,
             },
         })
+
+        // Revalidate blog listing and individual post
+        revalidatePath('/blog')
+        revalidatePath(`/blog/${post.slug}`)
+
         return NextResponse.json(post)
     } catch (err) {
         if (err instanceof Error && err.message === 'Unauthorised') {
@@ -52,7 +57,12 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
     try {
         await requireAuth()
         const { id } = await params
+        const post = await prisma.post.findUnique({ where: { id } })
         await prisma.post.delete({ where: { id } })
+        if (post) {
+            revalidatePath('/blog')
+            revalidatePath(`/blog/${post.slug}`)
+        }
         return NextResponse.json({ success: true })
     } catch (err) {
         if (err instanceof Error && err.message === 'Unauthorised') {

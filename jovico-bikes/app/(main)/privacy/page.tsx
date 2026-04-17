@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: 'Privacy Policy' }
 export default function PrivacyPage() {
     return (
         <>
-            <section className='pt-32 pb-12 bg-slate-950'>
+            <section className='pt-28 sm:pt-32 pb-12 bg-slate-950'>
                 <div className='jv-container max-w-3xl'>
                     <h1 className='text-4xl font-extrabold text-white mb-3'>Privacy Policy</h1>
                     <p className='text-slate-400'>Last updated: November 2024</p>
@@ -52,14 +52,14 @@ export default function PrivacyPage() {
                     <p>
                         You have the right to request access to your personal data, request deletion
                         of your data, and opt out of marketing communications at any time. Contact
-                        us at <a href='mailto:hello@jovicobikes.com'>hello@jovicobikes.com</a> to
+                        us at <a href='mailto:hello@jovicoworld.com'>hello@jovicoworld.com</a> to
                         exercise these rights.
                     </p>
 
                     <h2>7. Contact Us</h2>
                     <p>
                         For any privacy concerns, contact our Data Protection Officer at{' '}
-                        <a href='mailto:hello@jovicobikes.com'>hello@jovicobikes.com</a> or call
+                        <a href='mailto:hello@jovicoworld.com'>hello@jovicoworld.com</a> or call
                         +234 801 234 5678.
                     </p>
                 </div>

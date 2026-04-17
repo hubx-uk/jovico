@@ -1,5 +1,4 @@
 'use client'
-import { useSiteSettings } from '@/components/layout/SiteSettingsProvider'
 import { formatNaira } from '@/lib/utils'
 import { ArrowLeft, ArrowRight, Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react'
 import Link from 'next/link'
@@ -15,7 +14,6 @@ interface CartItem {
 }
 
 export default function CartPage() {
-    const s = useSiteSettings()
     const [cart, setCart] = useState<CartItem[]>([])
     const [mounted, setMounted] = useState(false)
 
@@ -54,12 +52,9 @@ export default function CartPage() {
     const shipping = subtotal > 0 && subtotal < 100000 ? 5000 : 0
     const total = subtotal + shipping
 
-    const waNumber = s.whatsapp.replace(/\D/g, '')
-    const waUrl = `https://wa.me/${waNumber}`
-
     if (!mounted) {
         return (
-            <div className='pt-32 pb-20 jv-container'>
+            <div className='pt-28 sm:pt-32 pb-20 jv-container'>
                 <div className='animate-pulse space-y-4'>
                     {[1, 2, 3].map((i) => (
                         <div key={i} className='h-24 bg-slate-100 rounded-2xl' />
@@ -72,9 +67,9 @@ export default function CartPage() {
     return (
         <>
             {/* Header */}
-            <section className='pt-32 pb-10 bg-slate-950'>
+            <section className='pt-28 sm:pt-32 pb-10 bg-slate-950'>
                 <div className='jv-container'>
-                    <h1 className='text-4xl md:text-5xl font-extrabold text-white mb-2'>
+                    <h1 className='text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-2'>
                         Your Cart
                     </h1>
                     <p className='text-slate-400'>
@@ -116,66 +111,60 @@ export default function CartPage() {
                                     </Link>
                                 </div>
                                 {cart.map((item) => (
-                                    <div
-                                        key={item.id}
-                                        className='jv-card p-5 flex items-center gap-4'
-                                    >
-                                        {/* Image placeholder */}
-                                        <Link href={`/shop/${item.slug}`}>
-                                            <div className='w-20 h-20 rounded-2xl bg-slate-100 flex items-center justify-center text-3xl shrink-0 hover:scale-105 transition-transform'>
-                                                🚴
-                                            </div>
-                                        </Link>
-
-                                        {/* Info */}
-                                        <div className='flex-1 min-w-0'>
-                                            <Link
-                                                href={`/shop/${item.slug}`}
-                                                className='font-bold text-slate-900 hover:text-green-600 transition-colors line-clamp-1'
-                                            >
-                                                {item.name}
+                                    <div key={item.id} className='jv-card p-4 sm:p-5'>
+                                        <div className='flex items-start gap-3 sm:gap-4'>
+                                            <Link href={`/shop/${item.slug}`}>
+                                                <div className='w-16 h-16 sm:w-20 sm:h-20 rounded-xl sm:rounded-2xl bg-slate-100 flex items-center justify-center text-2xl sm:text-3xl shrink-0 hover:scale-105 transition-transform'>
+                                                    🚴
+                                                </div>
                                             </Link>
-                                            <p className='text-sm text-slate-500 mt-0.5'>
-                                                Unit price: {formatNaira(item.price)}
-                                            </p>
-                                        </div>
-
-                                        {/* Qty controls */}
-                                        <div className='flex items-center gap-2 shrink-0'>
-                                            <button
-                                                type='button'
-                                                onClick={() => updateQty(item.id, -1)}
-                                                className='w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors'
-                                            >
-                                                <Minus className='w-3.5 h-3.5 text-slate-700' />
-                                            </button>
-                                            <span className='w-8 text-center font-bold text-slate-900'>
-                                                {item.quantity}
-                                            </span>
-                                            <button
-                                                type='button'
-                                                onClick={() => updateQty(item.id, 1)}
-                                                className='w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors'
-                                            >
-                                                <Plus className='w-3.5 h-3.5 text-slate-700' />
-                                            </button>
-                                        </div>
-
-                                        {/* Line total */}
-                                        <div className='text-right shrink-0 w-28'>
-                                            <div className='font-extrabold text-slate-900'>
-                                                {formatNaira(item.price * item.quantity)}
+                                            <div className='flex-1 min-w-0'>
+                                                <Link
+                                                    href={`/shop/${item.slug}`}
+                                                    className='font-bold text-slate-900 hover:text-green-600 transition-colors text-sm sm:text-base line-clamp-1'
+                                                >
+                                                    {item.name}
+                                                </Link>
+                                                <p className='text-xs text-slate-500 mt-0.5'>
+                                                    {formatNaira(item.price)} each
+                                                </p>
+                                                <div className='flex items-center justify-between mt-2.5 gap-2'>
+                                                    <div className='flex items-center gap-1.5'>
+                                                        <button
+                                                            type='button'
+                                                            onClick={() => updateQty(item.id, -1)}
+                                                            className='w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors'
+                                                        >
+                                                            <Minus className='w-3 h-3 sm:w-3.5 sm:h-3.5 text-slate-700' />
+                                                        </button>
+                                                        <span className='w-6 text-center font-bold text-slate-900 text-sm'>
+                                                            {item.quantity}
+                                                        </span>
+                                                        <button
+                                                            type='button'
+                                                            onClick={() => updateQty(item.id, 1)}
+                                                            className='w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors'
+                                                        >
+                                                            <Plus className='w-3 h-3 sm:w-3.5 sm:h-3.5 text-slate-700' />
+                                                        </button>
+                                                    </div>
+                                                    <div className='flex items-center gap-2'>
+                                                        <span className='font-extrabold text-slate-900 text-sm sm:text-base'>
+                                                            {formatNaira(
+                                                                item.price * item.quantity
+                                                            )}
+                                                        </span>
+                                                        <button
+                                                            type='button'
+                                                            onClick={() => removeItem(item.id)}
+                                                            className='p-1.5 rounded-lg text-slate-300 hover:text-red-500 hover:bg-red-50 transition-colors'
+                                                        >
+                                                            <Trash2 className='w-3.5 h-3.5 sm:w-4 sm:h-4' />
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-
-                                        {/* Remove */}
-                                        <button
-                                            type='button'
-                                            onClick={() => removeItem(item.id)}
-                                            className='p-2 rounded-xl text-slate-300 hover:text-red-500 hover:bg-red-50 transition-colors shrink-0'
-                                        >
-                                            <Trash2 className='w-4 h-4' />
-                                        </button>
                                     </div>
                                 ))}
                             </div>
@@ -222,7 +211,7 @@ export default function CartPage() {
                                     </Link>
 
                                     <a
-                                        href={`${waUrl}?text=Hi! I'd like to order: ${cart.map((i) => `${i.name} x${i.quantity}`).join(', ')}. Total: ${formatNaira(total)}`}
+                                        href={`https://wa.me/2348012345678?text=Hi! I'd like to order: ${cart.map((i) => `${i.name} x${i.quantity}`).join(', ')}. Total: ${formatNaira(total)}`}
                                         target='_blank'
                                         rel='noopener noreferrer'
                                         className='jv-btn-secondary w-full justify-center text-sm !border-slate-200 !text-slate-700 hover:!bg-slate-50 mb-4'

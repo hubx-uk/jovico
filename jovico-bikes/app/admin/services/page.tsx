@@ -1,11 +1,10 @@
-// app/admin/services/page.tsx
-import { Pencil, Plus, Wrench } from 'lucide-react'
-import type { Metadata } from 'next'
-import Link from 'next/link'
-
 import { AdminToggleService } from '@/components/admin/AdminToggleService'
 import { prisma } from '@/lib/prisma'
 import { formatNaira } from '@/lib/utils'
+import { Pencil, Plus, Wrench } from 'lucide-react'
+// app/admin/services/page.tsx
+import type { Metadata } from 'next'
+import Link from 'next/link'
 
 export const metadata: Metadata = { title: 'Services' }
 
@@ -14,7 +13,7 @@ export default async function AdminServicesPage() {
 
     return (
         <div className='max-w-5xl mx-auto'>
-            <div className='flex items-center justify-between mb-8'>
+            <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8'>
                 <div>
                     <h1 className='text-2xl font-extrabold text-slate-900'>Services</h1>
                     <p className='text-slate-500 text-sm mt-0.5'>

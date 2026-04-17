@@ -1,13 +1,13 @@
-// app/layout.tsx
-import { Toaster } from 'sonner'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+// app/layout.tsx
+import { Sora } from 'next/font/google'
+import { Toaster } from 'sonner'
 
 import './globals.css'
 
-const inter = Inter({
+const sora = Sora({
     subsets: ['latin'],
-    variable: '--font-inter',
+    variable: '--font-sora',
     weight: ['300', '400', '500', '600', '700', '800'],
     display: 'swap',
 })
@@ -27,12 +27,19 @@ export const metadata: Metadata = {
         'electric bike service Lagos',
         'buy ebike Nigeria',
     ],
-    authors: [{ name: 'Jovico Bikes', url: 'https://jovicobikes.com' }],
+    metadataBase: new URL('https://jovicoworld.com'),
+    alternates: {
+        canonical: '/',
+        languages: {
+            'en-US': '/en-US',
+        },
+    },
+    authors: [{ name: 'Jovico Bikes', url: 'https://jovicoworld.com' }],
     creator: 'Jovico Bikes',
     openGraph: {
         type: 'website',
         locale: 'en_NG',
-        url: 'https://jovicobikes.com',
+        url: 'https://jovicoworld.com',
         siteName: 'Jovico Bikes',
         title: 'Jovico Bikes — Premium eBikes in Lagos, Nigeria',
         description: "Lagos's premier eBike retailer and service centre.",
@@ -45,6 +52,11 @@ export const metadata: Metadata = {
         creator: '@jovicobikes',
     },
     robots: { index: true, follow: true },
+    icons: {
+        icon: '/images/favicon.ico',
+        shortcut: '/images/favicon.ico',
+        apple: '/images/apple-icon.png',
+    },
 }
 
 export default function RootLayout({
@@ -53,15 +65,15 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang='en' data-scroll-behavior='smooth' suppressHydrationWarning>
-            <body className={`${inter.variable} font-sans antialiased`}>
+        <html lang='en' suppressHydrationWarning>
+            <body className={`${sora.variable} font-sans antialiased`}>
                 {children}
                 <Toaster
                     position='top-right'
                     toastOptions={{
                         style: {
                             borderRadius: '16px',
-                            fontFamily: 'var(--font-inter)',
+                            fontFamily: 'var(--font-sora)',
                         },
                     }}
                 />

@@ -1,14 +1,15 @@
-// app/admin/blog/page.tsx
-import { Eye, Pencil, Plus } from 'lucide-react'
-import type { Metadata } from 'next'
-import Link from 'next/link'
-
 import { AdminDeletePost } from '@/components/admin/AdminDeletePost'
 import { AdminTogglePost } from '@/components/admin/AdminTogglePost'
 import { prisma } from '@/lib/prisma'
 import { formatDate } from '@/lib/utils'
+import { Eye, Pencil, Plus } from 'lucide-react'
+// app/admin/blog/page.tsx
+import type { Metadata } from 'next'
+import Link from 'next/link'
 
 export const metadata: Metadata = { title: 'Blog Posts' }
+
+export const dynamic = 'force-dynamic' // always fresh
 
 export default async function AdminBlogPage() {
     const posts = await prisma.post.findMany({
@@ -18,7 +19,7 @@ export default async function AdminBlogPage() {
     return (
         <div className='max-w-6xl mx-auto'>
             {/* Header */}
-            <div className='flex items-center justify-between mb-8'>
+            <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8'>
                 <div>
                     <h1 className='text-2xl font-extrabold text-slate-900'>Blog Posts</h1>
                     <p className='text-slate-500 text-sm mt-0.5'>{posts.length} total posts</p>
@@ -42,7 +43,7 @@ export default async function AdminBlogPage() {
                         </Link>
                     </div>
                 ) : (
-                    <div className='overflow-x-auto'>
+                    <div className='overflow-x-auto -mx-4 sm:mx-0'>
                         <table className='w-full text-sm'>
                             <thead>
                                 <tr className='border-b border-slate-100 bg-slate-50'>
@@ -58,10 +59,10 @@ export default async function AdminBlogPage() {
                                     <th className='text-left px-4 py-3.5 font-semibold text-slate-600'>
                                         Status
                                     </th>
-                                    <th className='text-left px-4 py-3.5 font-semibold text-slate-600'>
+                                    <th className='hidden md:table-cell text-left px-4 py-3.5 font-semibold text-slate-600'>
                                         Views
                                     </th>
-                                    <th className='text-left px-4 py-3.5 font-semibold text-slate-600'>
+                                    <th className='hidden md:table-cell text-left px-4 py-3.5 font-semibold text-slate-600'>
                                         Date
                                     </th>
                                     <th className='text-right px-6 py-3.5 font-semibold text-slate-600'>
@@ -88,17 +89,19 @@ export default async function AdminBlogPage() {
                                                 {post.category}
                                             </span>
                                         </td>
-                                        <td className='px-4 py-4 text-slate-600'>{post.author}</td>
+                                        <td className='hidden sm:table-cell px-4 py-4 text-slate-600'>
+                                            {post.author}
+                                        </td>
                                         <td className='px-4 py-4'>
                                             <AdminTogglePost
                                                 id={post.id}
                                                 published={post.published}
                                             />
                                         </td>
-                                        <td className='px-4 py-4 text-slate-600'>
+                                        <td className='hidden md:table-cell px-4 py-4 text-slate-600'>
                                             {post.views.toLocaleString()}
                                         </td>
-                                        <td className='px-4 py-4 text-slate-500 text-xs whitespace-nowrap'>
+                                        <td className='hidden md:table-cell px-4 py-4 text-slate-500 text-xs whitespace-nowrap'>
                                             {formatDate(post.createdAt)}
                                         </td>
                                         <td className='px-6 py-4'>

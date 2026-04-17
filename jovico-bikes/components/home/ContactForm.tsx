@@ -43,9 +43,9 @@ export function ContactForm() {
     }
 
     return (
-        <div className='jv-card p-8'>
-            <form onSubmit={handleSubmit} className='space-y-5'>
-                <div className='grid grid-cols-1 sm:grid-cols-2 gap-5'>
+        <div className='jv-card p-5 sm:p-8'>
+            <form onSubmit={handleSubmit} className='space-y-4 sm:space-y-5'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5'>
                     <div>
                         <label className='block text-sm font-semibold text-slate-700 mb-1.5'>
                             Full Name *

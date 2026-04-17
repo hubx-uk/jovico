@@ -18,7 +18,7 @@ const defaultSettings: SiteSettings = {
     site_name: 'Jovico Bikes',
     tagline: 'Ride Electric. Ride Lagos.',
     phone: '+234 801 234 5678',
-    email: 'hello@jovicobikes.com',
+    email: 'hello@jovicoworld.com',
     address: '14 Adeola Odeku Street, Victoria Island, Lagos',
     whatsapp: '+2348012345678',
     instagram: 'https://instagram.com/jovicobikes',

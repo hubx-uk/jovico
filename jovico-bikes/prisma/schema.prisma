@@ -2,12 +2,28 @@
 // Jovico Bikes - MySQL Database Schema
 
 generator client {
-  provider = "prisma-client"
-  output   = "./generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Customers ────────────────────────────────────────────
+model Customer {
+  id          String    @id @default(cuid())
+  name        String
+  email       String    @unique
+  password    String
+  phone       String?
+  address     String?
+  orders      Order[]
+  deletedAt   DateTime?           // soft delete
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("customers")
 }
 
 // ─── Auth ─────────────────────────────────────────────────
@@ -74,7 +90,6 @@ enum ProductCategory {
   ACCESSORY
   PART
   APPAREL
-  ALL
 }
 
 enum ProductType {
@@ -176,6 +191,8 @@ model Order {
   paymentStatus   PaymentStatus @default(UNPAID)
   paymentRef      String?
   notes           String?     @db.Text
+  customer        Customer?   @relation(fields: [customerId], references: [id])
+  customerId      String?
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
 

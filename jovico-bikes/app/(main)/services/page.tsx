@@ -43,7 +43,7 @@ export default async function ServicesPage() {
     return (
         <>
             {/* Hero */}
-            <section className='pt-32 pb-20 bg-slate-950 relative overflow-hidden'>
+            <section className='pt-28 sm:pt-32 pb-16 sm:pb-20 bg-slate-950 relative overflow-hidden'>
                 <div
                     className='absolute inset-0 opacity-[0.03]'
                     style={{
@@ -56,22 +56,25 @@ export default async function ServicesPage() {
                     <p className='text-green-400 font-semibold text-sm uppercase tracking-wider mb-2'>
                         Expert Care
                     </p>
-                    <h1 className='text-5xl md:text-6xl font-extrabold text-white mb-5 max-w-2xl'>
-                        eBike Services & Repairs
+                    <h1 className='text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-4 sm:mb-5 max-w-2xl'>
+                        eBike Services &amp; Repairs
                     </h1>
-                    <p className='text-slate-400 text-lg max-w-xl leading-relaxed mb-8'>
+                    <p className='text-slate-400 text-base md:text-lg max-w-xl leading-relaxed mb-7 sm:mb-8'>
                         Our fully-equipped Lagos workshop keeps your electric bike in peak
                         condition. Certified technicians, genuine parts, fast turnaround.
                     </p>
-                    <div className='flex flex-wrap gap-4'>
-                        <a href='#book' className='jv-btn-green text-base !px-8 !py-4'>
+                    <div className='flex flex-col sm:flex-row gap-3 sm:gap-4'>
+                        <a
+                            href='#book'
+                            className='jv-btn-green text-base !px-8 !py-4 justify-center'
+                        >
                             Book a Service <ArrowRight className='w-5 h-5' />
                         </a>
                         <a
                             href="https://wa.me/2348012345678?text=Hi! I'd like to book a service for my eBike."
                             target='_blank'
                             rel='noopener noreferrer'
-                            className='jv-btn-secondary !border-slate-600 !text-slate-300 hover:!bg-slate-800 hover:!text-white text-base !px-8 !py-4'
+                            className='jv-btn-secondary !border-slate-600 !text-slate-300 hover:!bg-slate-800 hover:!text-white text-base !px-8 !py-4 justify-center'
                         >
                             <MessageCircle className='w-5 h-5' />
                             WhatsApp Us
@@ -202,7 +205,7 @@ export default async function ServicesPage() {
                             Simple. Fast. Reliable.
                         </h2>
                     </div>
-                    <div className='grid grid-cols-1 md:grid-cols-4 gap-6'>
+                    <div className='grid grid-cols-2 md:grid-cols-4 gap-5 sm:gap-6'>
                         {[
                             {
                                 step: '01',

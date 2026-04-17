@@ -17,7 +17,7 @@ Lagos's premier eBike retailer and service centre — built with **Next.js 15**,
 | Auth | JWT + Iron Session (cookie-based) |
 | Animation | Framer Motion |
 | Notifications | Sonner toast |
-| Fonts | Inter (Google Fonts) |
+| Fonts | Sora (Google Fonts) |
 
 ---
 
@@ -83,7 +83,7 @@ jovico-bikes/
 ### 1. Install Dependencies
 
 ```bash
-pnpm install
+npm install
 ```
 
 ### 2. Environment Variables
@@ -118,17 +118,17 @@ On **Hostinger**, create a new MySQL database via the hPanel, then note the:
 
 ```bash
 # Generate Prisma client
-pnpm run db:generate
+npm run db:generate
 
 # Push schema to MySQL
-pnpm run db:push
+npm run db:push
 
 # Seed with sample data
-pnpm run db:seed
+npm run db:seed
 ```
 
 This creates:
-- ✅ Admin account: `admin@jovicobikes.com` / `jovico@admin2024`
+- ✅ Admin account: `admin@jovicoworld.com` / `jovico@admin2024`
 - ✅ 5 sample bikes
 - ✅ 6 services
 - ✅ 3 blog posts
@@ -137,7 +137,7 @@ This creates:
 ### 5. Run Development Server
 
 ```bash
-pnpm run dev
+npm run dev
 ```
 
 Visit:
@@ -186,7 +186,7 @@ Visit:
 ### 1. Build Locally
 
 ```bash
-pnpm run build
+npm run build
 ```
 
 ### 2. Upload via FTP or Git
@@ -196,11 +196,11 @@ Hostinger supports Node.js apps via their **Node.js** or **Business Hosting** pl
 **Option A: Git Deploy**
 1. Push to GitHub
 2. In hPanel → Git → Link repository
-3. Set build command: `pnpm install && pnpm run build`
-4. Set start command: `pnpm start`
+3. Set build command: `npm install && npm run build`
+4. Set start command: `npm start`
 
 **Option B: FTP Upload**
-1. Run `pnpm run build`
+1. Run `npm run build`
 2. Upload the entire project folder (including `.next/`, `public/`, `prisma/`, `node_modules/`)
 3. Set entry point to `node_modules/.bin/next start`
 
@@ -214,7 +214,7 @@ In hPanel → Node.js → Environment Variables, add all variables from `.env.ex
 2. Create database: `jovico_bikes`
 3. Create user with full privileges
 4. Note the connection details for `DATABASE_URL`
-5. Once deployed, run `pnpm run db:push && pnpm run db:seed` via SSH
+5. Once deployed, run `npm run db:push && npm run db:seed` via SSH
 
 ---
 
@@ -247,16 +247,16 @@ Add Paystack or Flutterwave by:
 ## Scripts
 
 ```bash
-pnpm run dev          # Start dev server
-pnpm run build        # Build for production
-pnpm run start        # Start production server
-pnpm run db:push      # Push schema to database
-pnpm run db:generate  # Regenerate Prisma client
-pnpm run db:migrate   # Create + run migrations
-pnpm run db:seed      # Seed sample data
-pnpm run db:studio    # Open Prisma Studio (GUI)
-pnpm run check        # Run Biome lint + format check
-pnpm run format       # Format all files with Biome
+npm run dev          # Start dev server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run db:push      # Push schema to database
+npm run db:generate  # Regenerate Prisma client
+npm run db:migrate   # Create + run migrations
+npm run db:seed      # Seed sample data
+npm run db:studio    # Open Prisma Studio (GUI)
+npm run check        # Run Biome lint + format check
+npm run format       # Format all files with Biome
 ```
 
 ---
@@ -265,7 +265,7 @@ pnpm run format       # Format all files with Biome
 
 > ⚠️ **Change these immediately after first login!**
 
-- Email: `admin@jovicobikes.com`
+- Email: `admin@jovicoworld.com`
 - Password: `jovico@admin2024`
 
 ---

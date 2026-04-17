@@ -17,7 +17,7 @@ const CATEGORIES = [
 export function ShopFilters() {
     const router = useRouter()
     const searchParams = useSearchParams()
-    const [isPending, startTransition] = useTransition()
+    const [_isPending, startTransition] = useTransition()
 
     const currentCategory = (searchParams.get('category') ?? 'all').toLowerCase()
     const currentSort = searchParams.get('sort') ?? 'featured'

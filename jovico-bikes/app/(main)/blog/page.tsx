@@ -1,16 +1,18 @@
-import { ArrowRight, Clock, Eye } from 'lucide-react'
-import type { Metadata } from 'next'
-// app/main/blog/page.tsx
-import Link from 'next/link'
-
 import { prisma } from '@/lib/prisma'
 import { formatDate } from '@/lib/utils'
+import type { PostCategory } from '@prisma/client'
+import { ArrowRight, Clock, Eye } from 'lucide-react'
+// app/main/blog/page.tsx
+import type { Metadata } from 'next'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
     title: 'Blog',
     description:
         'eBike tips, Lagos riding guides, product reviews and news from the Jovico Bikes team.',
 }
+
+export const dynamic = 'force-dynamic' // always fresh
 
 const CATEGORIES = ['ALL', 'NEWS', 'TIPS', 'REVIEW', 'GUIDE', 'COMPANY']
 
@@ -25,7 +27,7 @@ export default async function BlogPage({
     const posts = await prisma.post.findMany({
         where: {
             published: true,
-            ...(category && category !== 'ALL' ? { category: category as any } : {}),
+            ...(category && category !== 'ALL' ? { category: category as PostCategory } : {}),
         },
         orderBy: { publishedAt: 'desc' },
     })
@@ -36,16 +38,16 @@ export default async function BlogPage({
     return (
         <>
             {/* Hero */}
-            <section className='pt-32 pb-16 bg-slate-950'>
+            <section className='pt-28 sm:pt-32 pb-14 bg-slate-950'>
                 <div className='jv-container'>
                     <p className='text-green-400 font-semibold text-sm uppercase tracking-wider mb-2'>
                         Riding Insights
                     </p>
-                    <h1 className='text-5xl md:text-6xl font-extrabold text-white mb-4'>
+                    <h1 className='text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-4'>
                         The Jovico Blog
                     </h1>
-                    <p className='text-slate-400 text-lg max-w-xl'>
-                        Tips, guides, news and stories from Lagos's eBike community.
+                    <p className='text-slate-400 text-base md:text-lg max-w-xl'>
+                        Tips, guides, news and stories from Lagos&apos;s eBike community.
                     </p>
                 </div>
             </section>
@@ -96,13 +98,16 @@ export default async function BlogPage({
                         <>
                             {/* Featured post */}
                             {featured && !category && (
-                                <Link href={`/blog/${featured.slug}`} className='group block mb-10'>
+                                <Link
+                                    href={`/blog/${featured.slug}`}
+                                    className='group block mb-8 sm:mb-10'
+                                >
                                     <div className='jv-card overflow-hidden grid md:grid-cols-2 gap-0'>
-                                        <div className='aspect-video md:aspect-auto bg-gradient-to-br from-slate-800 to-slate-700 flex items-center justify-center text-7xl rounded-t-3xl md:rounded-l-3xl md:rounded-tr-none'>
+                                        <div className='aspect-video md:aspect-auto bg-gradient-to-br from-slate-800 to-slate-700 flex items-center justify-center text-5xl sm:text-7xl rounded-t-3xl md:rounded-l-3xl md:rounded-tr-none min-h-36 md:min-h-0'>
                                             📰
                                         </div>
-                                        <div className='p-8 md:p-10 flex flex-col justify-center'>
-                                            <div className='flex items-center gap-2 mb-4'>
+                                        <div className='p-5 sm:p-8 md:p-10 flex flex-col justify-center'>
+                                            <div className='flex flex-wrap items-center gap-2 mb-3 sm:mb-4'>
                                                 <span className='jv-badge bg-green-100 text-green-700 text-xs'>
                                                     Featured
                                                 </span>
@@ -110,13 +115,13 @@ export default async function BlogPage({
                                                     {featured.category}
                                                 </span>
                                             </div>
-                                            <h2 className='text-2xl md:text-3xl font-extrabold text-slate-900 mb-3 group-hover:text-green-600 transition-colors'>
+                                            <h2 className='text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-900 mb-2 sm:mb-3 group-hover:text-green-600 transition-colors'>
                                                 {featured.title}
                                             </h2>
-                                            <p className='text-slate-500 text-sm leading-relaxed mb-5 line-clamp-3'>
+                                            <p className='text-slate-500 text-sm leading-relaxed mb-4 sm:mb-5 line-clamp-3'>
                                                 {featured.excerpt}
                                             </p>
-                                            <div className='flex items-center gap-4 text-xs text-slate-400 mb-5'>
+                                            <div className='flex flex-wrap items-center gap-3 sm:gap-4 text-xs text-slate-400 mb-4 sm:mb-5'>
                                                 <span className='flex items-center gap-1'>
                                                     <Clock className='w-3.5 h-3.5' />{' '}
                                                     {featured.readTime} min read
@@ -125,13 +130,13 @@ export default async function BlogPage({
                                                     <Eye className='w-3.5 h-3.5' />{' '}
                                                     {featured.views.toLocaleString()} views
                                                 </span>
-                                                <span>
+                                                <span className='hidden sm:block'>
                                                     {featured.publishedAt
                                                         ? formatDate(featured.publishedAt)
                                                         : ''}
                                                 </span>
                                             </div>
-                                            <span className='flex items-center gap-1.5 text-sm font-bold text-green-600 group-hover:gap-3 transition-all'>
+                                            <span className='flex items-center gap-1.5 text-sm font-bold text-green-600 group-hover:gap-3 transition-all w-fit'>
                                                 Read Article <ArrowRight className='w-4 h-4' />
                                             </span>
                                         </div>

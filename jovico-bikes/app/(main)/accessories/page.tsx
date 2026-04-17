@@ -1,11 +1,9 @@
-// app/main/accessories/page.tsx
-import { ArrowRight } from 'lucide-react'
-import type { Metadata } from 'next'
-import Link from 'next/link'
-
 import { prisma } from '@/lib/prisma'
 import { formatNaira } from '@/lib/utils'
-import { getContactSettings } from '../contact/page'
+import { ArrowRight } from 'lucide-react'
+// app/main/accessories/page.tsx
+import type { Metadata } from 'next'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
     title: 'Accessories',
@@ -30,19 +28,15 @@ export default async function AccessoriesPage() {
         { emoji: '🎒', name: 'Bags & Racks', desc: 'Carry more. Go further.' },
     ]
 
-    const s = await getContactSettings()
-    const waNumber = s.whatsapp.replace(/\D/g, '')
-    const waUrl = `https://wa.me/${waNumber}`
-
     return (
         <>
             {/* Hero */}
-            <section className='pt-32 pb-16 bg-slate-950'>
+            <section className='pt-28 sm:pt-32 pb-16 bg-slate-950'>
                 <div className='jv-container'>
                     <p className='text-green-400 font-semibold text-sm uppercase tracking-wider mb-2'>
                         Gear Up
                     </p>
-                    <h1 className='text-5xl md:text-6xl font-extrabold text-white mb-4'>
+                    <h1 className='text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-4'>
                         Accessories
                     </h1>
                     <p className='text-slate-400 text-lg max-w-xl'>
@@ -95,7 +89,7 @@ export default async function AccessoriesPage() {
                                 launch!
                             </p>
                             <a
-                                href={`${waUrl}?text=Hi! Please notify me when your accessories are available.`}
+                                href='https://wa.me/2348012345678?text=Hi! Please notify me when your accessories are available.'
                                 target='_blank'
                                 rel='noopener noreferrer'
                                 className='jv-btn-green'
@@ -111,7 +105,7 @@ export default async function AccessoriesPage() {
                                     href={`/shop/${item.slug}`}
                                     className='group jv-card bg-white overflow-hidden'
                                 >
-                                    <div className='aspect-square bg-slate-50 rounded-t-3xl flex items-center justify-center text-5xl group-hover:scale-110 transition-transform duration-300'>
+                                    <div className='aspect-square bg-slate-50 rounded-t-3xl flex items-center justify-center text-4xl sm:text-5xl group-hover:scale-110 transition-transform duration-300'>
                                         🎽
                                     </div>
                                     <div className='p-5'>
@@ -144,7 +138,7 @@ export default async function AccessoriesPage() {
                         We can source any eBike accessory or spare part. Just ask us!
                     </p>
                     <a
-                        href={`${waUrl}?text=Hi! I'm looking for a specific eBike accessory.`}
+                        href="https://wa.me/2348012345678?text=Hi! I'm looking for a specific eBike accessory."
                         target='_blank'
                         rel='noopener noreferrer'
                         className='jv-btn-green'

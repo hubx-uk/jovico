@@ -1,39 +1,26 @@
 'use client'
-// components/admin/ServiceEditor.tsx
+import type { ServiceEditorData, ServiceFormState } from '@/types'
 import { Loader2, Save } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+// components/admin/ServiceEditor.tsx
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-export interface Service {
-    id: string
-    name: string
-    shortDesc: string
-    description: string
-    price: number
-    priceNote: string | null
-    duration: string | null
-    icon: string | null
-    featured: boolean
-    published: boolean
-    order: number
-}
+const ICONS = ['wrench', 'settings', 'battery', 'circle', 'zap', 'shield', 'star', 'tool']
 
 interface Props {
-    service: Service | null
+    service: ServiceEditorData | null
     mode: 'create' | 'edit'
 }
-
-const ICONS = ['wrench', 'settings', 'battery', 'circle', 'zap', 'shield', 'star', 'tool']
 
 export function ServiceEditor({ service, mode }: Props) {
     const router = useRouter()
     const [saving, setSaving] = useState(false)
-    const [form, setForm] = useState({
+    const [form, setForm] = useState<ServiceFormState>({
         name: service?.name ?? '',
         shortDesc: service?.shortDesc ?? '',
         description: service?.description ?? '',
-        price: service?.price ? String(service.price) : '',
+        price: service?.price ? String(Number(service.price)) : '',
         priceNote: service?.priceNote ?? '',
         duration: service?.duration ?? '',
         icon: service?.icon ?? 'wrench',
@@ -42,7 +29,7 @@ export function ServiceEditor({ service, mode }: Props) {
         order: service?.order ?? 0,
     })
 
-    function set(key: string, value: string | boolean | number) {
+    function setField<K extends keyof ServiceFormState>(key: K, value: ServiceFormState[K]) {
         setForm((f) => ({ ...f, [key]: value }))
     }
 
@@ -66,12 +53,15 @@ export function ServiceEditor({ service, mode }: Props) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
             })
-            if (!res.ok) throw new Error((await res.json()).error ?? 'Save failed')
+            if (!res.ok) {
+                const err: { error?: string } = await res.json()
+                throw new Error(err.error ?? 'Save failed')
+            }
             toast.success(mode === 'create' ? 'Service created!' : 'Service updated!')
             router.push('/admin/services')
             router.refresh()
-        } catch (err: any) {
-            toast.error(err.message ?? 'Something went wrong')
+        } catch (err) {
+            toast.error(err instanceof Error ? err.message : 'Something went wrong')
         } finally {
             setSaving(false)
         }
@@ -87,7 +77,7 @@ export function ServiceEditor({ service, mode }: Props) {
                     <input
                         type='text'
                         value={form.name}
-                        onChange={(e) => set('name', e.target.value)}
+                        onChange={(e) => setField('name', e.target.value)}
                         className='jv-input'
                         placeholder='e.g. Basic Tune-Up'
                     />
@@ -99,7 +89,7 @@ export function ServiceEditor({ service, mode }: Props) {
                     <input
                         type='text'
                         value={form.shortDesc}
-                        onChange={(e) => set('shortDesc', e.target.value)}
+                        onChange={(e) => setField('shortDesc', e.target.value)}
                         className='jv-input'
                         placeholder='One-line summary shown in listings'
                     />
@@ -110,10 +100,10 @@ export function ServiceEditor({ service, mode }: Props) {
                     </label>
                     <textarea
                         value={form.description}
-                        onChange={(e) => set('description', e.target.value)}
+                        onChange={(e) => setField('description', e.target.value)}
                         rows={4}
                         className='jv-input resize-none'
-                        placeholder="Detailed description of what's included..."
+                        placeholder='Detailed description of what is included...'
                     />
                 </div>
                 <div className='grid grid-cols-2 gap-4'>
@@ -124,7 +114,7 @@ export function ServiceEditor({ service, mode }: Props) {
                         <input
                             type='number'
                             value={form.price}
-                            onChange={(e) => set('price', e.target.value)}
+                            onChange={(e) => setField('price', e.target.value)}
                             className='jv-input'
                             placeholder='8500'
                             min={0}
@@ -137,7 +127,7 @@ export function ServiceEditor({ service, mode }: Props) {
                         <input
                             type='text'
                             value={form.duration}
-                            onChange={(e) => set('duration', e.target.value)}
+                            onChange={(e) => setField('duration', e.target.value)}
                             className='jv-input'
                             placeholder='e.g. 2–3 hours'
                         />
@@ -150,9 +140,9 @@ export function ServiceEditor({ service, mode }: Props) {
                     <input
                         type='text'
                         value={form.priceNote}
-                        onChange={(e) => set('priceNote', e.target.value)}
+                        onChange={(e) => setField('priceNote', e.target.value)}
                         className='jv-input'
-                        placeholder='e.g. Diagnostics fee. Replacement billed separately.'
+                        placeholder='e.g. Starting from. Quote given after diagnosis.'
                     />
                 </div>
                 <div className='grid grid-cols-2 gap-4'>
@@ -162,7 +152,7 @@ export function ServiceEditor({ service, mode }: Props) {
                         </label>
                         <select
                             value={form.icon}
-                            onChange={(e) => set('icon', e.target.value)}
+                            onChange={(e) => setField('icon', e.target.value)}
                             className='jv-input'
                         >
                             {ICONS.map((i) => (
@@ -179,25 +169,24 @@ export function ServiceEditor({ service, mode }: Props) {
                         <input
                             type='number'
                             value={form.order}
-                            onChange={(e) => set('order', Number(e.target.value))}
+                            onChange={(e) => setField('order', Number(e.target.value))}
                             className='jv-input'
                             min={0}
                         />
                     </div>
                 </div>
                 <div className='flex gap-6'>
-                    {[
-                        { key: 'published', label: 'Visible on site' },
-                        { key: 'featured', label: 'Featured service' },
-                    ].map(({ key, label }) => (
+                    {(['published', 'featured'] as const).map((key) => (
                         <label key={key} className='flex items-center gap-2 cursor-pointer'>
                             <input
                                 type='checkbox'
-                                checked={(form as any)[key]}
-                                onChange={(e) => set(key, e.target.checked)}
+                                checked={form[key]}
+                                onChange={(e) => setField(key, e.target.checked)}
                                 className='w-4 h-4 rounded accent-green-500'
                             />
-                            <span className='text-sm text-slate-700'>{label}</span>
+                            <span className='text-sm text-slate-700'>
+                                {key === 'published' ? 'Visible on site' : 'Featured service'}
+                            </span>
                         </label>
                     ))}
                 </div>

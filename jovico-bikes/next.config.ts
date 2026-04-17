@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
-      { protocol: "https", hostname: "**.jovicobikes.com" },
+      { protocol: "https", hostname: "**.jovicoworld.com" },
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "res.cloudinary.com" },
     ],
@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     serverActions: {
-      allowedOrigins: ["localhost:3000", "jovicobikes.com"],
+      allowedOrigins: ["localhost:3000", "jovicoworld.com"],
     },
   },
 };

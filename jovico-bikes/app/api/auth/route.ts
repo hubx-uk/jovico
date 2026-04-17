@@ -1,8 +1,7 @@
+import { clearSession, getSession, loginAdmin } from '@/lib/auth'
 // app/api/auth/route.ts
 import { type NextRequest, NextResponse } from 'next/server'
-import { z, ZodError } from 'zod'
-
-import { clearSession, getSession, loginAdmin } from '@/lib/auth'
+import { z } from 'zod'
 
 const loginSchema = z.object({
     email: z.string().email(),
@@ -19,8 +18,8 @@ export async function POST(req: NextRequest) {
         }
         return NextResponse.json({ success: true, user: result.session })
     } catch (err) {
-        if (err instanceof ZodError) {
-            return NextResponse.json({ error: err.issues[0].message }, { status: 400 })
+        if (err instanceof z.ZodError) {
+            return NextResponse.json({ error: err.errors[0].message }, { status: 400 })
         }
         return NextResponse.json({ error: 'Server error' }, { status: 500 })
     }

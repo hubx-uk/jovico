@@ -1,9 +1,8 @@
-import type { Metadata } from 'next'
-// app/admin/services/[id]/page.tsx
-import { notFound } from 'next/navigation'
-
-import { type Service, ServiceEditor } from '@/components/admin/ServiceEditor'
+import { ServiceEditor } from '@/components/admin/ServiceEditor'
 import { prisma } from '@/lib/prisma'
+// app/admin/services/[id]/page.tsx
+import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 
 export const metadata: Metadata = { title: 'Edit Service' }
 
@@ -13,7 +12,7 @@ export default async function EditServicePage({
     params: Promise<{ id: string }>
 }) {
     const { id } = await params
-    const service = (await prisma.service.findUnique({ where: { id } })) as unknown as Service
+    const service = await prisma.service.findUnique({ where: { id } })
     if (!service) notFound()
 
     return (

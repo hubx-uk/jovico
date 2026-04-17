@@ -1,8 +1,8 @@
-// app/api/settings/route.ts
-import { type NextRequest, NextResponse } from 'next/server'
-
 import { requireAuth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { revalidatePath } from 'next/cache'
+// app/api/settings/route.ts
+import { type NextRequest, NextResponse } from 'next/server'
 
 export async function GET() {
     const settings = await prisma.siteSetting.findMany()
@@ -22,6 +22,12 @@ export async function POST(req: NextRequest) {
                 create: { key, value: String(value) },
             })
         }
+
+        // Revalidate all public pages so settings changes appear immediately
+        revalidatePath('/', 'layout')
+        revalidatePath('/contact')
+        revalidatePath('/about')
+
         return NextResponse.json({ success: true })
     } catch (err) {
         if (err instanceof Error && err.message === 'Unauthorised') {

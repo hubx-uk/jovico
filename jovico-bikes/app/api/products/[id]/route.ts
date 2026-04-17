@@ -1,9 +1,9 @@
-// app/api/products/[id]/route.ts
-import { type NextRequest, NextResponse } from 'next/server'
-
 import { requireAuth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { createSlug } from '@/lib/utils'
+import { revalidatePath } from 'next/cache'
+// app/api/products/[id]/route.ts
+import { type NextRequest, NextResponse } from 'next/server'
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
@@ -29,6 +29,10 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
                 ...rest,
             },
         })
+
+        revalidatePath('/shop')
+        revalidatePath(`/shop/${product.slug}`)
+
         return NextResponse.json(product)
     } catch (err) {
         if (err instanceof Error && err.message === 'Unauthorised') {
@@ -42,7 +46,13 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
     try {
         await requireAuth()
         const { id } = await params
+        const product = await prisma.product.findUnique({ where: { id } })
         await prisma.product.delete({ where: { id } })
+        if (product) {
+            revalidatePath('/shop')
+            revalidatePath(`/shop/${product.slug}`)
+            revalidatePath('/accessories')
+        }
         return NextResponse.json({ success: true })
     } catch (err) {
         if (err instanceof Error && err.message === 'Unauthorised') {

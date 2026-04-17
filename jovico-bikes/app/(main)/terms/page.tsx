@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: 'Terms of Service' }
 export default function TermsPage() {
     return (
         <>
-            <section className='pt-32 pb-12 bg-slate-950'>
+            <section className='pt-28 sm:pt-32 pb-12 bg-slate-950'>
                 <div className='jv-container max-w-3xl'>
                     <h1 className='text-4xl font-extrabold text-white mb-3'>Terms of Service</h1>
                     <p className='text-slate-400'>Last updated: November 2024</p>
@@ -73,7 +73,7 @@ export default function TermsPage() {
                     <h2>9. Contact</h2>
                     <p>
                         For any questions about these terms, contact us at{' '}
-                        <a href='mailto:hello@jovicobikes.com'>hello@jovicobikes.com</a>.
+                        <a href='mailto:hello@jovicoworld.com'>hello@jovicoworld.com</a>.
                     </p>
                 </div>
             </section>

@@ -1,9 +1,8 @@
+import { prisma } from '@/lib/prisma'
+import { generateOrderNumber } from '@/lib/utils'
 // app/api/orders/route.ts
 import { type NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-
-import { prisma } from '@/lib/prisma'
-import { generateOrderNumber } from '@/lib/utils'
 
 const orderSchema = z.object({
     customerName: z.string().min(2),
@@ -70,7 +69,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(order, { status: 201 })
     } catch (err) {
         if (err instanceof z.ZodError) {
-            return NextResponse.json({ error: err.issues }, { status: 400 })
+            return NextResponse.json({ error: err.errors }, { status: 400 })
         }
         return NextResponse.json({ error: 'Server error' }, { status: 500 })
     }

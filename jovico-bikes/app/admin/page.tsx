@@ -103,7 +103,7 @@ export default async function AdminDashboard() {
     ]
 
     const statusColors: Record<string, string> = {
-        PENDING: 'bg-yellow-100 text-yellow-700',
+        PENDING: 'bg-amber-100 text-amber-700',
         PROCESSING: 'bg-blue-100 text-blue-700',
         SHIPPED: 'bg-purple-100 text-purple-700',
         DELIVERED: 'bg-green-100 text-green-700',
@@ -133,7 +133,7 @@ export default async function AdminDashboard() {
                         >
                             <stat.icon className='w-4.5 h-4.5' style={{ width: 18, height: 18 }} />
                         </div>
-                        <div className='text-2xl font-extrabold text-slate-900 leading-none mb-1'>
+                        <div className='text-xl sm:text-2xl font-extrabold text-slate-900 leading-none mb-1'>
                             {stat.value}
                         </div>
                         <div className='text-xs text-slate-500'>{stat.label}</div>
@@ -215,7 +215,7 @@ export default async function AdminDashboard() {
                             {recentMessages.map((msg) => (
                                 <Link
                                     key={msg.id}
-                                    href={`/admin/enquiries`}
+                                    href={'/admin/enquiries'}
                                     className='block px-6 py-4 hover:bg-slate-50 transition-colors'
                                 >
                                     <div className='flex items-start gap-3'>
@@ -250,6 +250,7 @@ export default async function AdminDashboard() {
             <div className='mt-6 bg-white rounded-2xl border border-slate-100 p-6'>
                 <h2 className='font-bold text-slate-900 mb-4'>Quick Actions</h2>
                 <div className='grid grid-cols-2 sm:grid-cols-4 gap-3'>
+                    {' '}
                     {[
                         { label: 'Add Product', href: '/admin/shop/new', icon: '＋ 🚴' },
                         { label: 'New Blog Post', href: '/admin/blog/new', icon: '＋ 📝' },

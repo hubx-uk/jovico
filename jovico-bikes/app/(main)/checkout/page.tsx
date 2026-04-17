@@ -110,7 +110,7 @@ export default function CheckoutPage() {
 
     return (
         <>
-            <section className='pt-32 pb-10 bg-slate-950'>
+            <section className='pt-28 sm:pt-32 pb-10 bg-slate-950'>
                 <div className='jv-container'>
                     <Link
                         href='/cart'
@@ -118,19 +118,19 @@ export default function CheckoutPage() {
                     >
                         <ArrowLeft className='w-4 h-4' /> Back to Cart
                     </Link>
-                    <h1 className='text-4xl font-extrabold text-white'>Checkout</h1>
+                    <h1 className='text-3xl sm:text-4xl font-extrabold text-white'>Checkout</h1>
                 </div>
             </section>
 
             <section className='jv-section bg-slate-50'>
                 <div className='jv-container'>
                     <form onSubmit={handleSubmit}>
-                        <div className='grid lg:grid-cols-[1fr_360px] gap-8'>
+                        <div className='grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 lg:gap-8'>
                             {/* Details */}
-                            <div className='space-y-5'>
+                            <div className='space-y-4 sm:space-y-5'>
                                 {/* Contact */}
-                                <div className='jv-card p-6 space-y-4'>
-                                    <h2 className='font-bold text-slate-900 text-lg'>
+                                <div className='jv-card p-5 sm:p-6 space-y-4'>
+                                    <h2 className='font-bold text-slate-900 text-base sm:text-lg'>
                                         Contact Information
                                     </h2>
                                     <div>
@@ -201,8 +201,8 @@ export default function CheckoutPage() {
                                 </div>
 
                                 {/* Delivery */}
-                                <div className='jv-card p-6 space-y-4'>
-                                    <h2 className='font-bold text-slate-900 text-lg'>
+                                <div className='jv-card p-5 sm:p-6 space-y-4'>
+                                    <h2 className='font-bold text-slate-900 text-base sm:text-lg'>
                                         Delivery Address
                                     </h2>
                                     <div>

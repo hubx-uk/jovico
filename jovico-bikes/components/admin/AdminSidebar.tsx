@@ -1,8 +1,8 @@
 'use client'
+import { cn } from '@/lib/utils'
 import {
     BarChart3,
     Bell,
-    Bike,
     BookOpen,
     LayoutDashboard,
     LogOut,
@@ -23,8 +23,6 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
-
-import { cn } from '@/lib/utils'
 
 const navGroups = [
     {
@@ -83,7 +81,7 @@ export function AdminSidebar() {
             {/* Logo */}
             <div className='flex items-center gap-3 px-4 py-5 border-b border-slate-100'>
                 <div className='w-9 h-9 rounded-xl bg-slate-900 flex items-center justify-center shrink-0'>
-                    <Bike className='w-5 h-5 text-white' />
+                    <Zap className='w-5 h-5 text-white' />
                 </div>
                 {!collapsed && (
                     <div>
@@ -168,7 +166,7 @@ export function AdminSidebar() {
             {/* Desktop Sidebar */}
             <aside
                 className={cn(
-                    'hidden lg:flex flex-col bg-white border-r border-slate-100 h-screen sticky top-0 transition-all duration-300',
+                    'hidden lg:flex flex-col bg-white border-r border-slate-100 h-screen sticky top-0 transition-all duration-300 relative',
                     collapsed ? 'w-16' : 'w-56'
                 )}
             >
@@ -177,6 +175,7 @@ export function AdminSidebar() {
                     type='button'
                     onClick={() => setCollapsed(!collapsed)}
                     className='absolute -right-3 top-7 w-6 h-6 rounded-full bg-white border border-slate-200 flex items-center justify-center shadow-sm hover:shadow-md z-10 transition-shadow'
+                    aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
                 >
                     <Menu className='w-3 h-3 text-slate-500' />
                 </button>

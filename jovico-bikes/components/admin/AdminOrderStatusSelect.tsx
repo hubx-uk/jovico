@@ -17,9 +17,11 @@ const colors: Record<string, string> = {
 export function AdminOrderStatusSelect({
     id,
     status,
+    fullWidth = false,
 }: {
     id: string
     status: string
+    fullWidth?: boolean
 }) {
     const [local, setLocal] = useState(status)
     const [isPending, startTransition] = useTransition()
@@ -49,7 +51,7 @@ export function AdminOrderStatusSelect({
             value={local}
             onChange={handleChange}
             disabled={isPending}
-            className={`text-xs font-semibold border rounded-xl px-2.5 py-1.5 appearance-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-slate-300 ${colors[local] ?? ''}`}
+            className={`${fullWidth ? 'w-full' : ''} text-xs font-semibold border rounded-xl px-2.5 py-1.5 appearance-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-slate-300 ${colors[local] ?? ''}`}
         >
             {STATUSES.map((s) => (
                 <option key={s} value={s}>

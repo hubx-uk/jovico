@@ -1,11 +1,13 @@
 'use client'
-// components/admin/ProductEditor.tsx
+import type { ProductEditorData, ProductFormState } from '@/types'
+import type { ProductCategory, ProductType } from '@prisma/client'
 import { Loader2, Minus, Plus, Save } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+// components/admin/ProductEditor.tsx
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-const CATEGORIES = [
+const CATEGORIES: ProductCategory[] = [
     'CITY_BIKE',
     'MOUNTAIN_BIKE',
     'CARGO_BIKE',
@@ -15,6 +17,8 @@ const CATEGORIES = [
     'PART',
     'APPAREL',
 ]
+
+const TYPES: ProductType[] = ['BIKE', 'ACCESSORY', 'PART', 'APPAREL']
 
 const SPEC_KEYS = [
     'motor',
@@ -30,36 +34,19 @@ const SPEC_KEYS = [
     'suspension',
 ]
 
-export interface Product {
-    id: string
-    name: string
-    slug: string
-    description: string
-    price: number
-    salePrice: number
-    sku: string
-    stock: number
-    category: string
-    type: string
-    brand: string | null
-    specs: Record<string, string>
-    featured: boolean
-    published: boolean
-}
-
 interface Props {
-    product: Product | null
+    product: ProductEditorData | null
     mode: 'create' | 'edit'
 }
 
 export function ProductEditor({ product, mode }: Props) {
     const router = useRouter()
     const [saving, setSaving] = useState(false)
-    const [form, setForm] = useState({
+    const [form, setForm] = useState<ProductFormState>({
         name: product?.name ?? '',
         description: product?.description ?? '',
-        price: product?.price ? String(product.price) : '',
-        salePrice: product?.salePrice ? String(product.salePrice) : '',
+        price: product?.price ? String(Number(product.price)) : '',
+        salePrice: product?.salePrice ? String(Number(product.salePrice)) : '',
         sku: product?.sku ?? '',
         stock: product?.stock ?? 0,
         category: product?.category ?? 'CITY_BIKE',
@@ -69,22 +56,28 @@ export function ProductEditor({ product, mode }: Props) {
         published: product?.published ?? true,
     })
     const [specs, setSpecs] = useState<Record<string, string>>(
-        (product?.specs as Record<string, string>) ?? {}
+        (product?.specs as Record<string, string> | null) ?? {}
     )
 
     function updateSpec(key: string, value: string) {
         setSpecs((s) => ({ ...s, [key]: value }))
     }
+
     function removeSpec(key: string) {
         setSpecs((s) => {
-            const n = { ...s }
-            delete n[key]
-            return n
+            const next = { ...s }
+            delete next[key]
+            return next
         })
     }
+
     function addSpec() {
         const key = prompt('Spec name (e.g. suspension):')
-        if (key) setSpecs((s) => ({ ...s, [key]: '' }))
+        if (key?.trim()) setSpecs((s) => ({ ...s, [key.trim()]: '' }))
+    }
+
+    function setField<K extends keyof ProductFormState>(key: K, value: ProductFormState[K]) {
+        setForm((f) => ({ ...f, [key]: value }))
     }
 
     async function handleSave() {
@@ -110,21 +103,21 @@ export function ProductEditor({ product, mode }: Props) {
                 body: JSON.stringify(payload),
             })
             if (!res.ok) {
-                const err = await res.json()
+                const err: { error?: string } = await res.json()
                 throw new Error(err.error ?? 'Save failed')
             }
             toast.success(mode === 'create' ? 'Product created!' : 'Product updated!')
             router.push('/admin/shop')
             router.refresh()
-        } catch (err: any) {
-            toast.error(err.message ?? 'Something went wrong')
+        } catch (err) {
+            toast.error(err instanceof Error ? err.message : 'Something went wrong')
         } finally {
             setSaving(false)
         }
     }
 
     return (
-        <div className='grid lg:grid-cols-[1fr_260px] gap-6'>
+        <div className='grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-5 lg:gap-6'>
             {/* Main */}
             <div className='space-y-5'>
                 {/* Basic info */}
@@ -137,7 +130,7 @@ export function ProductEditor({ product, mode }: Props) {
                         <input
                             type='text'
                             value={form.name}
-                            onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+                            onChange={(e) => setField('name', e.target.value)}
                             className='jv-input'
                             placeholder='Jovico City Cruiser Pro'
                         />
@@ -148,9 +141,7 @@ export function ProductEditor({ product, mode }: Props) {
                         </label>
                         <textarea
                             value={form.description}
-                            onChange={(e) =>
-                                setForm((f) => ({ ...f, description: e.target.value }))
-                            }
+                            onChange={(e) => setField('description', e.target.value)}
                             rows={4}
                             className='jv-input resize-none'
                             placeholder='Describe the product...'
@@ -164,7 +155,7 @@ export function ProductEditor({ product, mode }: Props) {
                             <input
                                 type='text'
                                 value={form.sku}
-                                onChange={(e) => setForm((f) => ({ ...f, sku: e.target.value }))}
+                                onChange={(e) => setField('sku', e.target.value)}
                                 className='jv-input font-mono'
                                 placeholder='JVC-CC-PRO-001'
                             />
@@ -176,7 +167,7 @@ export function ProductEditor({ product, mode }: Props) {
                             <input
                                 type='text'
                                 value={form.brand}
-                                onChange={(e) => setForm((f) => ({ ...f, brand: e.target.value }))}
+                                onChange={(e) => setField('brand', e.target.value)}
                                 className='jv-input'
                                 placeholder='Jovico'
                             />
@@ -195,7 +186,7 @@ export function ProductEditor({ product, mode }: Props) {
                             <input
                                 type='number'
                                 value={form.price}
-                                onChange={(e) => setForm((f) => ({ ...f, price: e.target.value }))}
+                                onChange={(e) => setField('price', e.target.value)}
                                 className='jv-input'
                                 placeholder='485000'
                                 min={0}
@@ -208,9 +199,7 @@ export function ProductEditor({ product, mode }: Props) {
                             <input
                                 type='number'
                                 value={form.salePrice}
-                                onChange={(e) =>
-                                    setForm((f) => ({ ...f, salePrice: e.target.value }))
-                                }
+                                onChange={(e) => setField('salePrice', e.target.value)}
                                 className='jv-input'
                                 placeholder='Optional'
                                 min={0}
@@ -223,9 +212,7 @@ export function ProductEditor({ product, mode }: Props) {
                             <input
                                 type='number'
                                 value={form.stock}
-                                onChange={(e) =>
-                                    setForm((f) => ({ ...f, stock: Number(e.target.value) }))
-                                }
+                                onChange={(e) => setField('stock', Number(e.target.value))}
                                 className='jv-input'
                                 min={0}
                             />
@@ -256,7 +243,7 @@ export function ProductEditor({ product, mode }: Props) {
                                     value={specs[key] ?? ''}
                                     onChange={(e) => updateSpec(key, e.target.value)}
                                     className='jv-input flex-1 text-sm'
-                                    placeholder={`e.g. ${key === 'motor' ? '500W Hub Motor' : '...'}`}
+                                    placeholder={key === 'motor' ? '500W Hub Motor' : '—'}
                                 />
                             </div>
                         ))}
@@ -276,7 +263,7 @@ export function ProductEditor({ product, mode }: Props) {
                                     <button
                                         type='button'
                                         onClick={() => removeSpec(key)}
-                                        className='p-2 text-red-400 hover:text-red-600'
+                                        className='p-2 text-red-400 hover:text-red-600 transition-colors'
                                     >
                                         <Minus className='w-3.5 h-3.5' />
                                     </button>
@@ -308,20 +295,19 @@ export function ProductEditor({ product, mode }: Props) {
             <div className='space-y-5'>
                 <div className='bg-white rounded-2xl border border-slate-100 p-5 space-y-4'>
                     <h3 className='font-bold text-slate-900 text-sm'>Settings</h3>
-                    {[
-                        { key: 'published', label: 'Published (visible on site)' },
-                        { key: 'featured', label: 'Featured product' },
-                    ].map(({ key, label }) => (
+                    {(['published', 'featured'] as const).map((key) => (
                         <label key={key} className='flex items-center gap-3 cursor-pointer'>
                             <input
                                 type='checkbox'
-                                checked={(form as any)[key]}
-                                onChange={(e) =>
-                                    setForm((f) => ({ ...f, [key]: e.target.checked }))
-                                }
+                                checked={form[key]}
+                                onChange={(e) => setField(key, e.target.checked)}
                                 className='w-4 h-4 rounded accent-green-500'
                             />
-                            <span className='text-sm text-slate-700'>{label}</span>
+                            <span className='text-sm text-slate-700'>
+                                {key === 'published'
+                                    ? 'Published (visible on site)'
+                                    : 'Featured product'}
+                            </span>
                         </label>
                     ))}
                 </div>
@@ -330,7 +316,7 @@ export function ProductEditor({ product, mode }: Props) {
                     <h3 className='font-bold text-slate-900 text-sm mb-3'>Category</h3>
                     <select
                         value={form.category}
-                        onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}
+                        onChange={(e) => setField('category', e.target.value as ProductCategory)}
                         className='jv-input text-sm'
                     >
                         {CATEGORIES.map((c) => (
@@ -345,10 +331,10 @@ export function ProductEditor({ product, mode }: Props) {
                     <h3 className='font-bold text-slate-900 text-sm mb-3'>Type</h3>
                     <select
                         value={form.type}
-                        onChange={(e) => setForm((f) => ({ ...f, type: e.target.value }))}
+                        onChange={(e) => setField('type', e.target.value as ProductType)}
                         className='jv-input text-sm'
                     >
-                        {['BIKE', 'ACCESSORY', 'PART', 'APPAREL'].map((t) => (
+                        {TYPES.map((t) => (
                             <option key={t} value={t}>
                                 {t}
                             </option>

@@ -1,9 +1,8 @@
-// app/admin/bookings/page.tsx
-import type { Metadata } from 'next'
-
 import { AdminBookingStatus } from '@/components/admin/AdminBookingStatus'
 import { prisma } from '@/lib/prisma'
 import { formatDate } from '@/lib/utils'
+// app/admin/bookings/page.tsx
+import type { Metadata } from 'next'
 
 export const metadata: Metadata = { title: 'Bookings' }
 
@@ -14,7 +13,7 @@ export default async function AdminBookingsPage() {
     })
 
     const statusColors: Record<string, string> = {
-        PENDING: 'bg-yellow-100 text-yellow-700',
+        PENDING: 'bg-amber-100 text-amber-700',
         CONFIRMED: 'bg-blue-100 text-blue-700',
         COMPLETED: 'bg-green-100 text-green-700',
         CANCELLED: 'bg-red-100 text-red-700',
@@ -45,7 +44,9 @@ export default async function AdminBookingsPage() {
                             >
                                 {status}
                             </div>
-                            <div className='text-3xl font-extrabold text-slate-900'>{count}</div>
+                            <div className='text-2xl sm:text-3xl font-extrabold text-slate-900'>
+                                {count}
+                            </div>
                         </div>
                     )
                 })}
@@ -58,7 +59,7 @@ export default async function AdminBookingsPage() {
                         <p>No bookings yet</p>
                     </div>
                 ) : (
-                    <div className='overflow-x-auto'>
+                    <div className='overflow-x-auto -mx-4 sm:mx-0'>
                         <table className='w-full text-sm'>
                             <thead>
                                 <tr className='border-b border-slate-100 bg-slate-50'>
@@ -71,7 +72,7 @@ export default async function AdminBookingsPage() {
                                     <th className='text-left px-4 py-3.5 font-semibold text-slate-600'>
                                         Date
                                     </th>
-                                    <th className='text-left px-4 py-3.5 font-semibold text-slate-600'>
+                                    <th className='text-left px-4 py-3.5 font-semibold text-slate-600 hidden lg:table-cell'>
                                         Notes
                                     </th>
                                     <th className='text-left px-4 py-3.5 font-semibold text-slate-600'>
@@ -102,7 +103,7 @@ export default async function AdminBookingsPage() {
                                         <td className='px-4 py-4 text-slate-600 whitespace-nowrap'>
                                             {formatDate(booking.date)}
                                         </td>
-                                        <td className='px-4 py-4 text-slate-500 max-w-xs'>
+                                        <td className='hidden lg:table-cell px-4 py-4 text-slate-500 max-w-xs'>
                                             <p className='text-xs line-clamp-2'>
                                                 {booking.notes || '—'}
                                             </p>

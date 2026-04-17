@@ -1,14 +1,15 @@
-// app/admin/shop/page.tsx
-import { Eye, Package, Pencil, Plus } from 'lucide-react'
-import type { Metadata } from 'next'
-import Link from 'next/link'
-
 import { AdminDeletePost } from '@/components/admin/AdminDeletePost'
 import { AdminToggleProduct } from '@/components/admin/AdminToggleProduct'
 import { prisma } from '@/lib/prisma'
 import { formatNaira } from '@/lib/utils'
+import { Eye, Package, Pencil, Plus } from 'lucide-react'
+// app/admin/shop/page.tsx
+import type { Metadata } from 'next'
+import Link from 'next/link'
 
 export const metadata: Metadata = { title: 'Products' }
+
+export const dynamic = 'force-dynamic' // always fresh
 
 export default async function AdminShopPage() {
     const products = await prisma.product.findMany({
@@ -18,7 +19,7 @@ export default async function AdminShopPage() {
 
     return (
         <div className='max-w-7xl mx-auto'>
-            <div className='flex items-center justify-between mb-8'>
+            <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8'>
                 <div>
                     <h1 className='text-2xl font-extrabold text-slate-900'>Products</h1>
                     <p className='text-slate-500 text-sm mt-0.5'>
@@ -43,7 +44,7 @@ export default async function AdminShopPage() {
                         </Link>
                     </div>
                 ) : (
-                    <div className='overflow-x-auto'>
+                    <div className='overflow-x-auto -mx-4 sm:mx-0'>
                         <table className='w-full text-sm'>
                             <thead>
                                 <tr className='border-b border-slate-100 bg-slate-50'>

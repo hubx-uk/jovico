@@ -1,14 +1,13 @@
-// app/main/shop/[slug]/page.tsx
-import { ChevronRight, Clock, MessageCircle, Shield, Star, Zap } from 'lucide-react'
-import { notFound } from 'next/navigation'
-import type { Metadata } from 'next'
-import Link from 'next/link'
-
+import { AddToCartButton } from '@/components/shop/AddToCartButton'
+import { EnquireButton } from '@/components/shop/EnquireButton'
+import { ProductImageSlider } from '@/components/shop/ProductImageSlider'
 import { prisma } from '@/lib/prisma'
 import { formatNaira } from '@/lib/utils'
-import { getContactSettings } from '../../contact/page'
-import { EnquireButton } from '@/components/shop/EnquireButton'
-import { AddToCartButton } from '@/components/shop/AddToCartButton'
+import { ChevronRight, Clock, MessageCircle, Shield, Star, Zap } from 'lucide-react'
+// app/(main)/shop/[slug]/page.tsx
+import type { Metadata } from 'next'
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
 
 export async function generateStaticParams() {
     const products = await prisma.product.findMany({ select: { slug: true } })
@@ -23,10 +22,7 @@ export async function generateMetadata({
     const { slug } = await params
     const product = await prisma.product.findUnique({ where: { slug } })
     if (!product) return {}
-    return {
-        title: product.name,
-        description: product.description,
-    }
+    return { title: product.name, description: product.description }
 }
 
 export default async function ProductPage({
@@ -37,44 +33,39 @@ export default async function ProductPage({
     const { slug } = await params
     const product = await prisma.product.findUnique({
         where: { slug, published: true },
-        include: { images: true },
+        include: {
+            images: { orderBy: [{ isPrimary: 'desc' }, { id: 'asc' }] },
+        },
     })
 
     if (!product) notFound()
 
     const related = await prisma.product.findMany({
-        where: {
-            category: product.category,
-            NOT: { id: product.id },
-            published: true,
-        },
+        where: { category: product.category, NOT: { id: product.id }, published: true },
         include: { images: { where: { isPrimary: true }, take: 1 } },
         take: 3,
     })
 
     const specs = product.specs as Record<string, string> | null
 
-    const s = await getContactSettings()
-    const waNumber = s.whatsapp.replace(/\D/g, '')
-    const waUrl = `https://wa.me/${waNumber}`
-
     return (
         <>
             {/* Breadcrumb */}
-            <div className='pt-24 pb-4 bg-white border-b border-slate-100'>
+            <div className='pt-24 sm:pt-28 pb-3 bg-white border-b border-slate-100'>
                 <div className='jv-container'>
-                    <nav className='flex items-center gap-2 text-sm text-slate-500'>
-                        <Link href='/' className='hover:text-slate-900 transition-colors'>
+                    <nav className='flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 overflow-x-auto whitespace-nowrap pb-1'>
+                        <Link href='/' className='hover:text-slate-900 transition-colors shrink-0'>
                             Home
                         </Link>
-                        <ChevronRight className='w-3.5 h-3.5' />
-                        <Link href='/shop' className='hover:text-slate-900 transition-colors'>
+                        <ChevronRight className='w-3 h-3 shrink-0' />
+                        <Link
+                            href='/shop'
+                            className='hover:text-slate-900 transition-colors shrink-0'
+                        >
                             Shop
                         </Link>
-                        <ChevronRight className='w-3.5 h-3.5' />
-                        <span className='text-slate-900 font-medium truncate max-w-48'>
-                            {product.name}
-                        </span>
+                        <ChevronRight className='w-3 h-3 shrink-0' />
+                        <span className='text-slate-900 font-medium truncate'>{product.name}</span>
                     </nav>
                 </div>
             </div>
@@ -82,32 +73,22 @@ export default async function ProductPage({
             {/* Product Detail */}
             <section className='jv-section bg-white'>
                 <div className='jv-container'>
-                    <div className='grid lg:grid-cols-2 gap-12 xl:gap-16'>
-                        {/* Left: Images */}
-                        <div>
-                            {/* Main image */}
-                            <div className='aspect-square rounded-3xl bg-slate-50 border border-slate-100 flex items-center justify-center text-[10rem] mb-4 overflow-hidden'>
-                                🚴
-                            </div>
-                            {/* Thumbnails */}
-                            {product.images.length > 1 && (
-                                <div className='grid grid-cols-4 gap-3'>
-                                    {product.images.map((img, i) => (
-                                        <div
-                                            key={img.id}
-                                            className='aspect-square rounded-2xl bg-slate-50 border-2 border-slate-200 flex items-center justify-center text-3xl cursor-pointer hover:border-slate-900 transition-colors'
-                                        >
-                                            🚴
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
+                    <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 xl:gap-14'>
+                        {/* Image Slider */}
+                        <ProductImageSlider
+                            images={product.images.map((img) => ({
+                                id: img.id,
+                                url: img.url,
+                                alt: img.alt,
+                                isPrimary: img.isPrimary,
+                            }))}
+                            productName={product.name}
+                        />
 
-                        {/* Right: Info */}
+                        {/* Info */}
                         <div className='flex flex-col'>
-                            {/* Category + badges */}
-                            <div className='flex items-center gap-2 mb-3'>
+                            {/* Badges */}
+                            <div className='flex flex-wrap items-center gap-2 mb-3'>
                                 <span className='jv-badge bg-slate-100 text-slate-600 text-xs uppercase tracking-wider'>
                                     {product.category.replace(/_/g, ' ')}
                                 </span>
@@ -118,12 +99,12 @@ export default async function ProductPage({
                                 )}
                             </div>
 
-                            <h1 className='text-3xl md:text-4xl font-extrabold text-slate-900 mb-3 leading-tight'>
+                            <h1 className='text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 mb-3 leading-tight'>
                                 {product.name}
                             </h1>
 
                             {/* Rating */}
-                            <div className='flex items-center gap-2 mb-5'>
+                            <div className='flex items-center gap-2 mb-4 sm:mb-5'>
                                 <div className='flex'>
                                     {[1, 2, 3, 4, 5].map((s) => (
                                         <Star
@@ -137,18 +118,18 @@ export default async function ProductPage({
 
                             {/* Price */}
                             <div className='flex items-end gap-3 mb-2'>
-                                <span className='text-4xl font-extrabold text-slate-900'>
+                                <span className='text-3xl sm:text-4xl font-extrabold text-slate-900'>
                                     {formatNaira(Number(product.price))}
                                 </span>
                                 {product.salePrice && (
-                                    <span className='text-lg text-slate-400 line-through mb-1'>
+                                    <span className='text-base sm:text-lg text-slate-400 line-through mb-1'>
                                         {formatNaira(Number(product.salePrice))}
                                     </span>
                                 )}
                             </div>
 
                             {/* Stock */}
-                            <div className='flex items-center gap-2 mb-6'>
+                            <div className='flex items-center gap-2 mb-5'>
                                 {product.stock > 0 ? (
                                     <>
                                         <div className='w-2 h-2 rounded-full bg-green-500' />
@@ -168,12 +149,12 @@ export default async function ProductPage({
                                 )}
                             </div>
 
-                            <p className='text-slate-600 leading-relaxed mb-8'>
+                            <p className='text-slate-600 leading-relaxed mb-6 sm:mb-8 text-sm sm:text-base'>
                                 {product.description}
                             </p>
 
                             {/* Actions */}
-                            <div className='flex flex-col sm:flex-row gap-3 mb-8'>
+                            <div className='flex flex-col sm:flex-row gap-3 mb-6 sm:mb-8'>
                                 <AddToCartButton
                                     product={{
                                         id: product.id,
@@ -186,7 +167,7 @@ export default async function ProductPage({
                             </div>
 
                             {/* Trust signals */}
-                            <div className='grid grid-cols-3 gap-3 mb-8'>
+                            <div className='grid grid-cols-3 gap-2 sm:gap-3 mb-6 sm:mb-8'>
                                 {[
                                     { icon: Shield, label: '1 Year Warranty' },
                                     { icon: Zap, label: 'Premium Parts' },
@@ -194,29 +175,29 @@ export default async function ProductPage({
                                 ].map((t) => (
                                     <div
                                         key={t.label}
-                                        className='flex flex-col items-center gap-1.5 p-4 rounded-2xl bg-slate-50 text-center'
+                                        className='flex flex-col items-center gap-1.5 p-3 sm:p-4 rounded-2xl bg-slate-50 text-center'
                                     >
-                                        <t.icon className='w-5 h-5 text-slate-700' />
-                                        <span className='text-xs font-medium text-slate-700'>
+                                        <t.icon className='w-4 h-4 sm:w-5 sm:h-5 text-slate-700' />
+                                        <span className='text-[10px] sm:text-xs font-medium text-slate-700 leading-tight'>
                                             {t.label}
                                         </span>
                                     </div>
                                 ))}
                             </div>
 
-                            {/* Contact */}
-                            <div className='flex items-center gap-4 p-4 rounded-2xl bg-green-50 border border-green-100'>
+                            {/* WhatsApp CTA */}
+                            <div className='flex items-center gap-3 p-4 rounded-2xl bg-green-50 border border-green-100'>
                                 <MessageCircle className='w-5 h-5 text-green-600 shrink-0' />
-                                <div className='flex-1 text-sm text-green-800'>
+                                <div className='flex-1 text-xs sm:text-sm text-green-800'>
                                     Need help? Chat with our eBike experts on WhatsApp
                                 </div>
                                 <a
-                                    href={`${waUrl}?text=Hi! I'm interested in the ${product.name}`}
+                                    href={`https://wa.me/2348012345678?text=Hi! I'm interested in the ${product.name}`}
                                     target='_blank'
                                     rel='noopener noreferrer'
-                                    className='text-sm font-bold text-green-700 hover:text-green-900 whitespace-nowrap'
+                                    className='text-xs sm:text-sm font-bold text-green-700 hover:text-green-900 whitespace-nowrap shrink-0'
                                 >
-                                    Chat Now →
+                                    Chat →
                                 </a>
                             </div>
                         </div>
@@ -224,11 +205,11 @@ export default async function ProductPage({
 
                     {/* Specs Table */}
                     {specs && Object.keys(specs).length > 0 && (
-                        <div className='mt-16'>
-                            <h2 className='text-2xl font-extrabold text-slate-900 mb-6'>
+                        <div className='mt-12 sm:mt-16'>
+                            <h2 className='text-xl sm:text-2xl font-extrabold text-slate-900 mb-5 sm:mb-6'>
                                 Technical Specifications
                             </h2>
-                            <div className='rounded-3xl border border-slate-100 overflow-hidden'>
+                            <div className='rounded-2xl sm:rounded-3xl border border-slate-100 overflow-hidden'>
                                 <table className='w-full text-sm'>
                                     <tbody>
                                         {Object.entries(specs).map(([key, value], i) => (
@@ -236,10 +217,10 @@ export default async function ProductPage({
                                                 key={key}
                                                 className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}
                                             >
-                                                <td className='px-6 py-4 font-semibold text-slate-700 capitalize w-40'>
+                                                <td className='px-4 sm:px-6 py-3 sm:py-4 font-semibold text-slate-700 capitalize w-32 sm:w-40 text-xs sm:text-sm'>
                                                     {key.replace(/([A-Z])/g, ' $1').trim()}
                                                 </td>
-                                                <td className='px-6 py-4 text-slate-600'>
+                                                <td className='px-4 sm:px-6 py-3 sm:py-4 text-slate-600 text-xs sm:text-sm'>
                                                     {value}
                                                 </td>
                                             </tr>
@@ -256,27 +237,39 @@ export default async function ProductPage({
             {related.length > 0 && (
                 <section className='jv-section bg-slate-50'>
                     <div className='jv-container'>
-                        <h2 className='text-2xl font-extrabold text-slate-900 mb-8'>
+                        <h2 className='text-xl sm:text-2xl font-extrabold text-slate-900 mb-6 sm:mb-8'>
                             You Might Also Like
                         </h2>
-                        <div className='grid grid-cols-1 sm:grid-cols-3 gap-6'>
+                        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5'>
                             {related.map((p) => (
                                 <Link
                                     key={p.id}
                                     href={`/shop/${p.slug}`}
                                     className='group jv-card bg-white overflow-hidden'
                                 >
-                                    <div className='aspect-[4/3] bg-slate-50 rounded-t-3xl flex items-center justify-center text-6xl group-hover:scale-110 transition-transform duration-300'>
-                                        🚴
+                                    <div className='aspect-[4/3] bg-slate-50 rounded-t-3xl overflow-hidden'>
+                                        {p.images[0]?.url &&
+                                        (p.images[0].url.startsWith('http') ||
+                                            p.images[0].url.startsWith('/')) ? (
+                                            <img
+                                                src={p.images[0].url}
+                                                alt={p.images[0].alt ?? p.name}
+                                                className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-500'
+                                            />
+                                        ) : (
+                                            <div className='w-full h-full flex items-center justify-center text-5xl sm:text-6xl group-hover:scale-110 transition-transform duration-300'>
+                                                🚴
+                                            </div>
+                                        )}
                                     </div>
-                                    <div className='p-5'>
+                                    <div className='p-4 sm:p-5'>
                                         <p className='text-xs text-slate-400 mb-1'>
                                             {p.category.replace(/_/g, ' ')}
                                         </p>
-                                        <h3 className='font-bold text-slate-900 group-hover:text-green-600 transition-colors mb-2'>
+                                        <h3 className='font-bold text-slate-900 group-hover:text-green-600 transition-colors mb-2 text-sm sm:text-base'>
                                             {p.name}
                                         </h3>
-                                        <span className='font-extrabold text-slate-900'>
+                                        <span className='font-extrabold text-slate-900 text-sm sm:text-base'>
                                             {formatNaira(Number(p.price))}
                                         </span>
                                     </div>

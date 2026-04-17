@@ -1,11 +1,10 @@
-// app/api/products/route.ts
-import { type NextRequest, NextResponse } from 'next/server'
-import { z } from 'zod'
-
 import { requireAuth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { createSlug } from '@/lib/utils'
-import { ProductCategory, ProductType } from '@/prisma/generated/prisma/enums'
+import type { ProductCategory, ProductType } from '@prisma/client'
+// app/api/products/route.ts
+import { type NextRequest, NextResponse } from 'next/server'
+import { z } from 'zod'
 
 const productSchema = z.object({
     name: z.string().min(2),
@@ -17,7 +16,7 @@ const productSchema = z.object({
     category: z.string(),
     type: z.string().default('BIKE'),
     brand: z.string().optional(),
-    specs: z.record(z.string(), z.string()).optional(),
+    specs: z.record(z.string()).optional(),
     featured: z.boolean().default(false),
     published: z.boolean().default(true),
 })
@@ -29,7 +28,7 @@ export async function GET(req: NextRequest) {
 
     const products = await prisma.product.findMany({
         where: {
-            ...(category ? { category: category as unknown as ProductCategory } : {}),
+            ...(category ? { category: category as ProductCategory } : {}),
             ...(published !== null ? { published: published === 'true' } : {}),
         },
         include: { images: { where: { isPrimary: true }, take: 1 } },
@@ -59,7 +58,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(product, { status: 201 })
     } catch (err) {
         if (err instanceof z.ZodError) {
-            return NextResponse.json({ error: err.issues }, { status: 400 })
+            return NextResponse.json({ error: err.errors }, { status: 400 })
         }
         if (err instanceof Error && err.message === 'Unauthorised') {
             return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })

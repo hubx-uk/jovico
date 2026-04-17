@@ -1,9 +1,8 @@
+import { prisma } from '@/lib/prisma'
+import { formatDate } from '@/lib/utils'
 import { Download } from 'lucide-react'
 // app/admin/subscribers/page.tsx
 import type { Metadata } from 'next'
-
-import { prisma } from '@/lib/prisma'
-import { formatDate } from '@/lib/utils'
 
 export const metadata: Metadata = { title: 'Subscribers' }
 
@@ -15,7 +14,7 @@ export default async function AdminSubscribersPage() {
 
     return (
         <div className='max-w-4xl mx-auto'>
-            <div className='flex items-center justify-between mb-8'>
+            <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8'>
                 <div>
                     <h1 className='text-2xl font-extrabold text-slate-900'>
                         Newsletter Subscribers
@@ -39,7 +38,7 @@ export default async function AdminSubscribersPage() {
                         <p>No subscribers yet</p>
                     </div>
                 ) : (
-                    <div className='overflow-x-auto'>
+                    <div className='overflow-x-auto -mx-4 sm:mx-0'>
                         <table className='w-full text-sm'>
                             <thead>
                                 <tr className='border-b border-slate-100 bg-slate-50'>

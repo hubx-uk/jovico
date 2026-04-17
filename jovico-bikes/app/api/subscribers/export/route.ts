@@ -1,8 +1,7 @@
-// app/api/subscribers/export/route.ts
-import { NextResponse } from 'next/server'
-
 import { requireAuth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+// app/api/subscribers/export/route.ts
+import { NextResponse } from 'next/server'
 
 export async function GET() {
     try {

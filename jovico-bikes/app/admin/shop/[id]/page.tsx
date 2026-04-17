@@ -1,9 +1,10 @@
-import type { Metadata } from 'next'
-// app/admin/shop/[id]/page.tsx
-import { notFound } from 'next/navigation'
-
-import { Product, ProductEditor } from '@/components/admin/ProductEditor'
+import { ProductEditor } from '@/components/admin/ProductEditor'
+import { ProductImageManager } from '@/components/admin/ProductImageManager'
 import { prisma } from '@/lib/prisma'
+import type { ProductEditorData } from '@/types'
+// app/admin/shop/[id]/page.tsx
+import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 
 export const metadata: Metadata = { title: 'Edit Product' }
 
@@ -13,16 +14,29 @@ export default async function EditProductPage({
     params: Promise<{ id: string }>
 }) {
     const { id } = await params
-    const product = await prisma.product.findUnique({
+    const product = (await prisma.product.findUnique({
         where: { id },
-        include: { images: true },
-    }) as unknown as Product
+        include: { images: { orderBy: [{ isPrimary: 'desc' }, { id: 'asc' }] } },
+    })) as ProductEditorData
     if (!product) notFound()
 
     return (
         <div className='max-w-4xl mx-auto'>
-            <h1 className='text-2xl font-extrabold text-slate-900 mb-8'>Edit Product</h1>
-            <ProductEditor product={product} mode='edit' />
+            <h1 className='text-xl sm:text-2xl font-extrabold text-slate-900 mb-6 sm:mb-8'>
+                Edit Product
+            </h1>
+            <div className='space-y-6'>
+                <ProductEditor product={product} mode='edit' />
+                <ProductImageManager
+                    productId={product.id}
+                    initialImages={product.images.map((img) => ({
+                        id: img.id,
+                        url: img.url,
+                        alt: img.alt,
+                        isPrimary: img.isPrimary,
+                    }))}
+                />
+            </div>
         </div>
     )
 }

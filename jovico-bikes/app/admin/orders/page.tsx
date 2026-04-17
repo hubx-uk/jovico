@@ -1,8 +1,10 @@
 import { AdminOrderStatusSelect } from '@/components/admin/AdminOrderStatusSelect'
 import { prisma } from '@/lib/prisma'
 import { formatDate, formatNaira } from '@/lib/utils'
+import { ExternalLink } from 'lucide-react'
 // app/admin/orders/page.tsx
 import type { Metadata } from 'next'
+import Link from 'next/link'
 
 export const metadata: Metadata = { title: 'Orders' }
 
@@ -14,8 +16,8 @@ export default async function AdminOrdersPage() {
         },
     })
 
-    const statColors: Record<string, string> = {
-        PENDING: 'bg-yellow-100 text-yellow-700',
+    const _statColors: Record<string, string> = {
+        PENDING: 'bg-amber-100 text-amber-700',
         PROCESSING: 'bg-blue-100 text-blue-700',
         SHIPPED: 'bg-purple-100 text-purple-700',
         DELIVERED: 'bg-green-100 text-green-700',
@@ -44,7 +46,7 @@ export default async function AdminOrdersPage() {
                         </p>
                     </div>
                 ) : (
-                    <div className='overflow-x-auto'>
+                    <div className='overflow-x-auto -mx-4 sm:mx-0'>
                         <table className='w-full text-sm'>
                             <thead>
                                 <tr className='border-b border-slate-100 bg-slate-50'>
@@ -54,7 +56,7 @@ export default async function AdminOrdersPage() {
                                     <th className='text-left px-4 py-3.5 font-semibold text-slate-600'>
                                         Customer
                                     </th>
-                                    <th className='text-left px-4 py-3.5 font-semibold text-slate-600'>
+                                    <th className='text-left px-4 py-3.5 font-semibold text-slate-600 hidden sm:table-cell'>
                                         Items
                                     </th>
                                     <th className='text-right px-4 py-3.5 font-semibold text-slate-600'>
@@ -66,9 +68,10 @@ export default async function AdminOrdersPage() {
                                     <th className='text-left px-4 py-3.5 font-semibold text-slate-600'>
                                         Status
                                     </th>
-                                    <th className='text-left px-4 py-3.5 font-semibold text-slate-600'>
+                                    <th className='text-left px-4 py-3.5 font-semibold text-slate-600 hidden md:table-cell'>
                                         Date
                                     </th>
+                                    <th className='text-right px-4 lg:px-6 py-3.5 font-semibold text-slate-600' />
                                 </tr>
                             </thead>
                             <tbody className='divide-y divide-slate-50'>
@@ -110,8 +113,16 @@ export default async function AdminOrdersPage() {
                                                 status={order.status}
                                             />
                                         </td>
-                                        <td className='px-4 py-4 text-slate-500 text-xs whitespace-nowrap'>
+                                        <td className='hidden md:table-cell px-4 py-4 text-slate-500 text-xs whitespace-nowrap'>
                                             {formatDate(order.createdAt)}
+                                        </td>
+                                        <td className='px-4 lg:px-6 py-4 text-right'>
+                                            <Link
+                                                href={`/admin/orders/${order.id}`}
+                                                className='inline-flex items-center gap-1 text-xs font-semibold text-slate-400 hover:text-green-600 transition-colors whitespace-nowrap'
+                                            >
+                                                View <ExternalLink className='w-3 h-3' />
+                                            </Link>
                                         </td>
                                     </tr>
                                 ))}
