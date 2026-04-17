@@ -1,7 +1,9 @@
 // app/(main)/account/login/page.tsx
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import Link from 'next/link'
 import { Zap } from 'lucide-react'
+
 import { CustomerLoginForm } from '@/components/account/CustomerLoginForm'
 
 export const metadata: Metadata = {
@@ -30,7 +32,9 @@ export default function AccountLoginPage() {
                 </div>
 
                 <div className='bg-white rounded-3xl border border-slate-100 shadow-sm p-7'>
-                    <CustomerLoginForm mode='login' />
+                    <Suspense fallback={<div className='text-slate-500'>Loading...</div>}>
+                        <CustomerLoginForm mode='login' />
+                    </Suspense>
                 </div>
 
                 <p className='text-center text-slate-500 text-sm mt-5'>

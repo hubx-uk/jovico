@@ -14,6 +14,8 @@ export const metadata: Metadata = {
         'Browse the full Jovico Bikes collection. City bikes, mountain bikes, cargo bikes and folding bikes — all built for Lagos.',
 }
 
+export const dynamic = 'force-dynamic' // always fresh
+
 export default async function ShopPage({
     searchParams,
 }: {

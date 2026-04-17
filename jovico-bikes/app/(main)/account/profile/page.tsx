@@ -7,6 +7,8 @@ import { ProfileForm } from '@/components/account/ProfileForm'
 
 export const metadata: Metadata = { title: 'My Profile' }
 
+export const dynamic = 'force-dynamic' // always fresh
+
 export default async function AccountProfilePage() {
     const session = await getCustomerSession()
     if (!session) redirect('/account/login')

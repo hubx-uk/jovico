@@ -9,6 +9,8 @@ import { ArrowRight, Package } from 'lucide-react'
 
 export const metadata: Metadata = { title: 'My Orders' }
 
+export const dynamic = 'force-dynamic' // always fresh
+
 export default async function AccountOrdersPage() {
     const session = await getCustomerSession()
     if (!session) redirect('/account/login')

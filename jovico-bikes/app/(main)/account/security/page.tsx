@@ -8,6 +8,8 @@ import { ShieldCheck, AlertTriangle } from 'lucide-react'
 
 export const metadata: Metadata = { title: 'Password & Security' }
 
+export const dynamic = 'force-dynamic' // always fresh
+
 export default async function AccountSecurityPage() {
     const session = await getCustomerSession()
     if (!session) redirect('/account/login')

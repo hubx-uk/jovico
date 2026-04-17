@@ -9,6 +9,8 @@ import { redirect } from 'next/navigation'
 
 export const metadata: Metadata = { title: 'My Account' }
 
+export const dynamic = 'force-dynamic' // always fresh
+
 export default async function AccountDashboardPage() {
     const session = await getCustomerSession()
     if (!session) redirect('/account/login')
