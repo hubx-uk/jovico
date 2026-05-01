@@ -2,6 +2,7 @@
 // components/layout/Footer.tsx
 import { useState } from 'react'
 import { toast } from 'sonner'
+import Image from 'next/image'
 import Link from 'next/link'
 import {
     Bike,
@@ -16,7 +17,6 @@ import {
 } from 'lucide-react'
 
 import { useSiteSettings } from './SiteSettingsProvider'
-import Image from 'next/image'
 
 const shopLinks = [
     { label: 'City Bikes', href: '/shop?category=city_bike' },
@@ -120,7 +120,12 @@ export function Footer() {
                         <Link href='/' className='flex items-center gap-2 mb-5 group w-fit'>
                             <div className='w-9 h-9 rounded-xl bg-slate-800 flex items-center justify-center group-hover:bg-green-500 transition-colors'>
                                 {/* <Bike className='w-5 h-5 text-white' /> */}
-                                <Image src={'/images/logo_sq.png'} alt='Jovico Logo' width={20} height={20} />
+                                <Image
+                                    src={'/images/logo_sq.png'}
+                                    alt='Jovico Logo'
+                                    width={20}
+                                    height={20}
+                                />
                             </div>
                             <span className='font-bold text-white text-lg tracking-tight'>
                                 Jovico<span className='text-green-500'>.</span>

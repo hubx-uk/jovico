@@ -2,24 +2,14 @@
 // Centralised concrete types for the Jovico Bikes app
 // All Prisma model shapes used in components are defined here so we never need `any`
 
+import type { Order, OrderItem, ProductImage } from '@/prisma/generated/prisma/client'
 import type {
-    Product,
-    ProductImage,
+    AdminRole,
+    PostCategory,
     ProductCategory,
     ProductType,
-    Service,
-    Post,
-    PostCategory,
-    Order,
-    OrderItem,
-    OrderStatus,
-    PaymentStatus,
-    Booking,
-    BookingStatus,
-    ContactMessage,
-    AdminRole,
-} from '@prisma/client'
-import type { Decimal } from '@prisma/client/runtime/library'
+} from '@/prisma/generated/prisma/enums'
+import type { Decimal } from '@prisma/client/runtime/client'
 
 // ─── Cart ──────────────────────────────────────────────────
 export interface CartItem {

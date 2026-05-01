@@ -95,7 +95,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
         return NextResponse.json(customer)
     } catch (err) {
         if (err instanceof z.ZodError) {
-            return NextResponse.json({ error: err.errors[0].message }, { status: 400 })
+            return NextResponse.json({ error: err.issues[0].message }, { status: 400 })
         }
         if (err instanceof Error && err.message === 'Unauthorised') {
             return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })

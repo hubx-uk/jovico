@@ -12,29 +12,29 @@ datasource db {
 
 // ─── Customers ────────────────────────────────────────────
 model Customer {
-  id          String    @id @default(cuid())
-  name        String
-  email       String    @unique
-  password    String
-  phone       String?
-  address     String?
-  orders      Order[]
-  deletedAt   DateTime?           // soft delete
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id        String    @id @default(cuid())
+  name      String
+  email     String    @unique
+  password  String
+  phone     String?
+  address   String?
+  orders    Order[]
+  deletedAt DateTime? // soft delete
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
   @@map("customers")
 }
 
 // ─── Auth ─────────────────────────────────────────────────
 model Admin {
-  id        String   @id @default(cuid())
-  email     String   @unique
+  id        String    @id @default(cuid())
+  email     String    @unique
   password  String
   name      String
   role      AdminRole @default(EDITOR)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
   @@map("admins")
 }
@@ -46,24 +46,24 @@ enum AdminRole {
 
 // ─── Products (Bikes) ──────────────────────────────────────
 model Product {
-  id          String        @id @default(cuid())
+  id          String          @id @default(cuid())
   name        String
-  slug        String        @unique
-  description String        @db.Text
-  price       Decimal       @db.Decimal(10, 2)
-  salePrice   Decimal?      @db.Decimal(10, 2)
-  sku         String        @unique
-  stock       Int           @default(0)
+  slug        String          @unique
+  description String          @db.Text
+  price       Decimal         @db.Decimal(10, 2)
+  salePrice   Decimal?        @db.Decimal(10, 2)
+  sku         String          @unique
+  stock       Int             @default(0)
   category    ProductCategory
-  type        ProductType   @default(BIKE)
+  type        ProductType     @default(BIKE)
   brand       String?
   specs       Json?
   images      ProductImage[]
   orderItems  OrderItem[]
-  featured    Boolean       @default(false)
-  published   Boolean       @default(true)
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  featured    Boolean         @default(false)
+  published   Boolean         @default(true)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
 
   @@index([category])
   @@index([published])
@@ -101,38 +101,38 @@ enum ProductType {
 
 // ─── Services ─────────────────────────────────────────────
 model Service {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   name        String
-  slug        String   @unique
-  description String   @db.Text
+  slug        String    @unique
+  description String    @db.Text
   shortDesc   String
-  price       Decimal? @db.Decimal(10, 2)
+  price       Decimal?  @db.Decimal(10, 2)
   priceNote   String?
   duration    String?
   icon        String?
-  featured    Boolean  @default(false)
-  published   Boolean  @default(true)
-  order       Int      @default(0)
+  featured    Boolean   @default(false)
+  published   Boolean   @default(true)
+  order       Int       @default(0)
   bookings    Booking[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   @@map("services")
 }
 
 // ─── Bookings ─────────────────────────────────────────────
 model Booking {
-  id          String        @id @default(cuid())
-  name        String
-  email       String
-  phone       String
-  service     Service       @relation(fields: [serviceId], references: [id])
-  serviceId   String
-  date        DateTime
-  notes       String?       @db.Text
-  status      BookingStatus @default(PENDING)
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  phone     String
+  service   Service       @relation(fields: [serviceId], references: [id])
+  serviceId String
+  date      DateTime
+  notes     String?       @db.Text
+  status    BookingStatus @default(PENDING)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
 
   @@map("bookings")
 }
@@ -146,22 +146,22 @@ enum BookingStatus {
 
 // ─── Blog ─────────────────────────────────────────────────
 model Post {
-  id          String     @id @default(cuid())
+  id          String       @id @default(cuid())
   title       String
-  slug        String     @unique
-  excerpt     String     @db.Text
-  content     String     @db.LongText
+  slug        String       @unique
+  excerpt     String       @db.Text
+  content     String       @db.LongText
   coverImage  String?
   category    PostCategory
   tags        String?
-  author      String     @default("Jovico Team")
-  published   Boolean    @default(false)
-  featured    Boolean    @default(false)
-  views       Int        @default(0)
-  readTime    Int        @default(5)
+  author      String       @default("Jovico Team")
+  published   Boolean      @default(false)
+  featured    Boolean      @default(false)
+  views       Int          @default(0)
+  readTime    Int          @default(5)
   publishedAt DateTime?
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
   @@index([published, publishedAt])
   @@map("posts")
@@ -177,24 +177,24 @@ enum PostCategory {
 
 // ─── Orders ───────────────────────────────────────────────
 model Order {
-  id              String      @id @default(cuid())
-  orderNumber     String      @unique
+  id              String        @id @default(cuid())
+  orderNumber     String        @unique
   customerName    String
   customerEmail   String
   customerPhone   String
   shippingAddress Json
   items           OrderItem[]
-  subtotal        Decimal     @db.Decimal(10, 2)
-  shipping        Decimal     @db.Decimal(10, 2) @default(0)
-  total           Decimal     @db.Decimal(10, 2)
-  status          OrderStatus @default(PENDING)
+  subtotal        Decimal       @db.Decimal(10, 2)
+  shipping        Decimal       @default(0) @db.Decimal(10, 2)
+  total           Decimal       @db.Decimal(10, 2)
+  status          OrderStatus   @default(PENDING)
   paymentStatus   PaymentStatus @default(UNPAID)
   paymentRef      String?
-  notes           String?     @db.Text
-  customer        Customer?   @relation(fields: [customerId], references: [id])
+  notes           String?       @db.Text
+  customer        Customer?     @relation(fields: [customerId], references: [id])
   customerId      String?
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 
   @@map("orders")
 }
@@ -229,14 +229,14 @@ enum PaymentStatus {
 
 // ─── Contact / Inquiries ──────────────────────────────────
 model ContactMessage {
-  id        String        @id @default(cuid())
+  id        String   @id @default(cuid())
   name      String
   email     String
   phone     String?
   subject   String
-  message   String        @db.Text
-  read      Boolean       @default(false)
-  createdAt DateTime      @default(now())
+  message   String   @db.Text
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
 
   @@map("contact_messages")
 }

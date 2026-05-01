@@ -1,12 +1,6 @@
 'use client'
 // components/admin/BlogPostEditor.tsx
-import CharacterCount from '@tiptap/extension-character-count'
-import TiptapUnderline from '@tiptap/extension-underline'
-import { useEditor, EditorContent } from '@tiptap/react'
-import Placeholder from '@tiptap/extension-placeholder'
-import TiptapLink from '@tiptap/extension-link'
 import { useState, useCallback } from 'react'
-import StarterKit from '@tiptap/starter-kit'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import {
@@ -28,9 +22,14 @@ import {
     Undo2,
     Redo2,
 } from 'lucide-react'
-
+import { useEditor, EditorContent } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
+import TiptapUnderline from '@tiptap/extension-underline'
+import TiptapLink from '@tiptap/extension-link'
+import Placeholder from '@tiptap/extension-placeholder'
+import CharacterCount from '@tiptap/extension-character-count'
 import type { PostEditorData, PostFormState } from '@/types'
-import type { PostCategory } from '@prisma/client'
+import type { PostCategory } from '@/prisma/generated/prisma/enums'
 
 interface Props {
     post: PostEditorData | null
@@ -101,8 +100,9 @@ export function BlogPostEditor({ post, mode }: Props) {
             Placeholder.configure({ placeholder: 'Start writing your post here…' }),
             CharacterCount,
         ],
+        immediatelyRender: false,
         content: post?.content ?? '',
-        onUpdate: ({ editor: e }: { editor: any }) => {
+        onUpdate: ({ editor: e }) => {
             setForm((f) => ({ ...f, content: e.getHTML() }))
         },
         editorProps: {
@@ -169,10 +169,14 @@ export function BlogPostEditor({ post, mode }: Props) {
             <div className='space-y-5'>
                 {/* Title */}
                 <div className='bg-white rounded-2xl border border-slate-100 p-6'>
-                    <label className='block text-sm font-semibold text-slate-700 mb-2'>
+                    <label
+                        htmlFor='title'
+                        className='block text-sm font-semibold text-slate-700 mb-2'
+                    >
                         Post Title *
                     </label>
                     <input
+                        id='title'
                         type='text'
                         value={form.title}
                         onChange={(e) => setField('title', e.target.value)}
@@ -183,10 +187,14 @@ export function BlogPostEditor({ post, mode }: Props) {
 
                 {/* Excerpt */}
                 <div className='bg-white rounded-2xl border border-slate-100 p-6'>
-                    <label className='block text-sm font-semibold text-slate-700 mb-2'>
+                    <label
+                        htmlFor='excerpt'
+                        className='block text-sm font-semibold text-slate-700 mb-2'
+                    >
                         Excerpt *
                     </label>
                     <textarea
+                        id='excerpt'
                         value={form.excerpt}
                         onChange={(e) => setField('excerpt', e.target.value)}
                         rows={3}
@@ -359,6 +367,7 @@ export function BlogPostEditor({ post, mode }: Props) {
                     <div className='space-y-4'>
                         {(['published', 'featured'] as const).map((key) => (
                             <label
+                                htmlFor='switch'
                                 key={key}
                                 className='flex items-center justify-between cursor-pointer'
                             >
@@ -377,6 +386,7 @@ export function BlogPostEditor({ post, mode }: Props) {
                                     </span>
                                 </div>
                                 <button
+                                    id='switch'
                                     type='button'
                                     role='switch'
                                     aria-checked={form[key]}
@@ -425,9 +435,12 @@ export function BlogPostEditor({ post, mode }: Props) {
 
                 {/* Author */}
                 <div className='bg-white rounded-2xl border border-slate-100 p-5'>
-                    <label className='block text-sm font-bold text-slate-900 mb-2'>Author</label>
+                    <label htmlFor='author' className='block text-sm font-bold text-slate-900 mb-2'>
+                        Author
+                    </label>
                     <input
                         type='text'
+                        id='author'
                         value={form.author}
                         onChange={(e) => setField('author', e.target.value)}
                         className='jv-input text-sm'
@@ -436,8 +449,11 @@ export function BlogPostEditor({ post, mode }: Props) {
 
                 {/* Tags */}
                 <div className='bg-white rounded-2xl border border-slate-100 p-5'>
-                    <label className='block text-sm font-bold text-slate-900 mb-1.5'>Tags</label>
+                    <label htmlFor='tags' className='block text-sm font-bold text-slate-900 mb-1.5'>
+                        Tags
+                    </label>
                     <input
+                        id='tags'
                         type='text'
                         value={form.tags}
                         onChange={(e) => setField('tags', e.target.value)}

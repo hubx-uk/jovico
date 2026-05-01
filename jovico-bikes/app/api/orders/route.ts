@@ -4,6 +4,7 @@ import { z } from 'zod'
 
 import { prisma } from '@/lib/prisma'
 import { generateOrderNumber } from '@/lib/utils'
+import { getCustomerSession } from '@/lib/customerAuth'
 
 const orderSchema = z.object({
     customerName: z.string().min(2),
@@ -28,8 +29,17 @@ const orderSchema = z.object({
 
 export async function POST(req: NextRequest) {
     try {
-        const body = await req.json()
+        const body: unknown = await req.json()
         const data = orderSchema.parse(body)
+
+        // Resolve the logged-in customer (if any) from the session cookie
+        let customerId: string | undefined
+        try {
+            const session = await getCustomerSession()
+            if (session) customerId = session.id
+        } catch {
+            // Guest checkout — no session, that's fine
+        }
 
         const subtotal = data.items.reduce((sum, item) => sum + item.price * item.quantity, 0)
         const shipping = subtotal > 100000 ? 0 : 5000
@@ -46,6 +56,7 @@ export async function POST(req: NextRequest) {
                 shipping,
                 total,
                 notes: data.notes,
+                ...(customerId ? { customerId } : {}),
                 items: {
                     create: data.items.map((item) => ({
                         productId: item.productId,
@@ -59,7 +70,7 @@ export async function POST(req: NextRequest) {
             include: { items: true },
         })
 
-        // Update stock
+        // Decrement stock for each ordered product
         for (const item of data.items) {
             await prisma.product.update({
                 where: { id: item.productId },
@@ -70,7 +81,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(order, { status: 201 })
     } catch (err) {
         if (err instanceof z.ZodError) {
-            return NextResponse.json({ error: err.errors }, { status: 400 })
+            return NextResponse.json({ error: err.issues }, { status: 400 })
         }
         return NextResponse.json({ error: 'Server error' }, { status: 500 })
     }
@@ -78,7 +89,9 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
     const orders = await prisma.order.findMany({
-        include: { items: { include: { product: { select: { name: true } } } } },
+        include: {
+            items: { include: { product: { select: { name: true } } } },
+        },
         orderBy: { createdAt: 'desc' },
     })
     return NextResponse.json(orders)

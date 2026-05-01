@@ -79,6 +79,7 @@ export function PasswordForm() {
                         <div className='relative'>
                             <Lock className='absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400' />
                             <input
+                                title='password'
                                 type={show ? 'text' : 'password'}
                                 value={form[key]}
                                 onChange={(e) => set(key, e.target.value)}

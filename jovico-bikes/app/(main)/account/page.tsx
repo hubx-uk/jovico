@@ -1,15 +1,14 @@
 // app/(main)/account/page.tsx
-import type { Metadata } from 'next'
-import Link from 'next/link'
-import { getCustomerSession } from '@/lib/customerAuth'
-import { prisma } from '@/lib/prisma'
-import { formatNaira, formatDate } from '@/lib/utils'
 import { ArrowRight, ShoppingBag, Package, Clock } from 'lucide-react'
 import { redirect } from 'next/navigation'
+import type { Metadata } from 'next'
+import Link from 'next/link'
+
+import { prisma } from '@/lib/prisma'
+import { formatNaira, formatDate } from '@/lib/utils'
+import { getCustomerSession } from '@/lib/customerAuth'
 
 export const metadata: Metadata = { title: 'My Account' }
-
-export const dynamic = 'force-dynamic' // always fresh
 
 export default async function AccountDashboardPage() {
     const session = await getCustomerSession()

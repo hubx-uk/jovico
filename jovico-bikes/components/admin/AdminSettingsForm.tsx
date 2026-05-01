@@ -1,8 +1,8 @@
 'use client'
 // components/admin/AdminSettingsForm.tsx
-import { Save, Loader2, CheckCircle2, Info } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import { Save, Loader2, CheckCircle2, Info } from 'lucide-react'
 
 interface Props {
     settings: Record<string, string>
@@ -81,7 +81,7 @@ const VIDEO_FIELDS = [
     {
         key: 'hero_video_url',
         label: 'Homepage Video URL (.mp4 or YouTube embed URL)',
-        type: 'url',
+        type: 'file', // or 'url',
         placeholder: 'https://example.com/ride-video.mp4',
         hint: 'The looping video shown on the homepage after the hero. Use a direct .mp4 link or leave blank to hide the section.',
     },
@@ -137,6 +137,36 @@ export function AdminSettingsForm({ settings }: Props) {
         }
     }
 
+    async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
+        const video = e.target.files?.[0]
+        if (!video) {
+            toast.info('Please select a video file.')
+            return
+        }
+
+        const formData = new FormData()
+        formData.append('video', video)
+
+        toast.info('Uploading...')
+
+        try {
+            const res = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData,
+            })
+
+            const data: { url: string; error?: string } = await res.json()
+            if (res.ok) {
+                toast.success('Upload successful!')
+                set('hero_video_url', data.url)
+            } else {
+                toast.error(data.error || 'Upload failed')
+            }
+        } catch (err) {
+            toast.error('Error uploading file')
+        }
+    }
+
     const renderField = (field: {
         key: string
         label: string
@@ -150,9 +180,14 @@ export function AdminSettingsForm({ settings }: Props) {
             </label>
             <input
                 type={field.type}
-                value={form[field.key] ?? ''}
-                onChange={(e) => set(field.key, e.target.value)}
-                placeholder={field.placeholder}
+                value={field.type === 'file' ? '' : form[field.key] ?? ''}
+                accept={field.type === 'file' ? 'video/*' : ''}
+                onChange={
+                    field.type === 'file'
+                        ? (e) => handleUpload(e)
+                        : (e) => set(field.key, e.target.value)
+                }
+                placeholder={field.type === 'file' ? '' : field.placeholder}
                 className='jv-input'
             />
             {field.hint && (
@@ -194,7 +229,7 @@ export function AdminSettingsForm({ settings }: Props) {
                     <h2 className='font-bold text-slate-900'>Homepage Video Section</h2>
                     <p className='text-xs text-slate-400 mt-1'>
                         The looping video panel shown on the homepage. Leave the URL blank to hide
-                        the section entirely.
+                        the section entirely. Ensure you save the settings after uploading.
                     </p>
                 </div>
                 {VIDEO_FIELDS.map(renderField)}

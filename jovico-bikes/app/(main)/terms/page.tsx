@@ -1,9 +1,12 @@
 // app/main/terms/page.tsx
 import type { Metadata } from 'next'
 
+import { getSettings } from '@/lib/getSettings'
+
 export const metadata: Metadata = { title: 'Terms of Service' }
 
-export default function TermsPage() {
+export default async function TermsPage() {
+    const s = await getSettings(['email', 'site_name'])
     return (
         <>
             <section className='pt-28 sm:pt-32 pb-12 bg-slate-950'>
@@ -73,7 +76,7 @@ export default function TermsPage() {
                     <h2>9. Contact</h2>
                     <p>
                         For any questions about these terms, contact us at{' '}
-                        <a href='mailto:hello@jovicoworld.com'>hello@jovicoworld.com</a>.
+                        <a href={`mailto:${s.email}`}>{s.email}</a>.
                     </p>
                 </div>
             </section>

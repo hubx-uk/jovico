@@ -1,9 +1,9 @@
 // app/(main)/about/page.tsx
-import { ArrowRight, MapPin, Users, Award, Leaf, Zap, Heart, Target } from 'lucide-react'
+import { ArrowRight, Users, Award, Leaf, Zap, Heart, Target } from 'lucide-react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
-import { prisma } from '@/lib/prisma'
+import { getSettings } from '@/lib/getSettings'
 
 export const metadata: Metadata = {
     title: 'About Us',
@@ -11,17 +11,8 @@ export const metadata: Metadata = {
         "Learn about Jovico Bikes — Lagos's homegrown eBike company on a mission to transform urban mobility in Nigeria.",
 }
 
-async function getAddress() {
-    try {
-        const row = await prisma.siteSetting.findUnique({ where: { key: 'address' } })
-        return row?.value ?? '14 Adeola Odeku Street, Victoria Island, Lagos'
-    } catch {
-        return '14 Adeola Odeku Street, Victoria Island, Lagos'
-    }
-}
-
 export default async function AboutPage() {
-    const address = await getAddress()
+    const s = await getSettings(['phone', 'email', 'address', 'whatsapp', 'site_name'])
 
     return (
         <>
@@ -46,7 +37,7 @@ export default async function AboutPage() {
                         <span className='text-green-400'>Built for Lagos.</span>
                     </h1>
                     <p className='text-slate-400 text-base md:text-xl leading-relaxed max-w-2xl'>
-                        Jovico Bikes was founded with one simple belief: electric mobility can
+                        {s.site_name} was founded with one simple belief: electric mobility can
                         transform how millions of Lagosians move through their city — cleaner,
                         faster, and more affordably.
                     </p>
@@ -65,7 +56,7 @@ export default async function AboutPage() {
                                 Making Electric Mobility Accessible to Every Nigerian
                             </h2>
                             <p className='text-slate-600 leading-relaxed mb-4 sm:mb-5 text-sm sm:text-base'>
-                                We started Jovico Bikes after one too many hours trapped in Lagos
+                                We started {s.site_name} after one too many hours trapped in Lagos
                                 gridlock, watching fuel money evaporate. We knew there had to be a
                                 better way — and that better way was electric.
                             </p>
@@ -84,8 +75,6 @@ export default async function AboutPage() {
                                 Get in Touch <ArrowRight className='w-4 h-4' />
                             </Link>
                         </div>
-
-                        {/* Stats grid */}
                         <div className='grid grid-cols-2 gap-3 sm:gap-4'>
                             {[
                                 {
@@ -188,7 +177,7 @@ export default async function AboutPage() {
                             Meet the Team
                         </p>
                         <h2 className='text-3xl sm:text-4xl font-extrabold text-slate-900'>
-                            The People Behind Jovico
+                            The People Behind {s.site_name}
                         </h2>
                     </div>
                     <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6'>
@@ -249,19 +238,19 @@ export default async function AboutPage() {
                                 Visit Our Showroom
                             </h2>
                             <p className='text-slate-400 leading-relaxed mb-6 sm:mb-8 text-sm sm:text-base'>
-                                Come see the full Jovico range in person. Test ride any bike, meet
-                                our team, and get expert advice — all at our Victoria Island
-                                showroom.
+                                Come see the full {s.site_name} range in person. Test ride any bike,
+                                meet our team, and get expert advice — all at our showroom.
                             </p>
                             <div className='space-y-3 sm:space-y-4 mb-7 sm:mb-8'>
                                 {[
-                                    { emoji: '📍', label: 'Address', value: address },
+                                    { emoji: '📍', label: 'Address', value: s.address },
                                     {
                                         emoji: '🕘',
                                         label: 'Hours',
                                         value: 'Mon–Sat: 9am–6pm  |  Sunday: By Appointment',
                                     },
-                                    { emoji: '✉️', label: 'Email', value: 'hello@jovicobikes.com' },
+                                    { emoji: '📞', label: 'Phone', value: s.phone },
+                                    { emoji: '✉️', label: 'Email', value: s.email },
                                 ].map((info) => (
                                     <div key={info.label} className='flex items-start gap-3'>
                                         <span className='text-lg mt-0.5 shrink-0'>
@@ -282,19 +271,17 @@ export default async function AboutPage() {
                                 Get Directions <ArrowRight className='w-4 h-4' />
                             </Link>
                         </div>
-
-                        {/* Map placeholder */}
                         <div className='w-full max-w-lg mx-auto aspect-square rounded-2xl sm:rounded-3xl bg-slate-800 border border-slate-700 flex items-center justify-center text-center'>
                             <div className='px-6'>
                                 <div className='text-4xl sm:text-5xl mb-3'>📍</div>
                                 <div className='text-white font-semibold text-sm sm:text-base'>
-                                    Victoria Island, Lagos
+                                    {s.site_name} Showroom
                                 </div>
                                 <div className='text-slate-400 text-xs sm:text-sm mt-1'>
-                                    {address}
+                                    {s.address}
                                 </div>
                                 <a
-                                    href={`https://maps.google.com/?q=${encodeURIComponent(address)}`}
+                                    href={`https://maps.google.com/?q=${encodeURIComponent(s.address)}`}
                                     target='_blank'
                                     rel='noopener noreferrer'
                                     className='mt-4 inline-flex items-center gap-1.5 text-green-400 text-sm font-medium hover:text-green-300 transition-colors'
@@ -311,18 +298,18 @@ export default async function AboutPage() {
             <section id='careers' className='py-14 sm:py-16 bg-green-500'>
                 <div className='jv-container text-center'>
                     <h2 className='text-2xl sm:text-3xl font-extrabold text-white mb-3'>
-                        Join the Jovico Team
+                        Join the {s.site_name} Team
                     </h2>
                     <p className='text-green-100 mb-6 max-w-md mx-auto text-sm sm:text-base'>
                         Passionate about electric mobility and great customer service? We&apos;d
                         love to hear from you.
                     </p>
-                    <Link
-                        href='/contact'
+                    <a
+                        href={`mailto:${s.email}?subject=Job Application`}
                         className='inline-flex items-center gap-2 rounded-full bg-white text-green-700 font-bold px-6 sm:px-8 py-3.5 sm:py-4 text-sm sm:text-base hover:bg-green-50 transition-colors'
                     >
-                        View Opportunities <ArrowRight className='w-4 h-4 sm:w-5 sm:h-5' />
-                    </Link>
+                        Contact Us <ArrowRight className='w-4 h-4 sm:w-5 sm:h-5' />
+                    </a>
                 </div>
             </section>
         </>

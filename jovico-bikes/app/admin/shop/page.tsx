@@ -1,5 +1,5 @@
 // app/admin/shop/page.tsx
-import { Plus, Pencil, Eye, EyeOff, Package } from 'lucide-react'
+import { Plus, Pencil, Eye, Package } from 'lucide-react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 

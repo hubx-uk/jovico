@@ -1,18 +1,14 @@
 // app/admin/blog/[id]/page.tsx  (also used for /new via [...id] routing trick)
 // For "new" we create a separate page at /admin/blog/new/page.tsx
-import { notFound } from 'next/navigation'
-import type { Metadata } from 'next'
 
+import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import { BlogPostEditor } from '@/components/admin/BlogPostEditor'
 
 export const metadata: Metadata = { title: 'Edit Post' }
 
-export default async function EditPostPage({
-    params,
-}: {
-    params: Promise<{ id: string }>
-}) {
+export default async function EditPostPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
     const post = await prisma.post.findUnique({ where: { id } })
     if (!post) notFound()

@@ -13,13 +13,13 @@ import {
     Clock,
     CheckCircle2,
     Users,
-    TrendingUp,
     Award,
 } from 'lucide-react'
+
 import { prisma } from '@/lib/prisma'
 import { formatNaira, formatDate } from '@/lib/utils'
-import { HomepageVideoSection } from '@/components/home/HomepageVideoSection'
 import { EBikeROICalculator } from '@/components/home/EBikeROICalculator'
+import { HomepageVideoSection } from '@/components/home/HomepageVideoSection'
 
 // ─── Server data fetching ──────────────────────────────────
 async function getFeaturedBikes() {

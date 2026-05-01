@@ -48,6 +48,7 @@ export function AdminOrderStatusSelect({
 
     return (
         <select
+            title='status'
             value={local}
             onChange={handleChange}
             disabled={isPending}

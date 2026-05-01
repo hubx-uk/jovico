@@ -68,13 +68,17 @@ export function AdminCustomerEditForm({ customer }: Props) {
                 <div className='px-5 pb-5 border-t border-slate-100 pt-5'>
                     <form onSubmit={handleSave} className='space-y-4'>
                         <div>
-                            <label className='block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1.5'>
+                            <label
+                                htmlFor='fullname'
+                                className='block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1.5'
+                            >
                                 Full Name
                             </label>
                             <div className='relative'>
                                 <User className='absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400' />
                                 <input
                                     type='text'
+                                    id='fullname'
                                     value={form.name}
                                     onChange={(e) => set('name', e.target.value)}
                                     required
@@ -84,13 +88,17 @@ export function AdminCustomerEditForm({ customer }: Props) {
                         </div>
 
                         <div>
-                            <label className='block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1.5'>
+                            <label
+                                htmlFor='phone'
+                                className='block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1.5'
+                            >
                                 Phone Number
                             </label>
                             <div className='relative'>
                                 <Phone className='absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400' />
                                 <input
                                     type='tel'
+                                    id='phone'
                                     value={form.phone}
                                     onChange={(e) => set('phone', e.target.value)}
                                     placeholder='+234 801 234 5678'
@@ -100,12 +108,16 @@ export function AdminCustomerEditForm({ customer }: Props) {
                         </div>
 
                         <div>
-                            <label className='block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1.5'>
+                            <label
+                                htmlFor='address'
+                                className='block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1.5'
+                            >
                                 Delivery Address
                             </label>
                             <div className='relative'>
                                 <MapPin className='absolute left-3.5 top-3.5 w-4 h-4 text-slate-400' />
                                 <textarea
+                                    id='address'
                                     value={form.address}
                                     onChange={(e) => set('address', e.target.value)}
                                     rows={2}

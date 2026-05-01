@@ -6,7 +6,6 @@ import { useState } from 'react'
 import {
     LayoutDashboard,
     ShoppingBag,
-    FileText,
     Settings,
     LogOut,
     Bike,
@@ -52,7 +51,7 @@ const navGroups = [
     {
         label: 'Customers',
         items: [
-            { icon: Users, label: 'Manage', href: '/admin/customers' },
+            { icon: Users, label: 'All Customers', href: '/admin/customers' },
             { icon: Mail, label: 'Enquiries', href: '/admin/enquiries' },
             { icon: MessageSquare, label: 'Bookings', href: '/admin/bookings' },
             { icon: Users, label: 'Subscribers', href: '/admin/subscribers' },
@@ -84,7 +83,7 @@ export function AdminSidebar() {
             {/* Logo */}
             <div className='flex items-center gap-3 px-4 py-5 border-b border-slate-100'>
                 <div className='w-9 h-9 rounded-xl bg-slate-900 flex items-center justify-center shrink-0'>
-                    {/* <Bike className='w-5 h-5 text-white' /> */}
+                    {/* <Bike className="w-5 h-5 text-white" /> */}
                     <Image src={'/images/logo_sq.png'} alt='Jovico Logo' width={20} height={20} />
                 </div>
                 {!collapsed && (
@@ -190,8 +189,13 @@ export function AdminSidebar() {
             <div className='lg:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b border-slate-100 flex items-center justify-between px-4 py-3 h-14'>
                 <div className='flex items-center gap-2'>
                     <div className='w-8 h-8 rounded-xl bg-slate-900 flex items-center justify-center'>
-                        {/* <Bike className='w-4 h-4 text-white' /> */}
-                        <Image src={'/images/logo_sq.png'} alt='Jovico Logo' width={20} height={20} />
+                        {/* <Bike className="w-4 h-4 text-white" /> */}
+                        <Image
+                            src={'/images/logo_sq.png'}
+                            alt='Jovico Logo'
+                            width={20}
+                            height={20}
+                        />
                     </div>
                     <span className='font-bold text-slate-900 text-sm'>Jovico Admin</span>
                 </div>
@@ -209,10 +213,13 @@ export function AdminSidebar() {
                 <div
                     className='lg:hidden fixed inset-0 z-30 flex pt-14'
                     onClick={() => setMobileOpen(false)}
+                    onKeyUp={() => setMobileOpen(true)}
+                    onKeyDown={() => setMobileOpen(false)}
                 >
                     <div
                         className='w-64 bg-white h-full border-r border-slate-100 shadow-xl'
                         onClick={(e) => e.stopPropagation()}
+                        onKeyDown={(e) => e.stopPropagation()}
                     >
                         <SidebarContent />
                     </div>

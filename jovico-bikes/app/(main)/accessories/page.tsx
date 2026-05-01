@@ -5,6 +5,7 @@ import Link from 'next/link'
 
 import { prisma } from '@/lib/prisma'
 import { formatNaira } from '@/lib/utils'
+import { getSettings, waNumber } from '@/lib/getSettings'
 
 export const metadata: Metadata = {
     title: 'Accessories',
@@ -12,11 +13,15 @@ export const metadata: Metadata = {
 }
 
 export default async function AccessoriesPage() {
-    const accessories = await prisma.product.findMany({
-        where: { published: true, type: 'ACCESSORY' },
-        include: { images: { where: { isPrimary: true }, take: 1 } },
-        orderBy: { createdAt: 'desc' },
-    })
+    const [accessories, settings] = await Promise.all([
+        prisma.product.findMany({
+            where: { published: true, type: 'ACCESSORY' },
+            include: { images: { where: { isPrimary: true }, take: 1 } },
+            orderBy: { createdAt: 'desc' },
+        }),
+        getSettings(['whatsapp', 'site_name']),
+    ])
+    const wa = waNumber(settings)
 
     const categories = [
         { emoji: '⛑️', name: 'Helmets', desc: 'Safe and stylish. Every ride.' },
@@ -90,7 +95,7 @@ export default async function AccessoriesPage() {
                                 launch!
                             </p>
                             <a
-                                href='https://wa.me/2348012345678?text=Hi! Please notify me when your accessories are available.'
+                                href={`https://wa.me/${wa}?text=Hi! Please notify me when your accessories are available.`}
                                 target='_blank'
                                 rel='noopener noreferrer'
                                 className='jv-btn-green'
@@ -139,7 +144,7 @@ export default async function AccessoriesPage() {
                         We can source any eBike accessory or spare part. Just ask us!
                     </p>
                     <a
-                        href="https://wa.me/2348012345678?text=Hi! I'm looking for a specific eBike accessory."
+                        href={`https://wa.me/${wa}?text=Hi! I'm looking for a specific eBike accessory.`}
                         target='_blank'
                         rel='noopener noreferrer'
                         className='jv-btn-green'

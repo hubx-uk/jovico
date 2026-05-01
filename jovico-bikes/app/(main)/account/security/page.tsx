@@ -1,14 +1,13 @@
 // app/(main)/account/security/page.tsx
-import type { Metadata } from 'next'
+import { ShieldCheck, AlertTriangle } from 'lucide-react'
 import { redirect } from 'next/navigation'
+import type { Metadata } from 'next'
+
 import { getCustomerSession } from '@/lib/customerAuth'
 import { PasswordForm } from '@/components/account/PasswordForm'
 import { DeleteAccountButton } from '@/components/account/DeleteAccountButton'
-import { ShieldCheck, AlertTriangle } from 'lucide-react'
 
 export const metadata: Metadata = { title: 'Password & Security' }
-
-export const dynamic = 'force-dynamic' // always fresh
 
 export default async function AccountSecurityPage() {
     const session = await getCustomerSession()

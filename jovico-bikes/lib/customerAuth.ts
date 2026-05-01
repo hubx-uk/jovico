@@ -1,10 +1,9 @@
 // lib/customerAuth.ts
 import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
-
-import type { CustomerSession } from '@/types'
 import { prisma } from './prisma'
-import { comparePasswords, hashPassword } from './utils'
+import bcrypt from 'bcryptjs'
+import type { CustomerSession } from '@/types'
 
 const SECRET = new TextEncoder().encode(
     process.env.CUSTOMER_JWT_SECRET ?? process.env.JWT_SECRET ?? 'jovico-customer-secret-change-me'
@@ -67,12 +66,16 @@ export async function registerCustomer(
     const exists = await prisma.customer.findUnique({ where: { email } })
     if (exists) return { success: false, error: 'An account with this email already exists.' }
 
-    const hashed = await hashPassword(password)
+    const hashed = await bcrypt.hash(password, 12)
     const customer = await prisma.customer.create({
         data: { name, email, password: hashed, phone },
     })
 
-    const session: CustomerSession = { id: customer.id, email: customer.email, name: customer.name }
+    const session: CustomerSession = {
+        id: customer.id,
+        email: customer.email,
+        name: customer.name,
+    }
     await setCustomerSession(session)
     return { success: true, session }
 }
@@ -84,10 +87,14 @@ export async function loginCustomer(
     const customer = await prisma.customer.findUnique({ where: { email, deletedAt: null } })
     if (!customer) return { success: false, error: 'Invalid email or password.' }
 
-    const valid = await comparePasswords(password, customer.password)
+    const valid = await bcrypt.compare(password, customer.password)
     if (!valid) return { success: false, error: 'Invalid email or password.' }
 
-    const session: CustomerSession = { id: customer.id, email: customer.email, name: customer.name }
+    const session: CustomerSession = {
+        id: customer.id,
+        email: customer.email,
+        name: customer.name,
+    }
     await setCustomerSession(session)
     return { success: true, session }
 }

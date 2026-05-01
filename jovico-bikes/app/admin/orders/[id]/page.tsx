@@ -1,9 +1,8 @@
 // app/admin/orders/[id]/page.tsx
-import { ArrowLeft, Package, User, MapPin, Phone, Mail, FileText } from 'lucide-react'
-import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-
+import { notFound } from 'next/navigation'
+import { ArrowLeft, Package, User, MapPin, Phone, Mail, FileText } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
 import { formatNaira, formatDate } from '@/lib/utils'
 import { AdminOrderStatusSelect } from '@/components/admin/AdminOrderStatusSelect'
@@ -11,11 +10,7 @@ import { AdminPaymentStatusSelect } from '@/components/admin/AdminPaymentStatusS
 
 export const metadata: Metadata = { title: 'Order Detail' }
 
-export default async function OrderDetailPage({
-    params,
-}: {
-    params: Promise<{ id: string }>
-}) {
+export default async function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
 
     const order = await prisma.order.findUnique({

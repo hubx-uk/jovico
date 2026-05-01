@@ -1,9 +1,8 @@
 // lib/auth.ts
 import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
-
 import { prisma } from './prisma'
-import { comparePasswords } from './utils'
+import bcrypt from 'bcryptjs'
 
 const JWT_SECRET = new TextEncoder().encode(
     process.env.JWT_SECRET ?? 'jovico-bikes-dev-secret-key-change-in-production'
@@ -66,7 +65,7 @@ export async function loginAdmin(
     const admin = await prisma.admin.findUnique({ where: { email } })
     if (!admin) return { success: false, error: 'Invalid email or password' }
 
-    const valid = await comparePasswords(password, admin.password)
+    const valid = await bcrypt.compare(password, admin.password)
     if (!valid) return { success: false, error: 'Invalid email or password' }
 
     const session: AdminSession = {

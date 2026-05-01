@@ -10,10 +10,10 @@ import {
     ArrowUpRight,
     Clock,
     CheckCircle2,
-    XCircle,
     Package,
     Users,
 } from 'lucide-react'
+
 import { prisma } from '@/lib/prisma'
 import { formatNaira, formatDate } from '@/lib/utils'
 
@@ -227,7 +227,7 @@ export default async function AdminDashboard() {
                             {recentMessages.map((msg) => (
                                 <Link
                                     key={msg.id}
-                                    href={`/admin/enquiries`}
+                                    href='/admin/enquiries'
                                     className='block px-6 py-4 hover:bg-slate-50 transition-colors'
                                 >
                                     <div className='flex items-start gap-3'>

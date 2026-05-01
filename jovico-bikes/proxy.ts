@@ -1,10 +1,9 @@
 // middleware.ts
 import { NextRequest, NextResponse } from 'next/server'
-
 import { verifyToken } from '@/lib/auth'
 import { verifyCustomerToken } from '@/lib/customerAuth'
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
     const { pathname } = req.nextUrl
 
     // ── Admin routes ────────────────────────────────────────

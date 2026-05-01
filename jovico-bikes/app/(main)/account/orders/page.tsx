@@ -1,15 +1,14 @@
 // app/(main)/account/orders/page.tsx
+import { ArrowRight, Package } from 'lucide-react'
+import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
-import { getCustomerSession } from '@/lib/customerAuth'
+
 import { prisma } from '@/lib/prisma'
 import { formatNaira, formatDate } from '@/lib/utils'
-import { ArrowRight, Package } from 'lucide-react'
+import { getCustomerSession } from '@/lib/customerAuth'
 
 export const metadata: Metadata = { title: 'My Orders' }
-
-export const dynamic = 'force-dynamic' // always fresh
 
 export default async function AccountOrdersPage() {
     const session = await getCustomerSession()

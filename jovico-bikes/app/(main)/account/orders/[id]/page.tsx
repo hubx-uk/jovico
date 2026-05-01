@@ -1,11 +1,13 @@
 // app/(main)/account/orders/[id]/page.tsx
+import { ArrowLeft, MapPin, Phone } from 'lucide-react'
+import { notFound, redirect } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { notFound, redirect } from 'next/navigation'
-import { ArrowLeft, MapPin, Phone, Mail } from 'lucide-react'
-import { getCustomerSession } from '@/lib/customerAuth'
+
 import { prisma } from '@/lib/prisma'
 import { formatNaira, formatDate } from '@/lib/utils'
+import { getCustomerSession } from '@/lib/customerAuth'
+import { getSettings, waNumber } from '@/lib/getSettings'
 import { CancelOrderButton } from '@/components/account/CancelOrderButton'
 
 export const metadata: Metadata = { title: 'Order Detail' }
@@ -29,6 +31,9 @@ export default async function CustomerOrderDetailPage({
     })
 
     if (!order) notFound()
+
+    const settings = await getSettings(['whatsapp'])
+    const wa = waNumber(settings)
 
     const shipping = order.shippingAddress as { street?: string; city?: string; state?: string }
 
@@ -223,7 +228,7 @@ export default async function CustomerOrderDetailPage({
 
                     {/* WhatsApp support */}
                     <a
-                        href={`https://wa.me/2348012345678?text=Hi! I need help with order ${order.orderNumber}`}
+                        href={`https://wa.me/${wa}?text=Hi! I need help with order ${order.orderNumber}`}
                         target='_blank'
                         rel='noopener noreferrer'
                         className='flex items-center justify-center gap-2 w-full px-4 py-3 rounded-2xl bg-green-50 text-green-700 text-sm font-semibold hover:bg-green-100 transition-colors border border-green-100'

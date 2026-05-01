@@ -44,6 +44,7 @@ export function AdminPaymentStatusSelect({
 
     return (
         <select
+            title='status'
             value={local}
             onChange={handleChange}
             disabled={isPending}

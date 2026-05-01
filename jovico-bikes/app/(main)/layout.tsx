@@ -1,8 +1,8 @@
 // app/(main)/layout.tsx
+import { prisma } from '@/lib/prisma'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { SiteSettingsProvider } from '@/components/layout/SiteSettingsProvider'
-import { prisma } from '@/lib/prisma'
 
 async function getSettings() {
     try {

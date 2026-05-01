@@ -1,18 +1,17 @@
 // app/main/blog/page.tsx
+import { ArrowRight, Clock, Eye } from 'lucide-react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, Clock, Eye } from 'lucide-react'
+
 import { prisma } from '@/lib/prisma'
-import type { PostCategory } from '@prisma/client'
 import { formatDate } from '@/lib/utils'
+import type { PostCategory } from '@/prisma/generated/prisma/enums'
 
 export const metadata: Metadata = {
     title: 'Blog',
     description:
         'eBike tips, Lagos riding guides, product reviews and news from the Jovico Bikes team.',
 }
-
-export const dynamic = 'force-dynamic' // always fresh
 
 const CATEGORIES = ['ALL', 'NEWS', 'TIPS', 'REVIEW', 'GUIDE', 'COMPANY']
 

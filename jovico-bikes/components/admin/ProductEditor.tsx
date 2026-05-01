@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-import { ProductCategory, ProductType } from '@prisma/client'
 import type { ProductEditorData, ProductFormState } from '@/types'
+import type { ProductCategory, ProductType } from '@/prisma/generated/prisma/enums'
 
 const CATEGORIES: ProductCategory[] = [
     'CITY_BIKE',
@@ -125,10 +125,14 @@ export function ProductEditor({ product, mode }: Props) {
                 <div className='bg-white rounded-2xl border border-slate-100 p-6 space-y-4'>
                     <h2 className='font-bold text-slate-900'>Basic Information</h2>
                     <div>
-                        <label className='block text-sm font-semibold text-slate-700 mb-1.5'>
+                        <label
+                            htmlFor='name'
+                            className='block text-sm font-semibold text-slate-700 mb-1.5'
+                        >
                             Product Name *
                         </label>
                         <input
+                            id='name'
                             type='text'
                             value={form.name}
                             onChange={(e) => setField('name', e.target.value)}
@@ -137,10 +141,14 @@ export function ProductEditor({ product, mode }: Props) {
                         />
                     </div>
                     <div>
-                        <label className='block text-sm font-semibold text-slate-700 mb-1.5'>
+                        <label
+                            htmlFor='description'
+                            className='block text-sm font-semibold text-slate-700 mb-1.5'
+                        >
                             Description *
                         </label>
                         <textarea
+                            id='description'
                             value={form.description}
                             onChange={(e) => setField('description', e.target.value)}
                             rows={4}
@@ -150,10 +158,14 @@ export function ProductEditor({ product, mode }: Props) {
                     </div>
                     <div className='grid grid-cols-2 gap-4'>
                         <div>
-                            <label className='block text-sm font-semibold text-slate-700 mb-1.5'>
+                            <label
+                                htmlFor='sku'
+                                className='block text-sm font-semibold text-slate-700 mb-1.5'
+                            >
                                 SKU *
                             </label>
                             <input
+                                id='sku'
                                 type='text'
                                 value={form.sku}
                                 onChange={(e) => setField('sku', e.target.value)}
@@ -162,7 +174,10 @@ export function ProductEditor({ product, mode }: Props) {
                             />
                         </div>
                         <div>
-                            <label className='block text-sm font-semibold text-slate-700 mb-1.5'>
+                            <label
+                                htmlFor='brand'
+                                className='block text-sm font-semibold text-slate-700 mb-1.5'
+                            >
                                 Brand
                             </label>
                             <input
@@ -181,10 +196,14 @@ export function ProductEditor({ product, mode }: Props) {
                     <h2 className='font-bold text-slate-900'>Pricing & Stock</h2>
                     <div className='grid grid-cols-3 gap-4'>
                         <div>
-                            <label className='block text-sm font-semibold text-slate-700 mb-1.5'>
+                            <label
+                                htmlFor='price'
+                                className='block text-sm font-semibold text-slate-700 mb-1.5'
+                            >
                                 Price (₦) *
                             </label>
                             <input
+                                id='price'
                                 type='number'
                                 value={form.price}
                                 onChange={(e) => setField('price', e.target.value)}
@@ -194,10 +213,14 @@ export function ProductEditor({ product, mode }: Props) {
                             />
                         </div>
                         <div>
-                            <label className='block text-sm font-semibold text-slate-700 mb-1.5'>
+                            <label
+                                htmlFor='salePrice'
+                                className='block text-sm font-semibold text-slate-700 mb-1.5'
+                            >
                                 Sale Price (₦)
                             </label>
                             <input
+                                id='salePrice'
                                 type='number'
                                 value={form.salePrice}
                                 onChange={(e) => setField('salePrice', e.target.value)}
@@ -207,10 +230,14 @@ export function ProductEditor({ product, mode }: Props) {
                             />
                         </div>
                         <div>
-                            <label className='block text-sm font-semibold text-slate-700 mb-1.5'>
+                            <label
+                                htmlFor='stock'
+                                className='block text-sm font-semibold text-slate-700 mb-1.5'
+                            >
                                 Stock
                             </label>
                             <input
+                                id='stock'
                                 type='number'
                                 value={form.stock}
                                 onChange={(e) => setField('stock', Number(e.target.value))}
@@ -236,10 +263,14 @@ export function ProductEditor({ product, mode }: Props) {
                     <div className='grid grid-cols-1 gap-3'>
                         {SPEC_KEYS.map((key) => (
                             <div key={key} className='flex items-center gap-3'>
-                                <label className='w-32 text-xs font-semibold text-slate-600 capitalize shrink-0'>
+                                <label
+                                    htmlFor='motor'
+                                    className='w-32 text-xs font-semibold text-slate-600 capitalize shrink-0'
+                                >
                                     {key.replace(/([A-Z])/g, ' $1')}
                                 </label>
                                 <input
+                                    id='motor'
                                     type='text'
                                     value={specs[key] ?? ''}
                                     onChange={(e) => updateSpec(key, e.target.value)}
@@ -252,16 +283,21 @@ export function ProductEditor({ product, mode }: Props) {
                             .filter((k) => !SPEC_KEYS.includes(k))
                             .map((key) => (
                                 <div key={key} className='flex items-center gap-3'>
-                                    <label className='w-32 text-xs font-semibold text-slate-600 capitalize shrink-0'>
+                                    <label
+                                        htmlFor={key}
+                                        className='w-32 text-xs font-semibold text-slate-600 capitalize shrink-0'
+                                    >
                                         {key}
                                     </label>
                                     <input
+                                        id={key}
                                         type='text'
                                         value={specs[key]}
                                         onChange={(e) => updateSpec(key, e.target.value)}
                                         className='jv-input flex-1 text-sm'
                                     />
                                     <button
+                                        title='remove spec'
                                         type='button'
                                         onClick={() => removeSpec(key)}
                                         className='p-2 text-red-400 hover:text-red-600 transition-colors'
@@ -316,6 +352,7 @@ export function ProductEditor({ product, mode }: Props) {
                 <div className='bg-white rounded-2xl border border-slate-100 p-5'>
                     <h3 className='font-bold text-slate-900 text-sm mb-3'>Category</h3>
                     <select
+                        title='product category'
                         value={form.category}
                         onChange={(e) => setField('category', e.target.value as ProductCategory)}
                         className='jv-input text-sm'
@@ -331,6 +368,7 @@ export function ProductEditor({ product, mode }: Props) {
                 <div className='bg-white rounded-2xl border border-slate-100 p-5'>
                     <h3 className='font-bold text-slate-900 text-sm mb-3'>Type</h3>
                     <select
+                        title='product type'
                         value={form.type}
                         onChange={(e) => setField('type', e.target.value as ProductType)}
                         className='jv-input text-sm'

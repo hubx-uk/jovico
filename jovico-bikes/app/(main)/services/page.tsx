@@ -1,6 +1,4 @@
 // app/main/services/page.tsx
-import type { Metadata } from 'next'
-import Link from 'next/link'
 import {
     CheckCircle2,
     Clock,
@@ -13,8 +11,11 @@ import {
     Shield,
     MessageCircle,
 } from 'lucide-react'
+import type { Metadata } from 'next'
+
 import { prisma } from '@/lib/prisma'
 import { formatNaira } from '@/lib/utils'
+import { getSettings, waNumber } from '@/lib/getSettings'
 import { BookingForm } from '@/components/home/BookingForm'
 
 export const metadata: Metadata = {
@@ -33,10 +34,14 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
 }
 
 export default async function ServicesPage() {
-    const services = await prisma.service.findMany({
-        where: { published: true },
-        orderBy: { order: 'asc' },
-    })
+    const [services, settings] = await Promise.all([
+        prisma.service.findMany({
+            where: { published: true },
+            orderBy: { order: 'asc' },
+        }),
+        getSettings(['phone', 'whatsapp']),
+    ])
+    const wa = waNumber(settings)
 
     const featured = services.filter((s) => s.featured)
     const rest = services.filter((s) => !s.featured)
@@ -72,7 +77,7 @@ export default async function ServicesPage() {
                             Book a Service <ArrowRight className='w-5 h-5' />
                         </a>
                         <a
-                            href="https://wa.me/2348012345678?text=Hi! I'd like to book a service for my eBike."
+                            href={`https://wa.me/${wa}?text=Hi! I'd like to book a service for my eBike.`}
                             target='_blank'
                             rel='noopener noreferrer'
                             className='jv-btn-secondary !border-slate-600 !text-slate-300 hover:!bg-slate-800 hover:!text-white text-base !px-8 !py-4 justify-center'

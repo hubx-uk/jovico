@@ -1,9 +1,9 @@
 // app/(main)/contact/page.tsx
-import type { Metadata } from 'next'
 import { MapPin, Phone, Mail, Clock, MessageCircle } from 'lucide-react'
+import type { Metadata } from 'next'
 
-import { ContactForm } from '@/components/home/ContactForm'
 import { prisma } from '@/lib/prisma'
+import { ContactForm } from '@/components/home/ContactForm'
 
 export const metadata: Metadata = {
     title: 'Contact Us',

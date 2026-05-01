@@ -1,10 +1,9 @@
 'use client'
 // components/admin/ServiceEditor.tsx
-import { Save, Loader2 } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-
+import { Save, Loader2 } from 'lucide-react'
 import type { ServiceEditorData, ServiceFormState } from '@/types'
 
 const ICONS = ['wrench', 'settings', 'battery', 'circle', 'zap', 'shield', 'star', 'tool']
@@ -72,10 +71,14 @@ export function ServiceEditor({ service, mode }: Props) {
         <div className='space-y-5'>
             <div className='bg-white rounded-2xl border border-slate-100 p-6 space-y-5'>
                 <div>
-                    <label className='block text-sm font-semibold text-slate-700 mb-1.5'>
+                    <label
+                        htmlFor='name'
+                        className='block text-sm font-semibold text-slate-700 mb-1.5'
+                    >
                         Service Name *
                     </label>
                     <input
+                        id='name'
                         type='text'
                         value={form.name}
                         onChange={(e) => setField('name', e.target.value)}
@@ -84,10 +87,14 @@ export function ServiceEditor({ service, mode }: Props) {
                     />
                 </div>
                 <div>
-                    <label className='block text-sm font-semibold text-slate-700 mb-1.5'>
+                    <label
+                        htmlFor='shortDesc'
+                        className='block text-sm font-semibold text-slate-700 mb-1.5'
+                    >
                         Short Description *
                     </label>
                     <input
+                        id='shortDesc'
                         type='text'
                         value={form.shortDesc}
                         onChange={(e) => setField('shortDesc', e.target.value)}
@@ -96,10 +103,14 @@ export function ServiceEditor({ service, mode }: Props) {
                     />
                 </div>
                 <div>
-                    <label className='block text-sm font-semibold text-slate-700 mb-1.5'>
+                    <label
+                        htmlFor='description'
+                        className='block text-sm font-semibold text-slate-700 mb-1.5'
+                    >
                         Full Description *
                     </label>
                     <textarea
+                        id='description'
                         value={form.description}
                         onChange={(e) => setField('description', e.target.value)}
                         rows={4}
@@ -109,10 +120,14 @@ export function ServiceEditor({ service, mode }: Props) {
                 </div>
                 <div className='grid grid-cols-2 gap-4'>
                     <div>
-                        <label className='block text-sm font-semibold text-slate-700 mb-1.5'>
+                        <label
+                            htmlFor='price'
+                            className='block text-sm font-semibold text-slate-700 mb-1.5'
+                        >
                             Price (₦)
                         </label>
                         <input
+                            id='price'
                             type='number'
                             value={form.price}
                             onChange={(e) => setField('price', e.target.value)}
@@ -122,10 +137,14 @@ export function ServiceEditor({ service, mode }: Props) {
                         />
                     </div>
                     <div>
-                        <label className='block text-sm font-semibold text-slate-700 mb-1.5'>
+                        <label
+                            htmlFor='duration'
+                            className='block text-sm font-semibold text-slate-700 mb-1.5'
+                        >
                             Duration
                         </label>
                         <input
+                            id='duration'
                             type='text'
                             value={form.duration}
                             onChange={(e) => setField('duration', e.target.value)}
@@ -135,10 +154,14 @@ export function ServiceEditor({ service, mode }: Props) {
                     </div>
                 </div>
                 <div>
-                    <label className='block text-sm font-semibold text-slate-700 mb-1.5'>
+                    <label
+                        htmlFor='priceNote'
+                        className='block text-sm font-semibold text-slate-700 mb-1.5'
+                    >
                         Price Note
                     </label>
                     <input
+                        id='priceNote'
                         type='text'
                         value={form.priceNote}
                         onChange={(e) => setField('priceNote', e.target.value)}
@@ -148,10 +171,14 @@ export function ServiceEditor({ service, mode }: Props) {
                 </div>
                 <div className='grid grid-cols-2 gap-4'>
                     <div>
-                        <label className='block text-sm font-semibold text-slate-700 mb-1.5'>
+                        <label
+                            htmlFor='icon'
+                            className='block text-sm font-semibold text-slate-700 mb-1.5'
+                        >
                             Icon
                         </label>
                         <select
+                            id='icon'
                             value={form.icon}
                             onChange={(e) => setField('icon', e.target.value)}
                             className='jv-input'
@@ -164,10 +191,14 @@ export function ServiceEditor({ service, mode }: Props) {
                         </select>
                     </div>
                     <div>
-                        <label className='block text-sm font-semibold text-slate-700 mb-1.5'>
+                        <label
+                            htmlFor='number'
+                            className='block text-sm font-semibold text-slate-700 mb-1.5'
+                        >
                             Display Order
                         </label>
                         <input
+                            id='number'
                             type='number'
                             value={form.order}
                             onChange={(e) => setField('order', Number(e.target.value))}

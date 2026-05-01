@@ -1,13 +1,12 @@
 // app/(main)/account/profile/page.tsx
-import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
-import { getCustomerSession } from '@/lib/customerAuth'
+import type { Metadata } from 'next'
+
 import { prisma } from '@/lib/prisma'
+import { getCustomerSession } from '@/lib/customerAuth'
 import { ProfileForm } from '@/components/account/ProfileForm'
 
 export const metadata: Metadata = { title: 'My Profile' }
-
-export const dynamic = 'force-dynamic' // always fresh
 
 export default async function AccountProfilePage() {
     const session = await getCustomerSession()

@@ -6,14 +6,25 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import Link from 'next/link'
 
+import type { CartItem } from '@/types'
 import { formatNaira } from '@/lib/utils'
 
-interface CartItem {
+interface CustomerProfile {
     id: string
     name: string
-    price: number
-    slug: string
-    quantity: number
+    email: string
+    phone: string | null
+    address: string | null
+}
+
+interface FormState {
+    customerName: string
+    customerEmail: string
+    customerPhone: string
+    street: string
+    city: string
+    state: string
+    notes: string
 }
 
 export default function CheckoutPage() {
@@ -22,7 +33,8 @@ export default function CheckoutPage() {
     const [mounted, setMounted] = useState(false)
     const [submitting, setSubmitting] = useState(false)
     const [success, setSuccess] = useState<string | null>(null)
-    const [form, setForm] = useState({
+    const [customer, setCustomer] = useState<CustomerProfile | null>(null)
+    const [form, setForm] = useState<FormState>({
         customerName: '',
         customerEmail: '',
         customerPhone: '',
@@ -32,21 +44,58 @@ export default function CheckoutPage() {
         notes: '',
     })
 
+    // Load cart from localStorage
     useEffect(() => {
         setMounted(true)
         const stored = localStorage.getItem('jovico_cart')
         if (stored) {
-            const items = JSON.parse(stored)
-            if (items.length === 0) router.push('/cart')
+            const items = JSON.parse(stored) as CartItem[]
+            if (items.length === 0) {
+                router.push('/cart')
+                return
+            }
             setCart(items)
         } else {
             router.push('/cart')
         }
     }, [router])
 
+    // Try to fetch logged-in customer profile and prefill form
+    useEffect(() => {
+        async function prefill() {
+            try {
+                const res = await fetch('/api/customer/profile')
+                if (!res.ok) return // guest — no prefill
+                const profile: CustomerProfile = await res.json()
+                setCustomer(profile)
+
+                // Parse saved address back into street/city/state if possible
+                const savedAddr = profile.address ?? ''
+                const parts = savedAddr.split(',').map((p) => p.trim())
+
+                setForm((f) => ({
+                    ...f,
+                    customerName: profile.name || f.customerName,
+                    customerEmail: profile.email || f.customerEmail,
+                    customerPhone: profile.phone || f.customerPhone,
+                    street: parts[0] || f.street,
+                    city: parts[1] || f.city,
+                    state: parts[2] || f.state,
+                }))
+            } catch {
+                // Guest checkout — leave form empty
+            }
+        }
+        prefill()
+    }, [])
+
     const subtotal = cart.reduce((s, i) => s + i.price * i.quantity, 0)
     const shipping = subtotal > 0 && subtotal < 100000 ? 5000 : 0
     const total = subtotal + shipping
+
+    function setField<K extends keyof FormState>(key: K, value: FormState[K]) {
+        setForm((f) => ({ ...f, [key]: value }))
+    }
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
@@ -60,7 +109,11 @@ export default function CheckoutPage() {
                     customerName: form.customerName,
                     customerEmail: form.customerEmail,
                     customerPhone: form.customerPhone,
-                    shippingAddress: { street: form.street, city: form.city, state: form.state },
+                    shippingAddress: {
+                        street: form.street,
+                        city: form.city,
+                        state: form.state,
+                    },
                     items: cart.map((i) => ({
                         productId: i.id,
                         name: i.name,
@@ -68,6 +121,7 @@ export default function CheckoutPage() {
                         quantity: i.quantity,
                     })),
                     notes: form.notes,
+                    // customerId is resolved server-side from the session cookie
                 }),
             })
             if (!res.ok) throw new Error('Order failed')
@@ -76,7 +130,7 @@ export default function CheckoutPage() {
             window.dispatchEvent(new Event('cart-updated'))
             setSuccess(order.orderNumber)
         } catch {
-            toast.error('Failed to place order. Please try WhatsApp.')
+            toast.error('Failed to place order. Please try WhatsApp instead.')
         } finally {
             setSubmitting(false)
         }
@@ -86,14 +140,14 @@ export default function CheckoutPage() {
 
     if (success) {
         return (
-            <div className='min-h-screen bg-slate-50 flex items-center justify-center p-6'>
-                <div className='jv-card p-12 text-center max-w-md w-full'>
+            <div className='min-h-screen bg-slate-50 flex items-center justify-center p-6 pt-28'>
+                <div className='jv-card p-10 sm:p-12 text-center max-w-md w-full'>
                     <div className='w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-5'>
                         <CheckCircle2 className='w-9 h-9 text-green-600' />
                     </div>
                     <h1 className='text-2xl font-extrabold text-slate-900 mb-2'>Order Placed!</h1>
                     <p className='text-slate-500 mb-2'>
-                        Thank you for your order. We'll contact you shortly to confirm.
+                        Thank you! We&apos;ll contact you shortly to confirm.
                     </p>
                     <div className='bg-slate-50 rounded-2xl px-5 py-3 my-5 font-mono font-bold text-slate-900'>
                         {success}
@@ -101,9 +155,19 @@ export default function CheckoutPage() {
                     <p className='text-sm text-slate-400 mb-6'>
                         A confirmation will be sent to your email and WhatsApp.
                     </p>
-                    <Link href='/shop' className='jv-btn-primary w-full justify-center'>
-                        Continue Shopping
-                    </Link>
+                    <div className='flex flex-col sm:flex-row gap-3'>
+                        {customer && (
+                            <Link
+                                href='/account/orders'
+                                className='jv-btn-secondary flex-1 justify-center !border-slate-200 !text-slate-700'
+                            >
+                                View My Orders
+                            </Link>
+                        )}
+                        <Link href='/shop' className='jv-btn-primary flex-1 justify-center'>
+                            Continue Shopping
+                        </Link>
+                    </div>
                 </div>
             </div>
         )
@@ -120,6 +184,12 @@ export default function CheckoutPage() {
                         <ArrowLeft className='w-4 h-4' /> Back to Cart
                     </Link>
                     <h1 className='text-3xl sm:text-4xl font-extrabold text-white'>Checkout</h1>
+                    {customer && (
+                        <p className='text-slate-400 text-sm mt-1'>
+                            Checking out as{' '}
+                            <span className='text-green-400 font-semibold'>{customer.name}</span>
+                        </p>
+                    )}
                 </div>
             </section>
 
@@ -131,67 +201,80 @@ export default function CheckoutPage() {
                             <div className='space-y-4 sm:space-y-5'>
                                 {/* Contact */}
                                 <div className='jv-card p-5 sm:p-6 space-y-4'>
-                                    <h2 className='font-bold text-slate-900 text-base sm:text-lg'>
-                                        Contact Information
-                                    </h2>
+                                    <div className='flex items-center justify-between'>
+                                        <h2 className='font-bold text-slate-900 text-base sm:text-lg'>
+                                            Contact Information
+                                        </h2>
+                                        {customer && (
+                                            <span className='jv-badge bg-green-100 text-green-700 text-xs'>
+                                                Pre-filled from your profile
+                                            </span>
+                                        )}
+                                    </div>
+
                                     <div>
-                                        <label className='block text-sm font-semibold text-slate-700 mb-1.5'>
+                                        <label
+                                            htmlFor='customerName'
+                                            className='block text-sm font-semibold text-slate-700 mb-1.5'
+                                        >
                                             Full Name *
                                         </label>
                                         <div className='relative'>
                                             <User className='absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400' />
                                             <input
-                                                type='text'
                                                 required
+                                                type='text'
+                                                id='customerName'
                                                 value={form.customerName}
                                                 onChange={(e) =>
-                                                    setForm((f) => ({
-                                                        ...f,
-                                                        customerName: e.target.value,
-                                                    }))
+                                                    setField('customerName', e.target.value)
                                                 }
                                                 placeholder='Your full name'
                                                 className='jv-input pl-10'
                                             />
                                         </div>
                                     </div>
+
                                     <div className='grid grid-cols-2 gap-4'>
                                         <div>
-                                            <label className='block text-sm font-semibold text-slate-700 mb-1.5'>
+                                            <label
+                                                htmlFor='customerEmail'
+                                                className='block text-sm font-semibold text-slate-700 mb-1.5'
+                                            >
                                                 Email *
                                             </label>
                                             <div className='relative'>
                                                 <Mail className='absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400' />
                                                 <input
-                                                    type='email'
                                                     required
+                                                    type='email'
+                                                    id='customerEmail'
                                                     value={form.customerEmail}
                                                     onChange={(e) =>
-                                                        setForm((f) => ({
-                                                            ...f,
-                                                            customerEmail: e.target.value,
-                                                        }))
+                                                        setField('customerEmail', e.target.value)
                                                     }
                                                     placeholder='you@email.com'
-                                                    className='jv-input pl-10'
+                                                    className={`jv-input pl-10 ${customer ? 'bg-slate-50' : ''}`}
+                                                    readOnly={!!customer}
                                                 />
                                             </div>
                                         </div>
                                         <div>
-                                            <label className='block text-sm font-semibold text-slate-700 mb-1.5'>
+                                            <label
+                                                htmlFor='customerPhone'
+                                                className='block text-sm font-semibold text-slate-700 mb-1.5'
+                                            >
                                                 Phone *
                                             </label>
                                             <div className='relative'>
                                                 <Phone className='absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400' />
                                                 <input
-                                                    type='tel'
                                                     required
+                                                    type='tel'
+                                                    id='customerPhone'
                                                     value={form.customerPhone}
                                                     onChange={(e) =>
-                                                        setForm((f) => ({
-                                                            ...f,
-                                                            customerPhone: e.target.value,
-                                                        }))
+                                                        setField('customerPhone', e.target.value)
                                                     }
                                                     placeholder='+234 801...'
                                                     className='jv-input pl-10'
@@ -207,21 +290,20 @@ export default function CheckoutPage() {
                                         Delivery Address
                                     </h2>
                                     <div>
-                                        <label className='block text-sm font-semibold text-slate-700 mb-1.5'>
+                                        <label
+                                            htmlFor='street'
+                                            className='block text-sm font-semibold text-slate-700 mb-1.5'
+                                        >
                                             Street Address *
                                         </label>
                                         <div className='relative'>
                                             <MapPin className='absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400' />
                                             <input
-                                                type='text'
                                                 required
+                                                id='street'
+                                                type='text'
                                                 value={form.street}
-                                                onChange={(e) =>
-                                                    setForm((f) => ({
-                                                        ...f,
-                                                        street: e.target.value,
-                                                    }))
-                                                }
+                                                onChange={(e) => setField('street', e.target.value)}
                                                 placeholder='14 Adeola Odeku, Victoria Island'
                                                 className='jv-input pl-10'
                                             />
@@ -229,32 +311,33 @@ export default function CheckoutPage() {
                                     </div>
                                     <div className='grid grid-cols-2 gap-4'>
                                         <div>
-                                            <label className='block text-sm font-semibold text-slate-700 mb-1.5'>
+                                            <label
+                                                htmlFor='city'
+                                                className='block text-sm font-semibold text-slate-700 mb-1.5'
+                                            >
                                                 City *
                                             </label>
                                             <input
-                                                type='text'
                                                 required
+                                                id='city'
+                                                type='text'
                                                 value={form.city}
-                                                onChange={(e) =>
-                                                    setForm((f) => ({ ...f, city: e.target.value }))
-                                                }
+                                                onChange={(e) => setField('city', e.target.value)}
                                                 placeholder='Lagos'
                                                 className='jv-input'
                                             />
                                         </div>
                                         <div>
-                                            <label className='block text-sm font-semibold text-slate-700 mb-1.5'>
+                                            <label
+                                                htmlFor='state'
+                                                className='block text-sm font-semibold text-slate-700 mb-1.5'
+                                            >
                                                 State *
                                             </label>
                                             <select
+                                                id='state'
                                                 value={form.state}
-                                                onChange={(e) =>
-                                                    setForm((f) => ({
-                                                        ...f,
-                                                        state: e.target.value,
-                                                    }))
-                                                }
+                                                onChange={(e) => setField('state', e.target.value)}
                                                 className='jv-input'
                                             >
                                                 {[
@@ -277,16 +360,18 @@ export default function CheckoutPage() {
                                         </div>
                                     </div>
                                     <div>
-                                        <label className='block text-sm font-semibold text-slate-700 mb-1.5'>
+                                        <label
+                                            htmlFor='notes'
+                                            className='block text-sm font-semibold text-slate-700 mb-1.5'
+                                        >
                                             Order Notes
                                         </label>
                                         <textarea
+                                            id='notes'
                                             value={form.notes}
-                                            onChange={(e) =>
-                                                setForm((f) => ({ ...f, notes: e.target.value }))
-                                            }
+                                            onChange={(e) => setField('notes', e.target.value)}
                                             rows={3}
-                                            placeholder='Any special instructions...'
+                                            placeholder='Any special instructions…'
                                             className='jv-input resize-none'
                                         />
                                     </div>
@@ -300,6 +385,22 @@ export default function CheckoutPage() {
                                         WhatsApp within 2 hours.
                                     </p>
                                 </div>
+
+                                {!customer && (
+                                    <div className='jv-card p-5 bg-amber-50 border-amber-200'>
+                                        <p className='text-sm text-amber-800'>
+                                            💡{' '}
+                                            <Link
+                                                href='/account/login'
+                                                className='font-semibold underline'
+                                            >
+                                                Sign in
+                                            </Link>{' '}
+                                            to auto-fill your details and track this order in your
+                                            account dashboard.
+                                        </p>
+                                    </div>
+                                )}
                             </div>
 
                             {/* Order summary */}
@@ -347,7 +448,6 @@ export default function CheckoutPage() {
                                             </span>
                                         </div>
                                     </div>
-
                                     <button
                                         type='submit'
                                         disabled={submitting}
@@ -356,7 +456,7 @@ export default function CheckoutPage() {
                                         {submitting ? (
                                             <>
                                                 <Loader2 className='w-5 h-5 animate-spin' /> Placing
-                                                Order...
+                                                Order…
                                             </>
                                         ) : (
                                             <>Place Order · {formatNaira(total)}</>

@@ -1,9 +1,9 @@
 'use client'
 // components/account/CustomerLoginForm.tsx
-import { Mail, Lock, User, Phone, Eye, EyeOff, Loader2 } from 'lucide-react'
-import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { toast } from 'sonner'
+import { Mail, Lock, User, Phone, Eye, EyeOff, Loader2 } from 'lucide-react'
 
 interface Props {
     mode: 'login' | 'register'
@@ -102,6 +102,7 @@ export function CustomerLoginForm({ mode }: Props) {
                             <Phone className='absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400' />
                             <input
                                 type='tel'
+                                title='phone'
                                 value={form.phone}
                                 onChange={(e) => set('phone', e.target.value)}
                                 placeholder='+234 801 234 5678'
@@ -119,6 +120,7 @@ export function CustomerLoginForm({ mode }: Props) {
                 <div className='relative'>
                     <Mail className='absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400' />
                     <input
+                        title='email'
                         type='email'
                         value={form.email}
                         onChange={(e) => set('email', e.target.value)}
@@ -137,6 +139,7 @@ export function CustomerLoginForm({ mode }: Props) {
                 <div className='relative'>
                     <Lock className='absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400' />
                     <input
+                        title='password'
                         type={showPass ? 'text' : 'password'}
                         value={form.password}
                         onChange={(e) => set('password', e.target.value)}

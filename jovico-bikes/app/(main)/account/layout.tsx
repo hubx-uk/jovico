@@ -2,14 +2,11 @@
 // This layout wraps all authenticated account pages (dashboard, orders, profile, security).
 // Login/Register live in app/(main)/(account-public)/account/ and don't use this layout.
 import { redirect } from 'next/navigation'
+
 import { getCustomerSession } from '@/lib/customerAuth'
 import { AccountSidebar } from '@/components/account/AccountSidebar'
 
-export default async function AccountLayout({
-    children,
-}: {
-    children: React.ReactNode
-}) {
+export default async function AccountLayout({ children }: { children: React.ReactNode }) {
     const session = await getCustomerSession()
     if (!session) redirect('/account/login')
 

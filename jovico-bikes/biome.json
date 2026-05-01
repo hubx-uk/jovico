@@ -1,8 +1,5 @@
 {
-    "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-    "organizeImports": {
-        "enabled": true
-    },
+    "$schema": "https://biomejs.dev/schemas/2.4.12/schema.json",
     "linter": {
         "enabled": true,
         "rules": {
@@ -47,7 +44,22 @@
             "attributePosition": "auto"
         }
     },
+    "css": {
+        "parser": {
+            "tailwindDirectives": true
+        },
+        "formatter": {
+            "quoteStyle": "single"
+        }
+    },
     "files": {
-        "ignore": ["node_modules", ".next", "dist", "*.config.js", "*.config.ts", "prisma/seed.ts"]
+        "ignoreUnknown": true,
+        "includes": [
+            "**",
+            "!!.next/**",
+            "!!node_modules/**",
+            "!!prisma/generated/**",
+            "!!prisma/migrations/**"
+        ]
     }
 }

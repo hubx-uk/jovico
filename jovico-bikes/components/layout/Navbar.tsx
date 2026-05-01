@@ -1,12 +1,12 @@
 'use client'
 // components/layout/Navbar.tsx
-import { Menu, X, ShoppingBag, Bike, User } from 'lucide-react'
+import { Menu, X, ShoppingBag, User } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 
 import { cn } from '@/lib/utils'
-import Image from 'next/image'
 
 const navLinks = [
     { label: 'Shop', href: '/shop' },
@@ -47,26 +47,29 @@ export function Navbar() {
 
     useEffect(() => {
         setOpen(false)
-    }, [pathname])
+    }, [])
 
     return (
         <header
             className={cn(
-                'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-                scrolled
-                    ? 'bg-white/95 backdrop-blur-lg shadow-sm'
-                    : 'bg-transparent'
+                'navbar-header fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+                scrolled ? 'bg-white/95 backdrop-blur-lg shadow-sm' : 'bg-transparent'
             )}
-            style={{ height: 'var(--nav-height)' }}
         >
             <nav className='jv-container flex items-center justify-between h-full'>
                 {/* Logo */}
                 <Link href='/' className='flex items-center gap-2 group'>
                     <div className='w-9 h-9 rounded-xl bg-slate-900 flex items-center justify-center group-hover:bg-green-500 transition-colors duration-300'>
                         {/* <Bike className='w-5 h-5 text-white' strokeWidth={2.5} /> */}
-                        <Image src={'/images/logo_sq.png'} alt='Jovico Logo' width={20} height={20} />
+                        <Image
+                            src={'/images/logo_sq.png'}
+                            alt='Jovico Logo'
+                            width={20}
+                            height={20}
+                        />
                     </div>
-                    <span className={cn(
+                    <span
+                        className={cn(
                             'font-bold text-lg text-base sm:text-lg tracking-tight',
                             scrolled
                                 ? 'text-slate-700 hover:text-slate-900'
@@ -78,7 +81,7 @@ export function Navbar() {
                 </Link>
 
                 {/* Desktop Nav */}
-                <ul className='hidden md:flex items-center gap-1'>
+                <ul className='hidden lg:flex items-center gap-1'>
                     {navLinks.map((link) => (
                         <li key={link.href}>
                             <Link
@@ -102,7 +105,7 @@ export function Navbar() {
                 </ul>
 
                 {/* Desktop CTA */}
-                <div className='hidden md:flex items-center gap-3'>
+                <div className='hidden lg:flex items-center gap-3'>
                     {/* Account */}
                     <Link
                         href='/account'
@@ -119,10 +122,7 @@ export function Navbar() {
                     >
                         <ShoppingBag className='w-5 h-5' />
                         {cartCount > 0 && (
-                            <span
-                                className='absolute -top-0.5 -right-0.5 w-4.5 h-4.5 rounded-full bg-green-500 text-white text-[10px] font-bold flex items-center justify-center'
-                                style={{ width: '1.1rem', height: '1.1rem', fontSize: '10px' }}
-                            >
+                            <span className='cart-badge absolute -top-0.5 -right-0.5 rounded-full bg-green-500 text-white font-bold flex items-center justify-center'>
                                 {cartCount > 9 ? '9+' : cartCount}
                             </span>
                         )}
@@ -133,10 +133,17 @@ export function Navbar() {
                 </div>
 
                 {/* Mobile toggle */}
-                <div className='md:hidden flex items-center gap-2'>
+                <div className='lg:hidden flex items-center gap-2'>{/* Account */}
+                    <Link
+                        href='/account'
+                        className='p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors'
+                        aria-label='My Account'
+                    >
+                        <User className='w-5 h-5' />
+                    </Link>
                     <Link
                         href='/cart'
-                        className='relative p-2 rounded-xl text-slate-600 hover:text-slate-900 transition-colors'
+                        className='relative p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors'
                         aria-label='Cart'
                     >
                         <ShoppingBag className='w-5 h-5' />
@@ -159,7 +166,7 @@ export function Navbar() {
 
             {/* Mobile Menu */}
             {open && (
-                <div className='md:hidden absolute top-full left-0 right-0 bg-white border-b border-slate-100 shadow-xl rounded-b-3xl overflow-hidden animate-slide-in-right'>
+                <div className='lg:hidden absolute top-full left-0 right-0 bg-white border-b border-slate-100 shadow-xl rounded-b-3xl overflow-hidden animate-slide-in-right'>
                     <div className='jv-container py-6 space-y-1'>
                         {navLinks.map((link) => (
                             <Link

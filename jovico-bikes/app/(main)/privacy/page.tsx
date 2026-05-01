@@ -1,9 +1,12 @@
 // app/main/privacy/page.tsx
 import type { Metadata } from 'next'
 
+import { getSettings } from '@/lib/getSettings'
+
 export const metadata: Metadata = { title: 'Privacy Policy' }
 
-export default function PrivacyPage() {
+export default async function PrivacyPage() {
+    const s = await getSettings(['email', 'phone', 'site_name'])
     return (
         <>
             <section className='pt-28 sm:pt-32 pb-12 bg-slate-950'>
@@ -52,15 +55,13 @@ export default function PrivacyPage() {
                     <p>
                         You have the right to request access to your personal data, request deletion
                         of your data, and opt out of marketing communications at any time. Contact
-                        us at <a href='mailto:hello@jovicoworld.com'>hello@jovicoworld.com</a> to
-                        exercise these rights.
+                        us at <a href={`mailto:${s.email}`}>{s.email}</a> to exercise these rights.
                     </p>
 
                     <h2>7. Contact Us</h2>
                     <p>
                         For any privacy concerns, contact our Data Protection Officer at{' '}
-                        <a href='mailto:hello@jovicoworld.com'>hello@jovicoworld.com</a> or call
-                        +234 801 234 5678.
+                        <a href={`mailto:${s.email}`}>{s.email}</a> or call {s.phone}.
                     </p>
                 </div>
             </section>

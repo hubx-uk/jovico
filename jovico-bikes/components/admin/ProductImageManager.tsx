@@ -2,6 +2,7 @@
 // components/admin/ProductImageManager.tsx
 import { Upload, Star, Trash2, Loader2, Plus, Link2, X, ImageIcon } from 'lucide-react'
 import { useState, useRef, useCallback } from 'react'
+import Image from 'next/image'
 import { toast } from 'sonner'
 
 interface ProductImage {
@@ -180,6 +181,7 @@ export function ProductImageManager({ productId, initialImages }: Props) {
 
             {/* Hidden file input */}
             <input
+                title='hideFile'
                 ref={fileInputRef}
                 type='file'
                 accept='image/*'
@@ -200,6 +202,7 @@ export function ProductImageManager({ productId, initialImages }: Props) {
                         onKeyDown={(e) => e.key === 'Enter' && handleAddUrl()}
                     />
                     <button
+                        title='add'
                         type='button'
                         onClick={handleAddUrl}
                         disabled={uploading || !urlInput}
@@ -208,6 +211,7 @@ export function ProductImageManager({ productId, initialImages }: Props) {
                         <Plus className='w-4 h-4' />
                     </button>
                     <button
+                        title='cancel'
                         type='button'
                         onClick={() => {
                             setShowUrlInput(false)

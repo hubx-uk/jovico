@@ -3,22 +3,18 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 
 import { prisma } from '@/lib/prisma'
-import { ProductEditorData } from '@/types'
+import type { ProductEditorData } from '@/types'
 import { ProductEditor } from '@/components/admin/ProductEditor'
 import { ProductImageManager } from '@/components/admin/ProductImageManager'
 
 export const metadata: Metadata = { title: 'Edit Product' }
 
-export default async function EditProductPage({
-    params,
-}: {
-    params: Promise<{ id: string }>
-}) {
+export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
-    const product = await prisma.product.findUnique({
+    const product = (await prisma.product.findUnique({
         where: { id },
         include: { images: { orderBy: [{ isPrimary: 'desc' }, { id: 'asc' }] } },
-    }) as ProductEditorData | null
+    })) as ProductEditorData | null
     if (!product) notFound()
 
     return (

@@ -1,8 +1,9 @@
 // app/(main)/blog/[slug]/page.tsx
+import { ArrowLeft, Clock, Eye, Calendar, Share2, Tag } from 'lucide-react'
+import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import { ArrowLeft, Clock, Eye, Calendar, Share2, Tag } from 'lucide-react'
+
 import { prisma } from '@/lib/prisma'
 import { formatDate } from '@/lib/utils'
 
@@ -25,11 +26,7 @@ export async function generateMetadata({
     return { title: post.title, description: post.excerpt }
 }
 
-export default async function BlogPostPage({
-    params,
-}: {
-    params: Promise<{ slug: string }>
-}) {
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params
     const post = await prisma.post.findUnique({
         where: { slug, published: true },
@@ -111,7 +108,7 @@ export default async function BlogPostPage({
                         {/* Article */}
                         <article
                             className='prose-jovico order-2 lg:order-1 min-w-0'
-                            dangerouslySetInnerHTML={{ __html: post.content }}
+                            // dangerouslySetInnerHTML={{ __html: post.content }}
                         />
 
                         {/* Sidebar */}

@@ -1,9 +1,9 @@
 // app/api/customer/profile/route.ts
 import { NextRequest, NextResponse } from 'next/server'
+import bcrypt from 'bcryptjs'
 import { z } from 'zod'
 
 import { prisma } from '@/lib/prisma'
-import { comparePasswords, hashPassword } from '@/lib/utils'
 import { requireCustomer, clearCustomerSession, setCustomerSession } from '@/lib/customerAuth'
 
 const updateSchema = z.object({
@@ -46,7 +46,7 @@ export async function PATCH(req: NextRequest) {
             }
             const customer = await prisma.customer.findUnique({ where: { id: session.id } })
             if (!customer) return NextResponse.json({ error: 'Not found' }, { status: 404 })
-            const valid = await comparePasswords(data.currentPassword, customer.password)
+            const valid = await bcrypt.compare(data.currentPassword, customer.password)
             if (!valid)
                 return NextResponse.json(
                     { error: 'Current password is incorrect' },
@@ -58,7 +58,7 @@ export async function PATCH(req: NextRequest) {
         if (data.name) update.name = data.name
         if (data.phone !== undefined) update.phone = data.phone
         if (data.address !== undefined) update.address = data.address
-        if (data.newPassword) update.password = await hashPassword(data.newPassword)
+        if (data.newPassword) update.password = await bcrypt.hash(data.newPassword, 12)
 
         const updated = await prisma.customer.update({
             where: { id: session.id },
@@ -70,7 +70,7 @@ export async function PATCH(req: NextRequest) {
         return NextResponse.json(updated)
     } catch (err) {
         if (err instanceof z.ZodError)
-            return NextResponse.json({ error: err.errors[0].message }, { status: 400 })
+            return NextResponse.json({ error: err.issues[0].message }, { status: 400 })
         if (err instanceof Error && err.message === 'Unauthenticated')
             return NextResponse.json({ error: 'Unauthenticated' }, { status: 401 })
         return NextResponse.json({ error: 'Server error' }, { status: 500 })
@@ -80,7 +80,10 @@ export async function PATCH(req: NextRequest) {
 export async function DELETE() {
     try {
         const session = await requireCustomer()
-        await prisma.customer.update({ where: { id: session.id }, data: { deletedAt: new Date() } })
+        await prisma.customer.update({
+            where: { id: session.id },
+            data: { deletedAt: new Date() },
+        })
         await clearCustomerSession()
         return NextResponse.json({ success: true })
     } catch {

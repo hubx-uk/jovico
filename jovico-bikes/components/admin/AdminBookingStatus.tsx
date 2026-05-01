@@ -38,9 +38,10 @@ export function AdminBookingStatus({ id, status }: { id: string; status: string 
 
     return (
         <select
+            title='status'
             value={local}
-            onChange={handleChange}
             disabled={isPending}
+            onChange={handleChange}
             className={`text-xs font-semibold border rounded-xl px-2.5 py-1.5 appearance-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-slate-300 ${colors[local] ?? ''}`}
         >
             {STATUSES.map((s) => (

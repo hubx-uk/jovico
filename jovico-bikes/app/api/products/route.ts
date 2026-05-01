@@ -2,10 +2,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 
-import type { ProductCategory, ProductType } from '@prisma/client'
+import { prisma } from '@/lib/prisma'
 import { requireAuth } from '@/lib/auth'
 import { createSlug } from '@/lib/utils'
-import { prisma } from '@/lib/prisma'
+import type { ProductCategory, ProductType } from '@/prisma/generated/prisma/enums'
 
 const productSchema = z.object({
     name: z.string().min(2),
@@ -17,7 +17,7 @@ const productSchema = z.object({
     category: z.string(),
     type: z.string().default('BIKE'),
     brand: z.string().optional(),
-    specs: z.record(z.string()).optional(),
+    specs: z.record(z.string(), z.string()).optional(),
     featured: z.boolean().default(false),
     published: z.boolean().default(true),
 })
@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(product, { status: 201 })
     } catch (err) {
         if (err instanceof z.ZodError) {
-            return NextResponse.json({ error: err.errors }, { status: 400 })
+            return NextResponse.json({ error: err.issues }, { status: 400 })
         }
         if (err instanceof Error && err.message === 'Unauthorised') {
             return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })

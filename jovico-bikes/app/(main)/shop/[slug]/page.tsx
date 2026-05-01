@@ -1,21 +1,14 @@
 // app/(main)/shop/[slug]/page.tsx
+import { Zap, Shield, Clock, MessageCircle, ChevronRight, Star } from 'lucide-react'
+import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import {
-    ArrowLeft,
-    CheckCircle2,
-    Zap,
-    Shield,
-    Clock,
-    MessageCircle,
-    ChevronRight,
-    Star,
-} from 'lucide-react'
+
 import { prisma } from '@/lib/prisma'
 import { formatNaira } from '@/lib/utils'
-import { AddToCartButton } from '@/components/shop/AddToCartButton'
+import { getSettings, waNumber } from '@/lib/getSettings'
 import { EnquireButton } from '@/components/shop/EnquireButton'
+import { AddToCartButton } from '@/components/shop/AddToCartButton'
 import { ProductImageSlider } from '@/components/shop/ProductImageSlider'
 
 export async function generateStaticParams() {
@@ -34,11 +27,7 @@ export async function generateMetadata({
     return { title: product.name, description: product.description }
 }
 
-export default async function ProductPage({
-    params,
-}: {
-    params: Promise<{ slug: string }>
-}) {
+export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params
     const product = await prisma.product.findUnique({
         where: { slug, published: true },
@@ -49,11 +38,15 @@ export default async function ProductPage({
 
     if (!product) notFound()
 
-    const related = await prisma.product.findMany({
-        where: { category: product.category, NOT: { id: product.id }, published: true },
-        include: { images: { where: { isPrimary: true }, take: 1 } },
-        take: 3,
-    })
+    const [related, settings] = await Promise.all([
+        prisma.product.findMany({
+            where: { category: product.category, NOT: { id: product.id }, published: true },
+            include: { images: { where: { isPrimary: true }, take: 1 } },
+            take: 3,
+        }),
+        getSettings(['whatsapp', 'site_name']),
+    ])
+    const wa = waNumber(settings)
 
     const specs = product.specs as Record<string, string> | null
 
@@ -172,7 +165,10 @@ export default async function ProductPage({
                                         slug: product.slug,
                                     }}
                                 />
-                                <EnquireButton productName={product.name} />
+                                <EnquireButton
+                                    productName={product.name}
+                                    whatsapp={settings.whatsapp}
+                                />
                             </div>
 
                             {/* Trust signals */}
@@ -201,7 +197,7 @@ export default async function ProductPage({
                                     Need help? Chat with our eBike experts on WhatsApp
                                 </div>
                                 <a
-                                    href={`https://wa.me/2348012345678?text=Hi! I'm interested in the ${product.name}`}
+                                    href={`https://wa.me/${wa}?text=Hi! I'm interested in the ${product.name}`}
                                     target='_blank'
                                     rel='noopener noreferrer'
                                     className='text-xs sm:text-sm font-bold text-green-700 hover:text-green-900 whitespace-nowrap shrink-0'

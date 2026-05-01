@@ -27,14 +27,8 @@ export const metadata: Metadata = {
         'electric bike service Lagos',
         'buy ebike Nigeria',
     ],
-    metadataBase: new URL('https://jovicoworld.com'),
-    alternates: {
-        canonical: '/',
-        languages: {
-            'en-US': '/en-US',
-        },
-    },
     authors: [{ name: 'Jovico Bikes', url: 'https://jovicoworld.com' }],
+    metadataBase: new URL('https://jovicoworld.com'),
     creator: 'Jovico Bikes',
     openGraph: {
         type: 'website',
@@ -49,7 +43,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'Jovico Bikes — Premium eBikes in Lagos',
         description: "Lagos's premier eBike retailer and service centre.",
-        creator: '@jovicobikes',
+        creator: '@jovicoworld',
     },
     robots: { index: true, follow: true },
     icons: {
@@ -59,13 +53,9 @@ export const metadata: Metadata = {
     },
 }
 
-export default function RootLayout({
-    children,
-}: {
-    children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang='en' suppressHydrationWarning>
+        <html lang='en' data-scroll-behavior='smooth' suppressHydrationWarning>
             <body className={`${inter.variable} font-sans antialiased`}>
                 {children}
                 <Toaster
