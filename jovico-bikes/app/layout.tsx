@@ -1,13 +1,13 @@
 // app/layout.tsx
-import { Sora } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import type { Metadata } from 'next'
 import { Toaster } from 'sonner'
 
 import './globals.css'
 
-const sora = Sora({
+const inter = Inter({
     subsets: ['latin'],
-    variable: '--font-sora',
+    variable: '--font-inter',
     weight: ['300', '400', '500', '600', '700', '800'],
     display: 'swap',
 })
@@ -66,14 +66,14 @@ export default function RootLayout({
 }) {
     return (
         <html lang='en' suppressHydrationWarning>
-            <body className={`${sora.variable} font-sans antialiased`}>
+            <body className={`${inter.variable} font-sans antialiased`}>
                 {children}
                 <Toaster
                     position='top-right'
                     toastOptions={{
                         style: {
                             borderRadius: '16px',
-                            fontFamily: 'var(--font-sora)',
+                            fontFamily: 'var(--font-inter)',
                         },
                     }}
                 />

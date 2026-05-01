@@ -3,7 +3,7 @@
    Tailwind CSS v4  ·  CSS-first configuration
    ───────────────────────────────────────────────────────── */
 
-@import url("https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
 
 /* 1. Import Tailwind v4 */
 @import "tailwindcss";
@@ -18,8 +18,8 @@
 /*      Use @theme inline so values resolve at runtime via var()            */
 @theme inline {
     /* Fonts — set by Next.js font loader at runtime */
-    --font-sans: var(--font-sora), system-ui, sans-serif;
-    --font-display: var(--font-sora), system-ui, sans-serif;
+    --font-sans: var(--font-inter), system-ui, sans-serif;
+    --font-display: var(--font-inter), system-ui, sans-serif;
     --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
     /* ── Shadcn/ui colour tokens ── */
@@ -215,7 +215,7 @@
         scroll-behavior: smooth;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        font-family: var(--font-sora), system-ui, sans-serif;
+        font-family: var(--font-inter), system-ui, sans-serif;
     }
 
     body {

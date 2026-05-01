@@ -17,7 +17,7 @@ Lagos's premier eBike retailer and service centre — built with **Next.js 15**,
 | Auth | JWT + Iron Session (cookie-based) |
 | Animation | Framer Motion |
 | Notifications | Sonner toast |
-| Fonts | Sora (Google Fonts) |
+| Fonts | Inter (Google Fonts) |
 
 ---
 
