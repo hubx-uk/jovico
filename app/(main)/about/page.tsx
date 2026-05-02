@@ -183,19 +183,19 @@ export default async function AboutPage() {
                     <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6'>
                         {[
                             {
-                                name: 'Chukwuemeka Jovita',
+                                name: 'Joseph Ewulu',
                                 role: 'Founder & CEO',
                                 bio: 'Serial entrepreneur and eBike obsessive. Founded Jovico after one too many hours in Lagos traffic.',
                                 emoji: '👨🏾‍💼',
                             },
                             {
-                                name: 'Ngozi Adewale',
+                                name: 'Ngozi Adaku',
                                 role: 'Head of Operations',
                                 bio: 'Logistics pro with 10 years in Lagos retail. Keeps Jovico running like a well-oiled motor.',
                                 emoji: '👩🏾‍💼',
                             },
                             {
-                                name: 'Seun Okonkwo',
+                                name: 'Seun Femi',
                                 role: 'Lead Technician',
                                 bio: 'Certified eBike mechanic with expertise in Bosch, Bafang, and Shimano systems.',
                                 emoji: '👨🏾‍🔧',
